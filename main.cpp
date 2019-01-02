@@ -8,8 +8,9 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 bool init(SDL_Window *&window, SDL_Surface *&surface);
-bool loadMedia();
-bool close();
+bool loadMedia(SDL_Surface *&image, char fileName[]);
+bool close(SDL_Surface *&surface, SDL_Window *&window);
+void eventLoop();
 
 int main()
 {
@@ -18,29 +19,14 @@ int main()
     SDL_Surface *image = nullptr;
 
     init(window, surface);
+    loadMedia(image, "hello_world.bmp");
 
-    SDL_FillRect(surface, nullptr, SDL_MapRGB(surface->format,0xFF, 0xFF,0xFF) );
+    SDL_BlitSurface(image, nullptr, surface, nullptr);
     SDL_UpdateWindowSurface(window);
-    SDL_Delay(2E3);
 
-    // A basic main loop to prevent blocking
-    // =====================================
-    bool is_running = true;
-    SDL_Event event;
+    eventLoop();
 
-    while (is_running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                is_running = false;
-            }
-        }
-        SDL_Delay(16);
-    }
-    // =====================================
-    // end event loop
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    close(surface, window);
 
     return 0;
 }
@@ -69,4 +55,50 @@ bool init(SDL_Window *&window, SDL_Surface *&surface)
         surface = SDL_GetWindowSurface(window);
 
     return true;
+}
+
+bool loadMedia(SDL_Surface *&image, char fileName[])
+{
+    image = SDL_LoadBMP(fileName);
+
+    if(image == nullptr)
+    {
+        cout << "Unable to load image: " << SDL_GetError() << endl;
+        return false;
+    }
+
+    return true;
+}
+
+bool close(SDL_Surface *&surface, SDL_Window *&window)
+{
+    //Deallocate surface
+    SDL_FreeSurface( surface );
+    surface = nullptr;
+
+    //Destroy window
+    SDL_DestroyWindow( window );
+    window = nullptr;
+
+    //Quit SDL subsystems
+    SDL_Quit();
+
+    return true;
+}
+
+
+void eventLoop()
+{
+    bool is_running = true;
+    SDL_Event event;
+
+    while (is_running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                is_running = false;
+            }
+        }
+        SDL_Delay(16);
+    }
+
 }
