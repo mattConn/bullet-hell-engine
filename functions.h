@@ -1,7 +1,20 @@
 #include "include/SDL2/SDL.h"
 
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+
+enum KeyPressSurfaces
+{
+    KEY_PRESS_SURFACE_DEFAULT,
+    KEY_PRESS_SURFACE_UP,
+    KEY_PRESS_SURFACE_DOWN,
+    KEY_PRESS_SURFACE_LEFT,
+    KEY_PRESS_SURFACE_RIGHT,
+    KEY_PRESS_SURFACE_TOTAL
+};
+
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
-bool loadMedia(SDL_Surface *&imageSurface, char fileName[]);
+SDL_Surface *loadImage(char fileName[]);
 bool close(SDL_Surface *&surface, SDL_Window *&window);
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
@@ -30,17 +43,17 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
     return true;
 }
 
-bool loadMedia(SDL_Surface *&imageSurface, char fileName[])
+SDL_Surface *loadImage(char fileName[])
 {
-    imageSurface = SDL_LoadBMP(fileName);
+    SDL_Surface *imageSurface = SDL_LoadBMP(fileName);
 
     if(imageSurface == nullptr)
     {
-        cout << "Unable to load image: " << SDL_GetError() << endl;
-        return false;
+        cout << "Unable to load image" << fileName << ": " << SDL_GetError() << endl;
+        return imageSurface;
     }
 
-    return true;
+    return imageSurface;
 }
 
 bool close(SDL_Surface *&surface, SDL_Window *&window)

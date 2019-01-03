@@ -4,20 +4,7 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
 #include "functions.h"
-
-enum KeyPressSurfaces
-{
-    KEY_PRESS_SURFACE_DEFAULT,
-    KEY_PRESS_SURFACE_UP,
-    KEY_PRESS_SURFACE_DOWN,
-    KEY_PRESS_SURFACE_LEFT,
-    KEY_PRESS_SURFACE_RIGHT,
-    KEY_PRESS_SURFACE_TOTAL
-};
 
 int main()
 {
@@ -26,25 +13,21 @@ int main()
     SDL_Surface *currentImage = nullptr;
 
     SDL_Surface *keypressImages[KEY_PRESS_SURFACE_TOTAL];
-    cout << "KEY_PRESS_SURFACE_TOTAL: " << KEY_PRESS_SURFACE_TOTAL << endl;
 
     init(window, windowSurface);
 
-    loadMedia(currentImage, "hello_world.bmp");
-
     // load all keyPress images
-    loadMedia(keypressImages[KEY_PRESS_SURFACE_DEFAULT], "hello_world.bmp");
-    loadMedia(keypressImages[KEY_PRESS_SURFACE_UP], "arrows_up.bmp");
-    loadMedia(keypressImages[KEY_PRESS_SURFACE_DOWN], "arrows_down.bmp");
-    loadMedia(keypressImages[KEY_PRESS_SURFACE_LEFT], "arrows_left.bmp");
-    loadMedia(keypressImages[KEY_PRESS_SURFACE_RIGHT], "arrows_right.bmp");
+    keypressImages[KEY_PRESS_SURFACE_DEFAULT] = loadImage("hello_world.bmp");
+    keypressImages[KEY_PRESS_SURFACE_UP] = loadImage("arrows_up.bmp");
+    keypressImages[KEY_PRESS_SURFACE_DOWN] = loadImage("arrows_down.bmp");
+    keypressImages[KEY_PRESS_SURFACE_LEFT] = loadImage("arrows_left.bmp");
+    keypressImages[KEY_PRESS_SURFACE_RIGHT] = loadImage("arrows_right.bmp");
 
     // event loop
     //===========
     bool quit = false;
     SDL_Event event;
 
-    int a  = 0;
     while (!quit)
     {
         // event polling loop
