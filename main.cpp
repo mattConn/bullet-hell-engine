@@ -7,10 +7,9 @@ using namespace std;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-bool init(SDL_Window *&window, SDL_Surface *&surface);
-bool loadMedia(SDL_Surface *&image, char fileName[]);
+bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
+bool loadMedia(SDL_Surface *&imageSurface, char fileName[]);
 bool close(SDL_Surface *&surface, SDL_Window *&window);
-void eventLoop();
 
 enum KeyPressSurfaces
 {
@@ -25,23 +24,89 @@ enum KeyPressSurfaces
 int main()
 {
     SDL_Window *window = nullptr;
-    SDL_Surface *surface = nullptr;
-    SDL_Surface *image = nullptr;
+    SDL_Surface *windowSurface = nullptr;
+    SDL_Surface *currentImage = nullptr;
 
-    init(window, surface);
-    loadMedia(image, "hello_world.bmp");
+    SDL_Surface *keypressImages[KEY_PRESS_SURFACE_TOTAL];
+    cout << "KEY_PRESS_SURFACE_TOTAL: " << KEY_PRESS_SURFACE_TOTAL << endl;
 
-    SDL_BlitSurface(image, nullptr, surface, nullptr);
-    SDL_UpdateWindowSurface(window);
+    init(window, windowSurface);
 
-    eventLoop();
+    loadMedia(currentImage, "hello_world.bmp");
 
-    close(surface, window);
+    // load all keyPress images
+    loadMedia(keypressImages[KEY_PRESS_SURFACE_DEFAULT], "hello_world.bmp");
+    loadMedia(keypressImages[KEY_PRESS_SURFACE_UP], "arrows_up.bmp");
+    loadMedia(keypressImages[KEY_PRESS_SURFACE_DOWN], "arrows_down.bmp");
+    loadMedia(keypressImages[KEY_PRESS_SURFACE_LEFT], "arrows_left.bmp");
+    loadMedia(keypressImages[KEY_PRESS_SURFACE_RIGHT], "arrows_right.bmp");
+
+    // event loop
+    //===========
+    bool quit = false;
+    SDL_Event event;
+
+    while (!quit)
+    {
+        // event polling loop
+        //===================
+        while (SDL_PollEvent(&event))
+        {
+            // window close event
+            if (event.type == SDL_QUIT)
+            {
+                quit = true;
+                break;
+            }
+
+            // keypress event
+            if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                // up, down, left and right key presses
+                //=====================================
+
+                case SDLK_UP:
+                    currentImage = keypressImages[KEY_PRESS_SURFACE_UP];
+                    break;
+
+                case SDLK_DOWN:
+                    currentImage = keypressImages[KEY_PRESS_SURFACE_DOWN];
+                    break;
+
+                case SDLK_LEFT:
+                    currentImage = keypressImages[KEY_PRESS_SURFACE_LEFT];
+                    break;
+
+                case SDLK_RIGHT:
+                    currentImage = keypressImages[KEY_PRESS_SURFACE_RIGHT];
+                    break;
+
+                default:
+                    currentImage = keypressImages[KEY_PRESS_SURFACE_DEFAULT];
+                }
+            }
+        }
+        //=======================
+        // end event polling loop
+
+        // update window
+        SDL_BlitSurface(currentImage, nullptr, windowSurface, nullptr);
+        SDL_UpdateWindowSurface(window);
+
+        SDL_Delay(16);
+    }
+    //===============
+    // end event loop
+
+
+    close(windowSurface, window);
 
     return 0;
 }
 
-bool init(SDL_Window *&window, SDL_Surface *&surface)
+bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 {
     if( SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -61,17 +126,17 @@ bool init(SDL_Window *&window, SDL_Surface *&surface)
         cout << "SDL window creation error: " << SDL_GetError() << endl;
         return false;
     }
-    else
-        surface = SDL_GetWindowSurface(window);
+
+    windowSurface = SDL_GetWindowSurface(window);
 
     return true;
 }
 
-bool loadMedia(SDL_Surface *&image, char fileName[])
+bool loadMedia(SDL_Surface *&imageSurface, char fileName[])
 {
-    image = SDL_LoadBMP(fileName);
+    imageSurface = SDL_LoadBMP(fileName);
 
-    if(image == nullptr)
+    if(imageSurface == nullptr)
     {
         cout << "Unable to load image: " << SDL_GetError() << endl;
         return false;
@@ -94,30 +159,4 @@ bool close(SDL_Surface *&surface, SDL_Window *&window)
     SDL_Quit();
 
     return true;
-}
-
-
-void eventLoop()
-{
-    bool is_running = true;
-    SDL_Event event;
-
-    while (is_running) {
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-                is_running = false;
-            else if (event.type == SDL_KEYDOWN)
-            {
-                switch (event.key.keysym.sym)
-                {
-                    case SDLK_UP:
-                    is_running = false;
-                    break;
-                }
-            }
-        }
-        SDL_Delay(16);
-    }
-
 }
