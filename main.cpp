@@ -12,6 +12,16 @@ bool loadMedia(SDL_Surface *&image, char fileName[]);
 bool close(SDL_Surface *&surface, SDL_Window *&window);
 void eventLoop();
 
+enum KeyPressSurfaces
+{
+    KEY_PRESS_SURFACE_DEFAULT,
+    KEY_PRESS_SURFACE_UP,
+    KEY_PRESS_SURFACE_DOWN,
+    KEY_PRESS_SURFACE_LEFT,
+    KEY_PRESS_SURFACE_RIGHT,
+    KEY_PRESS_SURFACE_TOTAL
+};
+
 int main()
 {
     SDL_Window *window = nullptr;
@@ -93,9 +103,18 @@ void eventLoop()
     SDL_Event event;
 
     while (is_running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
                 is_running = false;
+            else if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_UP:
+                    is_running = false;
+                    break;
+                }
             }
         }
         SDL_Delay(16);
