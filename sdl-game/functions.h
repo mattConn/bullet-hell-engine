@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+// window dimensions
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
@@ -16,6 +17,7 @@ enum KeyPresses
 	KEY_PRESS_DOWN,
 	KEY_PRESS_LEFT,
 	KEY_PRESS_RIGHT,
+	KEY_PRESS_LATEST,
 	KEY_PRESS_TOTAL
 };
 
@@ -106,13 +108,14 @@ SDL_Surface *loadImage(const char fileName[])
 	return optimizedSurface;
 }
 
+//IMG_LoadTexture wrapper
 SDL_Texture *loadTexture(const char fileName[])
 {
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer,loadImage(fileName));
+	SDL_Texture *texture = IMG_LoadTexture(renderer, fileName);
 
 	if (texture == nullptr)
 	{
-		std::cout << "Unable to load texture: " << fileName << std::endl;
+		std::cout << "Unable to load texture: " << fileName << " : " << SDL_GetError() << std::endl;
 		return nullptr;
 	}
 

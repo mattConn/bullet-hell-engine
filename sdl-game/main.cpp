@@ -26,22 +26,31 @@ int main()
 	init(window, windowSurface);
 
 	// load all keyPress images
-	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp");
+	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp"); 
 	keypressImages[KEY_PRESS_UP] = loadTexture("arrows_up.bmp");
 	keypressImages[KEY_PRESS_DOWN] = loadTexture("arrows_down.bmp");
 	keypressImages[KEY_PRESS_LEFT] = loadTexture("arrows_left.bmp");
 	keypressImages[KEY_PRESS_RIGHT] = loadTexture("arrows_right.bmp");
 	
 
-	// event loop
+	// TEST
+	SDL_Rect rect;
+	rect.x = 1;
+	rect.y = 1;
+	rect.w = 100;
+	rect.h = 100;
+
+	// real-time state of key
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+
+	// game loop
 	//===========
 	bool quit = false;
-	SDL_Event event;
-
+	SDL_Event event; // event handler
+	
 	while (!quit)
 	{
 		// event polling loop
-		//===================
 		while (SDL_PollEvent(&event))
 		{
 			// window close event
@@ -50,53 +59,47 @@ int main()
 				quit = true;
 				break;
 			}
-
-			// keypress event
-			if (event.type == SDL_KEYDOWN)
-			{
-				switch (event.key.keysym.sym)
-				{
-
-				case SDLK_UP:
-					currentImage = keypressImages[KEY_PRESS_UP];
-					break;
-
-				case SDLK_DOWN:
-					currentImage = keypressImages[KEY_PRESS_DOWN];
-					break;
-
-				case SDLK_LEFT:
-					currentImage = keypressImages[KEY_PRESS_LEFT];
-					break;
-
-
-				case SDLK_RIGHT:
-					currentImage = keypressImages[KEY_PRESS_RIGHT];
-					break;
-
-				// DEBUG: Easy quitting
-				case SDLK_RETURN:
-					quit = true;
-					break;
-
-				default:
-					currentImage = keypressImages[KEY_PRESS_DEFAULT];
-				}
-			}
 		}
-		//=======================
-		// end event polling loop
+
+		// check keystate
+		//===============
+		if (keyState[SDL_SCANCODE_UP])
+		{
+			currentImage = keypressImages[KEY_PRESS_UP];
+			rect.y -= 10;
+		}
+		else if (keyState[SDL_SCANCODE_DOWN])
+		{
+			currentImage = keypressImages[KEY_PRESS_DOWN];
+			rect.y += 10;
+		}
+		else if (keyState[SDL_SCANCODE_LEFT])
+		{
+			currentImage = keypressImages[KEY_PRESS_LEFT];
+			rect.x -= 10;
+		}
+		else if (keyState[SDL_SCANCODE_RIGHT])
+		{
+			currentImage = keypressImages[KEY_PRESS_RIGHT];
+			rect.x += 10;
+		}
+		else if (keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
+		{
+			quit = true;
+		}
 
 		// update window
 		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, currentImage, nullptr, nullptr); // use rect for x and y positioning
+		SDL_RenderCopy(renderer, currentImage, nullptr, &rect); // use rect for x and y positioning
 		SDL_RenderPresent(renderer);
 
 		SDL_Delay(16);
 	}
-	//===============
-	// end event loop
 
+	//==============
+	// end game loop
+
+	// close SDL subsystems
 	close(windowSurface, window);
 
 	return 0;
