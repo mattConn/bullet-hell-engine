@@ -4,24 +4,25 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-SDL_Window *window = nullptr;
-SDL_Surface *windowSurface = nullptr;
-SDL_Renderer *renderer = nullptr;
+SDL_Window *window = nullptr; // main window
+SDL_Surface *windowSurface = nullptr; // surface for main window
+SDL_Renderer *renderer = nullptr; // main renderer
 
-enum KeyPressSurfaces
+// keypress enum for relating textures to keypress events
+enum KeyPresses
 {
-	KEY_PRESS_SURFACE_DEFAULT,
-	KEY_PRESS_SURFACE_UP,
-	KEY_PRESS_SURFACE_DOWN,
-	KEY_PRESS_SURFACE_LEFT,
-	KEY_PRESS_SURFACE_RIGHT,
-	KEY_PRESS_SURFACE_TOTAL
+	KEY_PRESS_DEFAULT,
+	KEY_PRESS_UP,
+	KEY_PRESS_DOWN,
+	KEY_PRESS_LEFT,
+	KEY_PRESS_RIGHT,
+	KEY_PRESS_TOTAL
 };
 
-bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
-SDL_Surface *loadImage(char fileName[]);
-SDL_Texture *loadTexture(const char filename[]);
-bool close(SDL_Surface *&surface, SDL_Window *&window);
+bool init(SDL_Window *&window, SDL_Surface *&windowSurface); // init SDL subsystems, windows etc.
+SDL_Surface *loadImage(char fileName[]); // load image and optimize
+SDL_Texture *loadTexture(const char filename[]); // load image and convert to texture
+bool close(SDL_Surface *&surface, SDL_Window *&window); // free memory and quit SDL subsytems
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 {

@@ -20,17 +20,17 @@ int main()
 
 	SDL_Texture *currentImage = nullptr;
 
-	SDL_Texture *keypressImages[KEY_PRESS_SURFACE_TOTAL];
+	SDL_Texture *keypressImages[KEY_PRESS_TOTAL];
 
 	// init sdl
 	init(window, windowSurface);
 
 	// load all keyPress images
-	keypressImages[KEY_PRESS_SURFACE_DEFAULT] = loadTexture("hello_world.bmp");
-	keypressImages[KEY_PRESS_SURFACE_UP] = loadTexture("arrows_up.bmp");
-	keypressImages[KEY_PRESS_SURFACE_DOWN] = loadTexture("arrows_down.bmp");
-	keypressImages[KEY_PRESS_SURFACE_LEFT] = loadTexture("arrows_left.bmp");
-	keypressImages[KEY_PRESS_SURFACE_RIGHT] = loadTexture("arrows_right.bmp");
+	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp");
+	keypressImages[KEY_PRESS_UP] = loadTexture("arrows_up.bmp");
+	keypressImages[KEY_PRESS_DOWN] = loadTexture("arrows_down.bmp");
+	keypressImages[KEY_PRESS_LEFT] = loadTexture("arrows_left.bmp");
+	keypressImages[KEY_PRESS_RIGHT] = loadTexture("arrows_right.bmp");
 	
 
 	// event loop
@@ -58,20 +58,20 @@ int main()
 				{
 
 				case SDLK_UP:
-					currentImage = keypressImages[KEY_PRESS_SURFACE_UP];
+					currentImage = keypressImages[KEY_PRESS_UP];
 					break;
 
 				case SDLK_DOWN:
-					currentImage = keypressImages[KEY_PRESS_SURFACE_DOWN];
+					currentImage = keypressImages[KEY_PRESS_DOWN];
 					break;
 
 				case SDLK_LEFT:
-					currentImage = keypressImages[KEY_PRESS_SURFACE_LEFT];
+					currentImage = keypressImages[KEY_PRESS_LEFT];
 					break;
 
 
 				case SDLK_RIGHT:
-					currentImage = keypressImages[KEY_PRESS_SURFACE_RIGHT];
+					currentImage = keypressImages[KEY_PRESS_RIGHT];
 					break;
 
 				// DEBUG: Easy quitting
@@ -80,7 +80,7 @@ int main()
 					break;
 
 				default:
-					currentImage = keypressImages[KEY_PRESS_SURFACE_DEFAULT];
+					currentImage = keypressImages[KEY_PRESS_DEFAULT];
 				}
 			}
 		}
