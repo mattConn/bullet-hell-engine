@@ -262,3 +262,7 @@ __pycache__/
 
 # binary compiled to on *nix
 game
+
+# library directories
+sdl2
+sdl2_image
