@@ -2,8 +2,8 @@
 #include <SDL_image.h>
 
 // window dimensions
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
@@ -17,13 +17,13 @@ enum KeyPresses
 	KEY_PRESS_DOWN,
 	KEY_PRESS_LEFT,
 	KEY_PRESS_RIGHT,
-	KEY_PRESS_LATEST,
 	KEY_PRESS_TOTAL
 };
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface); // init SDL subsystems, windows etc.
 SDL_Surface *loadImage(char fileName[]); // load image and optimize
 SDL_Texture *loadTexture(const char filename[]); // load image and convert to texture
+SDL_Rect getRect(const float &x, const float &y, const float &w, const float &h); // make SDL Rect
 bool close(SDL_Surface *&surface, SDL_Window *&window); // free memory and quit SDL subsytems
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
@@ -122,6 +122,18 @@ SDL_Texture *loadTexture(const char fileName[])
 	DEBUG_MSG("Load texture successful: " << fileName);
 
 	return texture;
+}
+
+// SDL rect wrapper
+SDL_Rect getRect(const float &xPos, const float &yPos, const float &width, const float &height = NULL)
+{
+	SDL_Rect rect;
+	rect.x = xPos;
+	rect.y = yPos;
+	rect.w = width;
+	rect.h = height == NULL ? width : height;
+
+	return rect;
 }
 
 bool close(SDL_Surface *&surface, SDL_Window *&window)

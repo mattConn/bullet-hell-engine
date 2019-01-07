@@ -23,31 +23,30 @@ int main()
 	SDL_Texture *keypressImages[KEY_PRESS_TOTAL];
 
 	// init sdl
-	init(window, windowSurface);
+	if (!init(window, windowSurface))
+	{
+		DEBUG_MSG("Init failed");
+		return -1;
+	}
 
 	// load all keyPress images
-	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp"); 
+	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp");
 	keypressImages[KEY_PRESS_UP] = loadTexture("arrows_up.bmp");
 	keypressImages[KEY_PRESS_DOWN] = loadTexture("arrows_down.bmp");
 	keypressImages[KEY_PRESS_LEFT] = loadTexture("arrows_left.bmp");
 	keypressImages[KEY_PRESS_RIGHT] = loadTexture("arrows_right.bmp");
-	
 
 	// TEST
-	SDL_Rect rect;
-	rect.x = 1;
-	rect.y = 1;
-	rect.w = 100;
-	rect.h = 100;
+	SDL_Rect rect = getRect(1,1,100,100);
 
 	// real-time state of key
-	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
 
 	// game loop
 	//===========
 	bool quit = false;
 	SDL_Event event; // event handler
-	
+
 	while (!quit)
 	{
 		// event polling loop
@@ -70,8 +69,11 @@ int main()
 		}
 		else if (keyState[SDL_SCANCODE_DOWN])
 		{
-			currentImage = keypressImages[KEY_PRESS_DOWN];
-			rect.y += 10;
+			if (rect.y < SCREEN_HEIGHT-100)
+			{
+				currentImage = keypressImages[KEY_PRESS_DOWN];
+				rect.y += 10;
+			}
 		}
 		else if (keyState[SDL_SCANCODE_LEFT])
 		{
