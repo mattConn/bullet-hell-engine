@@ -1,26 +1,24 @@
 #include <iostream>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #undef main
 
-
-// debug message macro
-#define DEBUG true
-#if DEBUG
-#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
-#else
-#define DEBUG_MSG(str) do { } while ( false )
-#endif
-
-
+#include "debug_msg.h"
 #include "functions.h"
+#include "classes.h"
+
+void foo();
 
 int main(int argc, char *argv[])
 {
 
 	SDL_Texture *currentImage = nullptr;
-
 	SDL_Texture *keypressImages[KEY_PRESS_TOTAL];
+
+	// player
+	playerObj player(1, 1, 100);
+	std::cout << player.rect.w << std::endl;
 
 	// init sdl
 	if (!init(window, windowSurface))
@@ -29,6 +27,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+
 	// load all keyPress images
 	keypressImages[KEY_PRESS_DEFAULT] = loadTexture("hello_world.bmp");
 	keypressImages[KEY_PRESS_UP] = loadTexture("arrows_up.bmp");
@@ -36,17 +35,18 @@ int main(int argc, char *argv[])
 	keypressImages[KEY_PRESS_LEFT] = loadTexture("arrows_left.bmp");
 	keypressImages[KEY_PRESS_RIGHT] = loadTexture("arrows_right.bmp");
 
-	// TEST
-	SDL_Rect rect = makeRect(1, 1, 100, 100);
+	// list of all objects with collidable rectangles
+	std::vector<SDL_Rect> collidableObj;
 
-	SDL_Rect wall[WALL_TOTAL];
-	wall[WALL_LEFT] = makeRect(0, 0, 1, SCREEN_HEIGHT);
-	wall[WALL_RIGHT] = makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT);
-	wall[WALL_TOP] = makeRect(0, 0, SCREEN_WIDTH, 1);
-	wall[WALL_BOTTOM] = makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1);
+	// array of screen edges rectangles (1 px thick)
+	SDL_Rect screenEdge[SCREEN_EDGE_TOTAL];
+	screenEdge[SCREEN_EDGE_LEFT] = makeRect(0, 0, 1, SCREEN_HEIGHT);
+	screenEdge[SCREEN_EDGE_RIGHT] = makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT);
+	screenEdge[SCREEN_EDGE_TOP] = makeRect(0, 0, SCREEN_WIDTH, 1);
+	screenEdge[SCREEN_EDGE_BOTTOM] = makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1);
 
 	// real-time state of key
-	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
+	const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
 
 	// game loop
 	//===========
@@ -72,37 +72,37 @@ int main(int argc, char *argv[])
 		{
 			currentImage = keypressImages[KEY_PRESS_UP];
 
-			if (SDL_HasIntersection(&rect, &wall[WALL_TOP]))
-				rect.y = SCREEN_HEIGHT - rect.h;
+			if (SDL_HasIntersection(&player.rect, &screenEdge[SCREEN_EDGE_TOP]))
+				player.rect.y = SCREEN_HEIGHT - player.rect.h;
 			else
-				rect.y -= 10;
+				player.rect.y -= 10;
 		}
 		else if (keyState[SDL_SCANCODE_DOWN])
 		{
 			currentImage = keypressImages[KEY_PRESS_DOWN];
 
-			if (SDL_HasIntersection(&rect, &wall[WALL_BOTTOM]))
-				rect.y = 0;
+			if (SDL_HasIntersection(&player.rect, &screenEdge[SCREEN_EDGE_BOTTOM]))
+				player.rect.y = 0;
 			else
-				rect.y += 10;
+				player.rect.y += 10;
 		}
 		else if (keyState[SDL_SCANCODE_LEFT])
 		{
 			currentImage = keypressImages[KEY_PRESS_LEFT];
 
-			if (SDL_HasIntersection(&rect, &wall[WALL_LEFT]))
-				rect.x = SCREEN_WIDTH - rect.w;
+			if (SDL_HasIntersection(&player.rect, &screenEdge[SCREEN_EDGE_LEFT]))
+				player.rect.x = SCREEN_WIDTH - player.rect.w;
 			else
-				rect.x -= 10;
+				player.rect.x -= 10;
 		}
 		else if (keyState[SDL_SCANCODE_RIGHT])
 		{
 			currentImage = keypressImages[KEY_PRESS_RIGHT];
 
-			if (SDL_HasIntersection(&rect, &wall[WALL_RIGHT]))
-				rect.x = 0;
+			if (SDL_HasIntersection(&player.rect, &screenEdge[SCREEN_EDGE_RIGHT]))
+				player.rect.x = 0;
 			else
-				rect.x += 10;
+				player.rect.x += 10;
 		}
 		else if (keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
 		{
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
 		// update window
 		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, currentImage, nullptr, &rect); // use rect for x and y positioning
+		SDL_RenderCopy(renderer, currentImage, nullptr, &player.rect);
 		SDL_RenderPresent(renderer);
 
 		SDL_Delay(16);
@@ -125,5 +125,7 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-
-
+void foo()
+{
+	return;
+}

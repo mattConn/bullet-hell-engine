@@ -1,13 +1,4 @@
-#include <SDL.h>
-#include <SDL_image.h>
-
-// window dimensions
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-
-SDL_Window *window = nullptr; // main window
-SDL_Surface *windowSurface = nullptr; // surface for main window
-SDL_Renderer *renderer = nullptr; // main renderer
+#pragma once
 
 // keypress enum for relating textures to keypress events
 enum KeyPresses
@@ -23,18 +14,41 @@ enum KeyPresses
 // wall position enum
 enum wallPos
 {
-	WALL_LEFT,
-	WALL_RIGHT,
-	WALL_TOP,
-	WALL_BOTTOM,
-	WALL_TOTAL
+	SCREEN_EDGE_LEFT,
+	SCREEN_EDGE_RIGHT,
+	SCREEN_EDGE_TOP,
+	SCREEN_EDGE_BOTTOM,
+	SCREEN_EDGE_TOTAL
 };
 
-bool init(SDL_Window *&window, SDL_Surface *&windowSurface); // init SDL subsystems, windows etc.
-SDL_Surface *loadImage(char fileName[]); // load image and optimize
-SDL_Texture *loadTexture(const char filename[]); // load image and convert to texture
-SDL_Rect makeRect(const float &x, const float &y, const float &w, const float &h); // make SDL Rect
-bool close(SDL_Surface *&surface, SDL_Window *&window); // free memory and quit SDL subsytems
+// window dimensions
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+
+SDL_Window *window = nullptr; // main window
+SDL_Surface *windowSurface = nullptr; // surface for main window
+SDL_Renderer *renderer = nullptr; // main renderer
+
+// prototypes
+// ==========
+
+// init SDL subsystems, windows etc.
+bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
+
+// load image and optimize
+SDL_Surface *loadImage(char fileName[]);
+
+// load image and convert to texture
+SDL_Texture *loadTexture(const char filename[]);
+
+// make SDL Rect
+SDL_Rect makeRect(const float &x, const float &y, const float &w, const float &h);
+
+// free memory and quit SDL subsytems
+bool close(SDL_Surface *&surface, SDL_Window *&window);
+
+// definitions
+// ===========
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 {
@@ -49,7 +63,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	DEBUG_MSG("Init video");
 
 	// init PNG loading
-	if ( !IMG_Init(IMG_INIT_PNG) )
+	if (!IMG_Init(IMG_INIT_PNG))
 	{
 		std::cout << "Could not init PNG loading: " << SDL_GetError() << std::endl;
 		return false;
@@ -109,7 +123,7 @@ SDL_Surface *loadImage(const char fileName[])
 		std::cout << "Unable to optimize surface " << fileName << ": " << std::endl;
 		return nullptr;
 	}
-	
+
 	// free unoptimized surface
 	SDL_FreeSurface(imageSurface);
 
@@ -135,10 +149,11 @@ SDL_Texture *loadTexture(const char fileName[])
 }
 
 // SDL rect wrapper
-SDL_Rect makeRect(const float &xPos, const float &yPos, const float &width, const float &height = -1)
+SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int &height = -1)
 {
 	SDL_Rect rect;
 	rect.x = xPos;
+
 	rect.y = yPos;
 	rect.w = width;
 	rect.h = height == -1 ? width : height;
