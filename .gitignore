@@ -266,3 +266,6 @@ game
 # library directories
 sdl2
 sdl2_image
+
+# windows symlinks
+*.lnk
