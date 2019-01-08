@@ -20,10 +20,20 @@ enum KeyPresses
 	KEY_PRESS_TOTAL
 };
 
+// wall position enum
+enum wallPos
+{
+	WALL_LEFT,
+	WALL_RIGHT,
+	WALL_TOP,
+	WALL_BOTTOM,
+	WALL_TOTAL
+};
+
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface); // init SDL subsystems, windows etc.
 SDL_Surface *loadImage(char fileName[]); // load image and optimize
 SDL_Texture *loadTexture(const char filename[]); // load image and convert to texture
-SDL_Rect getRect(const float &x, const float &y, const float &w, const float &h); // make SDL Rect
+SDL_Rect makeRect(const float &x, const float &y, const float &w, const float &h); // make SDL Rect
 bool close(SDL_Surface *&surface, SDL_Window *&window); // free memory and quit SDL subsytems
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
@@ -69,7 +79,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 		std::cout << "Could not init renderer: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	DEBUG_MSG("Init renderer");
 
 	// assign window surface
@@ -125,13 +135,13 @@ SDL_Texture *loadTexture(const char fileName[])
 }
 
 // SDL rect wrapper
-SDL_Rect getRect(const float &xPos, const float &yPos, const float &width, const float &height = NULL)
+SDL_Rect makeRect(const float &xPos, const float &yPos, const float &width, const float &height = -1)
 {
 	SDL_Rect rect;
 	rect.x = xPos;
 	rect.y = yPos;
 	rect.w = width;
-	rect.h = height == NULL ? width : height;
+	rect.h = height == -1 ? width : height;
 
 	return rect;
 }

@@ -37,7 +37,13 @@ int main(int argc, char *argv[])
 	keypressImages[KEY_PRESS_RIGHT] = loadTexture("arrows_right.bmp");
 
 	// TEST
-	SDL_Rect rect = getRect(1,1,100,100);
+	SDL_Rect rect = makeRect(1, 1, 100, 100);
+
+	SDL_Rect wall[WALL_TOTAL];
+	wall[WALL_LEFT] = makeRect(0, 0, 1, SCREEN_HEIGHT);
+	wall[WALL_RIGHT] = makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT);
+	wall[WALL_TOP] = makeRect(0, 0, SCREEN_WIDTH, 1);
+	wall[WALL_BOTTOM] = makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1);
 
 	// real-time state of key
 	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
@@ -65,25 +71,38 @@ int main(int argc, char *argv[])
 		if (keyState[SDL_SCANCODE_UP])
 		{
 			currentImage = keypressImages[KEY_PRESS_UP];
-			rect.y -= 10;
+
+			if (SDL_HasIntersection(&rect, &wall[WALL_TOP]))
+				rect.y = SCREEN_HEIGHT - rect.h;
+			else
+				rect.y -= 10;
 		}
 		else if (keyState[SDL_SCANCODE_DOWN])
 		{
-			if (rect.y < SCREEN_HEIGHT-100)
-			{
-				currentImage = keypressImages[KEY_PRESS_DOWN];
+			currentImage = keypressImages[KEY_PRESS_DOWN];
+
+			if (SDL_HasIntersection(&rect, &wall[WALL_BOTTOM]))
+				rect.y = 0;
+			else
 				rect.y += 10;
-			}
 		}
 		else if (keyState[SDL_SCANCODE_LEFT])
 		{
 			currentImage = keypressImages[KEY_PRESS_LEFT];
-			rect.x -= 10;
+
+			if (SDL_HasIntersection(&rect, &wall[WALL_LEFT]))
+				rect.x = SCREEN_WIDTH - rect.w;
+			else
+				rect.x -= 10;
 		}
 		else if (keyState[SDL_SCANCODE_RIGHT])
 		{
 			currentImage = keypressImages[KEY_PRESS_RIGHT];
-			rect.x += 10;
+
+			if (SDL_HasIntersection(&rect, &wall[WALL_RIGHT]))
+				rect.x = 0;
+			else
+				rect.x += 10;
 		}
 		else if (keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
 		{
