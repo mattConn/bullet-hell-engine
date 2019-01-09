@@ -143,11 +143,11 @@ SDL_Texture *loadTexture(const char fileName[])
 	return texture;
 }
 
-bool close(SDL_Surface *&surface, SDL_Window *&window)
+bool close()
 {
-	//Deallocate surface
-	SDL_FreeSurface(surface);
-	surface = nullptr;
+	//Deallocate windowSurface
+	SDL_FreeSurface(windowSurface);
+	windowSurface = nullptr;
 
 	//Destroy window
 	SDL_DestroyWindow(window);

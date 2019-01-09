@@ -27,6 +27,8 @@ public:
 	gameObj(); // default constructor
 	gameObj(const bool &collisionBool, const gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
 
+	~gameObj(); // destructor
+
 	// obj rect
 	SDL_Rect rect;
 

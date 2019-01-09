@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	// end game loop
 
 	// close SDL subsystems
-	g::close(g::windowSurface, g::window);
+	g::close();
 
 	return 0;
 }

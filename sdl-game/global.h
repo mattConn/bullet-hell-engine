@@ -47,6 +47,6 @@ namespace g {
 	extern SDL_Texture *loadTexture(const char filename[]);
 
 	// free memory and quit SDL subsytems
-	extern bool close(SDL_Surface *&surface, SDL_Window *&window);
+	extern bool close();
 
 } // end namespace

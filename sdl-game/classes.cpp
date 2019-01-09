@@ -31,6 +31,13 @@ gameObj::gameObj(const bool &collisionBool, const gameObjType &oType, const int 
 	rect = g::makeRect(xPos, yPos, width, height);
 }
 
+// destructor
+gameObj::~gameObj()
+{
+	SDL_DestroyTexture(currentTexture);
+	currentTexture = nullptr;
+}
+
 inline bool gameObj::isCollidable()
 {
 	return collidable;
