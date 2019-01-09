@@ -122,13 +122,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="classes.cpp" />
-    <ClCompile Include="classes.h" />
+    <ClCompile Include="gameObj.cpp" />
+    <ClCompile Include="playerObj.cpp" />
+    <ClCompile Include="playerObj.h" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug.h" />
+    <ClInclude Include="gameObj.h" />
     <ClInclude Include="global.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

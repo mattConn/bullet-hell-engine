@@ -6,7 +6,8 @@
 
 #include "debug.h"
 #include "global.h"
-#include "classes.h"
+#include "gameObj.h"
+#include "playerObj.h"
 
 
 int main(int argc, char *argv[])
