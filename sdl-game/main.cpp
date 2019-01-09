@@ -4,20 +4,13 @@
 #include <SDL_image.h>
 #undef main
 
-#define DEBUG
-
-#include "debug_msg.h"
+#include "debug.h"
 #include "global.h"
 #include "classes.h"
 
 
 int main(int argc, char *argv[])
 {
-
-	// player
-	playerObj player(1, 1, 100);
-	std::cout << player.rect.w << std::endl;
-
 	// init sdl
 	if (!g::init(g::window, g::windowSurface))
 	{
@@ -25,6 +18,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	// construct player
+	playerObj player(1, 1, 100);
 
 	// list of all objects with collidable rectangles
 	std::vector<SDL_Rect> collidableObj;
@@ -50,6 +45,8 @@ int main(int argc, char *argv[])
 		if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
 			g::quit = true;
 		#endif
+
+		player.checkKeystate();
 		
 		// update window
 		SDL_RenderClear(g::renderer);

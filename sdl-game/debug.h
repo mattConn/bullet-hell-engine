@@ -1,4 +1,7 @@
 #pragma once
+
+#define DEBUG
+
 // debug msg printing
 #ifdef DEBUG
 #define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )

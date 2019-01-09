@@ -43,7 +43,7 @@ namespace g {
 	// load image and optimize
 	extern SDL_Surface *loadImage(char fileName[]);
 
-	// load image and convert to texture
+	// SDL image wrapper
 	extern SDL_Texture *loadTexture(const char filename[]);
 
 	// free memory and quit SDL subsytems

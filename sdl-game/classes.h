@@ -59,5 +59,5 @@ public:
 	playerObj(); // default constructor
 	playerObj(const int &xPos, const int &yPos, const int &width, const int &height = -1);
 
-	void getKeystate();
+	void checkKeystate();
 };

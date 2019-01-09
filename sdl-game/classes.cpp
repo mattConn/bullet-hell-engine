@@ -1,7 +1,7 @@
 // default constructor
 #include <SDL.h>
 #include "global.h"
-#include "debug_msg.h"
+#include "debug.h"
 #include "classes.h"
 
 // game object definitions
@@ -71,7 +71,7 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &width, const i
 	keypressTextures[KEY_PRESS_RIGHT] = g::loadTexture("arrows_right.bmp");
 }
 
-void playerObj::getKeystate()
+void playerObj::checkKeystate()
 {
 	// check keystate
 	//===============
