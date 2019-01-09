@@ -1,5 +1,6 @@
 // default constructor
 #include <SDL.h>
+#include <vector>
 #include "global.h"
 #include "debug.h"
 #include "classes.h"
@@ -16,14 +17,14 @@ SDL_Texture *gameObj::getCurrentTexture()
 gameObj::gameObj()
 {
 	collidable = false;
-	objType = OBJ_GRAPHIC;
+	objType = g::OBJ_GRAPHIC;
 
 	rect = g::makeRect(0, 0, 1);
 }
 
 // custom constructor
 // set collision, obj type, rect data
-gameObj::gameObj(const bool &collisionBool, const gameObjType &oType, const int &xPos, const int &yPos, const int &width, const int &height)
+gameObj::gameObj(const bool &collisionBool, const g::gameObjType &oType, const int &xPos, const int &yPos, const int &width, const int &height)
 {
 	collidable = collisionBool;
 	objType = oType;
@@ -43,7 +44,7 @@ inline bool gameObj::isCollidable()
 	return collidable;
 }
 
-inline gameObjType gameObj::getType()
+inline g::gameObjType gameObj::getType()
 {
 	return objType;
 }
@@ -58,7 +59,7 @@ inline gameObjType gameObj::getType()
 playerObj::playerObj() // default constructor
 {
 	collidable = true;
-	objType = OBJ_PLAYER;
+	objType = g::OBJ_PLAYER;
 
 	rect = g::makeRect(0, 0, 50);
 }
@@ -66,7 +67,7 @@ playerObj::playerObj() // default constructor
 playerObj::playerObj(const int &xPos, const int &yPos, const int &width, const int &height) // custom constructor: sets rect
 {
 	collidable = true;
-	objType = OBJ_PLAYER;
+	objType = g::OBJ_PLAYER;
 
 	rect = g::makeRect(xPos, yPos, width, height);
 
@@ -78,7 +79,25 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &width, const i
 	keypressTextures[KEY_PRESS_RIGHT] = g::loadTexture("arrows_right.bmp");
 }
 
-void playerObj::checkKeystate()
+// check for collision
+g::gameObjType playerObj::checkCollisionType(gameObj &obj)
+{
+	// if player has no collision
+	if (!collidable)
+		return g::OBJ_NO_COLLISION;
+
+	// no collision detected
+	if (!SDL_HasIntersection(&rect, &obj.rect))
+		return g::OBJ_NO_COLLISION;
+
+	// prevent collision with self
+	if (obj.getType() == g::OBJ_PLAYER)
+		return g::OBJ_NO_COLLISION;
+
+	return obj.getType();
+}
+
+void playerObj::checkKeystate(const std::vector<gameObj*> &collidableObjs)
 {
 	// check keystate
 	//===============
@@ -105,19 +124,21 @@ void playerObj::checkKeystate()
 	{
 		currentTexture = keypressTextures[KEY_PRESS_LEFT];
 
-		if (SDL_HasIntersection(&rect, &g::screenEdge[g::SCREEN_EDGE_LEFT]))
-			rect.x = g::SCREEN_WIDTH - rect.w;
-		else
-			rect.x -= 10;
+		for (auto obj : collidableObjs)
+		{
+			if (checkCollisionType(*obj) != g::OBJ_WALL)
+				rect.x -= 10;
+		}
 	}
 	else if (g::keyState[SDL_SCANCODE_RIGHT])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
 
-		if (SDL_HasIntersection(&rect, &g::screenEdge[g::SCREEN_EDGE_RIGHT]))
-			rect.x = 0;
-		else
-			rect.x += 10;
+		for (auto obj : collidableObjs)
+		{
+			if(checkCollisionType(*obj) != g::OBJ_WALL)
+				rect.x += 10;
+		}
 	}
 
 }

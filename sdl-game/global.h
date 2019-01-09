@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <vector>
 
 namespace g {
 	extern bool quit;
@@ -16,6 +17,18 @@ namespace g {
 		SCREEN_EDGE_TOP,
 		SCREEN_EDGE_BOTTOM,
 		SCREEN_EDGE_TOTAL
+	};
+
+	// obj types
+	enum gameObjType
+	{
+		OBJ_PLATFORM,
+		OBJ_WALL,
+		OBJ_PLAYER,
+		OBJ_ENEMY,
+		OBJ_GRAPHIC,
+		OBJ_NO_COLLISION,
+		OBJ_TOTAL
 	};
 
 	// array of screen edges rectangles (1 px thick)

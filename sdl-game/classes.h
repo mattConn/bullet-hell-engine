@@ -3,29 +3,21 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
-
-// obj types
-enum gameObjType
-{
-	OBJ_PLATFORM,
-	OBJ_PLAYER,
-	OBJ_ENEMY,
-	OBJ_GRAPHIC,
-	OBJ_TOTAL
-};
+#include "global.h"
+#include <vector>
 
 // any game object
 // ===============
 class gameObj {
 protected:
 	bool collidable;
-	gameObjType objType;
+	g::gameObjType objType;
 
 	SDL_Texture *currentTexture = nullptr;
 
 public:
 	gameObj(); // default constructor
-	gameObj(const bool &collisionBool, const gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
+	gameObj(const bool &collisionBool, const g::gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
 
 	~gameObj(); // destructor
 
@@ -34,7 +26,7 @@ public:
 
 	// accessors
 	bool isCollidable();
-	gameObjType getType();
+	g::gameObjType getType();
 	SDL_Texture *getCurrentTexture();
 
 };
@@ -61,5 +53,7 @@ public:
 	playerObj(); // default constructor
 	playerObj(const int &xPos, const int &yPos, const int &width, const int &height = -1);
 
-	void checkKeystate();
+	g::gameObjType checkCollisionType(gameObj &obj); // check for collision
+
+	void checkKeystate(const std::vector<gameObj*> &collidableObjs); // check keystate
 };

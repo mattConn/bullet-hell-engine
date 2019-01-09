@@ -76,10 +76,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Matthew\Documents\development\sdl2\SDL2\include;C:\Users\Matthew\Documents\development\sdl2_image\SDL2_image-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Matthew\source\repos\sdl-game\sdl-game\sdl2_image\SDL2_image-2.0.4\include;C:\Users\Matthew\source\repos\sdl-game\sdl-game\sdl2\SDL2-2.0.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Matthew\Documents\development\sdl2\SDL2\lib\x86;C:\Users\Matthew\Documents\development\sdl2_image\SDL2_image-2.0.4\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Matthew\source\repos\sdl-game\sdl-game\sdl2_image\SDL2_image-2.0.4\lib\x86;C:\Users\Matthew\source\repos\sdl-game\sdl-game\sdl2\SDL2-2.0.9\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>

@@ -22,7 +22,12 @@ int main(int argc, char *argv[])
 	playerObj player(1, 1, 100);
 
 	// list of all objects with collidable rectangles
-	std::vector<SDL_Rect> collidableObj;
+	std::vector<gameObj*> currentCollidableObjs;
+
+	// right wall
+	gameObj *wall = new gameObj(true, g::OBJ_WALL, g::SCREEN_WIDTH - 1, 0, 1, g::SCREEN_HEIGHT);
+
+	currentCollidableObjs.push_back(wall);
 
 	// game loop
 	//===========
@@ -46,7 +51,7 @@ int main(int argc, char *argv[])
 			g::quit = true;
 		#endif
 
-		player.checkKeystate();
+		player.checkKeystate(currentCollidableObjs);
 		
 		// update window
 		SDL_RenderClear(g::renderer);
