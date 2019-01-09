@@ -21,8 +21,7 @@ protected:
 	bool collidable;
 	gameObjType objType;
 
-	// rect making helper function
-	SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int &height = -1);
+	SDL_Texture *currentTexture = nullptr;
 
 public:
 	gameObj(); // default constructor
@@ -34,6 +33,7 @@ public:
 	// accessors
 	bool isCollidable();
 	gameObjType getType();
+	SDL_Texture *getCurrentTexture();
 
 };
 
@@ -41,7 +41,23 @@ public:
 // =============
 class playerObj : public gameObj {
 
+	// keypress enum for relating textures to keypress events
+	enum KeyPresses
+	{
+		KEY_PRESS_DEFAULT,
+		KEY_PRESS_UP,
+		KEY_PRESS_DOWN,
+		KEY_PRESS_LEFT,
+		KEY_PRESS_RIGHT,
+		KEY_PRESS_TOTAL
+	};
+
+	// textures for keypresses
+	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
+
 public:
 	playerObj(); // default constructor
 	playerObj(const int &xPos, const int &yPos, const int &width, const int &height = -1);
+
+	void getKeystate();
 };

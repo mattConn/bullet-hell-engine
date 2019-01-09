@@ -1,54 +1,49 @@
-#pragma once
+#include "global.h"
+#include "debug_msg.h"
+#include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
 
-// keypress enum for relating textures to keypress events
-enum KeyPresses
-{
-	KEY_PRESS_DEFAULT,
-	KEY_PRESS_UP,
-	KEY_PRESS_DOWN,
-	KEY_PRESS_LEFT,
-	KEY_PRESS_RIGHT,
-	KEY_PRESS_TOTAL
-};
+namespace g {
 
-// wall position enum
-enum wallPos
-{
-	SCREEN_EDGE_LEFT,
-	SCREEN_EDGE_RIGHT,
-	SCREEN_EDGE_TOP,
-	SCREEN_EDGE_BOTTOM,
-	SCREEN_EDGE_TOTAL
-};
+bool quit = false;
 
-// window dimensions
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+
+// left, right, top, bottom
+SDL_Rect screenEdge[SCREEN_EDGE_TOTAL] = {
+	makeRect(0, 0, 1, SCREEN_HEIGHT),
+	makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT),
+	makeRect(0, 0, SCREEN_WIDTH, 1),
+	makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1)
+};
 
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
 SDL_Renderer *renderer = nullptr; // main renderer
 
-// prototypes
-// ==========
+// realtime keystate
+extern const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
 
-// init SDL subsystems, windows etc.
-bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
+// event handler
+SDL_Event event;
 
-// load image and optimize
-SDL_Surface *loadImage(char fileName[]);
+// functions
+// =========
 
-// load image and convert to texture
-SDL_Texture *loadTexture(const char filename[]);
+// SDL rect wrapper
+SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int &height)
+{
+	SDL_Rect rect;
+	rect.x = xPos;
 
-// make SDL Rect
-SDL_Rect makeRect(const float &x, const float &y, const float &w, const float &h);
+	rect.y = yPos;
+	rect.w = width;
+	rect.h = height == -1 ? width : height;
 
-// free memory and quit SDL subsytems
-bool close(SDL_Surface *&surface, SDL_Window *&window);
-
-// definitions
-// ===========
+	return rect;
+}
 
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 {
@@ -132,7 +127,7 @@ SDL_Surface *loadImage(const char fileName[])
 	return optimizedSurface;
 }
 
-//IMG_LoadTexture wrapper
+// IMG_LoadTexture wrapper
 SDL_Texture *loadTexture(const char fileName[])
 {
 	SDL_Texture *texture = IMG_LoadTexture(renderer, fileName);
@@ -146,19 +141,6 @@ SDL_Texture *loadTexture(const char fileName[])
 	DEBUG_MSG("Load texture successful: " << fileName);
 
 	return texture;
-}
-
-// SDL rect wrapper
-SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int &height = -1)
-{
-	SDL_Rect rect;
-	rect.x = xPos;
-
-	rect.y = yPos;
-	rect.w = width;
-	rect.h = height == -1 ? width : height;
-
-	return rect;
 }
 
 bool close(SDL_Surface *&surface, SDL_Window *&window)
@@ -181,3 +163,5 @@ bool close(SDL_Surface *&surface, SDL_Window *&window)
 	DEBUG_MSG("Close successful");
 	return true;
 }
+
+} // end namespace
