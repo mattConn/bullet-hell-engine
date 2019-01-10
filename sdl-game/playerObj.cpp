@@ -91,6 +91,9 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 		// reset collisions detection sides
 		for (int i = 0; i < RECT_TOTAL; i++)
 			sideCollision[i] = false;
+
+		// fall until collide
+		rect.y += velocity;
 	}
 
 	return collision;
@@ -130,6 +133,10 @@ void playerObj::checkKeystate()
 
 		if (!sideCollision[RECT_R])
 			rect.x += velocity;
+	}
+	else if (g::keyState[SDL_SCANCODE_Z])
+	{
+			rect.y -= velocity;
 	}
 
 }
