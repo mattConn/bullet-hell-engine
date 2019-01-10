@@ -43,43 +43,54 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int
 }
 
 // check for collision
-bool playerObj::checkCollision(gameObj &obj)
-{  
+bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
+{
+	// check for any collision
+	bool collision = false;
+
 	// if player has no collision
 	if (!collidable)
 		return false;
 
-	// no collision detected
-	if (!SDL_HasIntersection(&rect, &obj.rect))
+	// check all objs in objVector
+	for (auto obj : objVector)
+	{
+		// if collision detected
+		if (SDL_HasIntersection(&rect, &obj->rect))
+		{
+			collision = true;
+
+			// getting intersection rect
+			SDL_Rect tmp;
+			SDL_IntersectRect(&rect, &obj->rect, &tmp);
+
+			// collision types
+			// ===============
+			if (obj->getType() == g::OBJ_BLOCK)
+			{
+				if (tmp.x > getRectL()) // right of player
+					sideCollision[RECT_R] = true;
+
+				if (tmp.x == getRectL()) // left of player
+					sideCollision[RECT_L] = true;
+
+				if (tmp.y == getRectTop()) // top of player
+					sideCollision[RECT_TOP] = true;
+
+				if (tmp.y + tmp.h == getRectBottom()) // bottom of player
+					sideCollision[RECT_BOTTOM] = true;
+			} // end collision types
+		} // end if collision detected
+	} // end foreach loop
+
+	if (!collision)
 	{
 		// reset collisions detection sides
 		for (int i = 0; i < RECT_TOTAL; i++)
 			sideCollision[i] = false;
-
-		return false;
 	}
 
-	SDL_Rect tmp;
-	SDL_IntersectRect(&rect, &obj.rect, &tmp);
-
-	// collision types
-	// ===============
-	if (obj.getType() == g::OBJ_BLOCK)
-	{
-		if (tmp.x == obj.getRectL()) // right of player
-			sideCollision[RECT_R] = true;
-
-		if (tmp.x + tmp.w == obj.getRectR()) // left of player
-			sideCollision[RECT_L] = true;
-
-		if (tmp.y + tmp.h == obj.getRectBottom()) // top of player
-			sideCollision[RECT_TOP] = true;
-
-		if (tmp.y == obj.getRectTop()) // bottom of player
-			sideCollision[RECT_BOTTOM] = true;
-	}
-
-	return true;
+	return collision;
 }
 
 void playerObj::checkKeystate()
@@ -93,7 +104,7 @@ void playerObj::checkKeystate()
 		currentTexture = keypressTextures[KEY_PRESS_UP];
 
 		if (!sideCollision[RECT_TOP])
-			rect.y-= velocity;
+			rect.y -= velocity;
 	}
 	else if (g::keyState[SDL_SCANCODE_DOWN])
 	{
@@ -114,7 +125,7 @@ void playerObj::checkKeystate()
 	{
 		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
 
-		if(!sideCollision[RECT_R])
+		if (!sideCollision[RECT_R])
 			rect.x += velocity;
 	}
 

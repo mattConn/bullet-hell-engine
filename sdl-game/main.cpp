@@ -26,11 +26,13 @@ int main(int argc, char *argv[])
 	std::vector<gameObj*> currentObjs;
 
 	// right wall
-	gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 1, 0, 1, g::SCREEN_HEIGHT);
-	gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 100);
+	gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
+	gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 400, 100);
+	gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH / 4, 500, 400, 100);
 
 	currentObjs.push_back(wall);
 	currentObjs.push_back(block);
+	currentObjs.push_back(block2);
 
 	// game loop
 	//===========
@@ -54,8 +56,10 @@ int main(int argc, char *argv[])
 			g::quit = true;
 		#endif
 
-		for (auto obj : currentObjs)
-			player->checkCollision(*obj);
+		//for (auto obj : currentObjs)
+		//	player->checkCollision(*obj);
+
+		player->checkCollision(currentObjs);
 
 		player->checkKeystate();
 

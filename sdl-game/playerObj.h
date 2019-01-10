@@ -42,7 +42,7 @@ public:
 	playerObj(); // default constructor
 	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1);
 
-	bool checkCollision(gameObj &obj); // check for collision
+	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
 
 	void checkKeystate(); // check keystate
 };
