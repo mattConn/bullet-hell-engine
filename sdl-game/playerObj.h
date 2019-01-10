@@ -31,8 +31,11 @@ class playerObj : public gameObj {
 		RECT_TOTAL
 	};
 
-	int velocity; // player velocity
+	// min width and height of collision rectangles
+	const int MIN_COLLISION_H = 12;
+	const int MIN_COLLISION_W = 5;
 
+	int velocity; // player velocity
 	bool sideCollision[RECT_TOTAL]; // side of collision
 
 	// textures for keypresses

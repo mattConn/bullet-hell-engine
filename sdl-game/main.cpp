@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 
 	// right wall
 	gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
-	gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 400, 100);
-	gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH / 4, 500, 400, 100);
+	gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
+	gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH / 4, 500, 300, 100);
 
 	currentObjs.push_back(wall);
 	currentObjs.push_back(block);

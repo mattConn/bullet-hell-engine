@@ -68,17 +68,20 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 			// ===============
 			if (obj->getType() == g::OBJ_BLOCK)
 			{
-				if (tmp.x > getRectL()) // right of player
+				if (tmp.x + tmp.w == getRectR() && tmp.h > MIN_COLLISION_H) // right of player
+				{
 					sideCollision[RECT_R] = true;
+				}
 
-				if (tmp.x == getRectL()) // left of player
+				if (tmp.x == getRectL() && tmp.h > MIN_COLLISION_H) // left of player
 					sideCollision[RECT_L] = true;
 
-				if (tmp.y == getRectTop()) // top of player
+				if (tmp.y == getRectTop() && tmp.w > MIN_COLLISION_W) // top of player
 					sideCollision[RECT_TOP] = true;
 
-				if (tmp.y + tmp.h == getRectBottom()) // bottom of player
+				if (tmp.y + tmp.h == getRectBottom() && tmp.w > MIN_COLLISION_W) // bottom of player
 					sideCollision[RECT_BOTTOM] = true;
+
 			} // end collision types
 		} // end if collision detected
 	} // end foreach loop
