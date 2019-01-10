@@ -11,15 +11,28 @@ playerObj::playerObj() // default constructor
 	collidable = true;
 	objType = g::OBJ_PLAYER;
 
+	velocity = 10;
+
+	// set all sides to no collision
+	for (auto i : sideCollision)
+		i = false;
+
 	rect = g::makeRect(0, 0, 50);
 }
 
-playerObj::playerObj(const int &xPos, const int &yPos, const int &width, const int &height) // custom constructor: sets rect
+// custom constructor: sets x, y, velocity, rect
+playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height)
 {
 	collidable = true;
 	objType = g::OBJ_PLAYER;
 
 	rect = g::makeRect(xPos, yPos, width, height);
+
+	// set all sides to no collision
+	for (auto i : sideCollision)
+		i = false;
+
+	velocity = vel;
 
 	// load all keyPress images
 	keypressTextures[KEY_PRESS_DEFAULT] = g::loadTexture("hello_world.bmp");
@@ -30,25 +43,48 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &width, const i
 }
 
 // check for collision
-g::gameObjType playerObj::checkCollisionType(gameObj &obj)
-{
+bool playerObj::checkCollision(gameObj &obj)
+{  
 	// if player has no collision
 	if (!collidable)
-		return g::OBJ_NO_COLLISION;
+		return false;
 
 	// no collision detected
 	if (!SDL_HasIntersection(&rect, &obj.rect))
-		return g::OBJ_NO_COLLISION;
+	{
+		// reset collisions detection sides
+		for (int i = 0; i < RECT_TOTAL; i++)
+			sideCollision[i] = false;
 
-	// prevent collision with self
-	if (obj.getType() == g::OBJ_PLAYER)
-		return g::OBJ_NO_COLLISION;
+		return false;
+	}
 
-	return obj.getType();
+	SDL_Rect tmp;
+	SDL_IntersectRect(&rect, &obj.rect, &tmp);
+
+	// collision types
+	// ===============
+	if (obj.getType() == g::OBJ_BLOCK)
+	{
+		if (tmp.x == obj.getRectL()) // right of player
+			sideCollision[RECT_R] = true;
+
+		if (tmp.x + tmp.w == obj.getRectR()) // left of player
+			sideCollision[RECT_L] = true;
+
+		if (tmp.y + tmp.h == obj.getRectBottom()) // top of player
+			sideCollision[RECT_TOP] = true;
+
+		if (tmp.y == obj.getRectTop()) // bottom of player
+			sideCollision[RECT_BOTTOM] = true;
+	}
+
+	return true;
 }
 
-void playerObj::checkKeystate(const std::vector<gameObj*> &collidableObjs)
+void playerObj::checkKeystate()
 {
+
 	// check keystate
 	//===============
 
@@ -56,39 +92,30 @@ void playerObj::checkKeystate(const std::vector<gameObj*> &collidableObjs)
 	{
 		currentTexture = keypressTextures[KEY_PRESS_UP];
 
-		if (SDL_HasIntersection(&rect, &g::screenEdge[g::SCREEN_EDGE_TOP]))
-			rect.y = g::SCREEN_HEIGHT - rect.h;
-		else
-			rect.y -= 10;
+		if (!sideCollision[RECT_TOP])
+			rect.y-= velocity;
 	}
 	else if (g::keyState[SDL_SCANCODE_DOWN])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_DOWN];
 
-		if (SDL_HasIntersection(&rect, &g::screenEdge[g::SCREEN_EDGE_BOTTOM]))
-			rect.y = 0;
-		else
-			rect.y += 10;
+		if (!sideCollision[RECT_BOTTOM])
+			rect.y += velocity;
 	}
 	else if (g::keyState[SDL_SCANCODE_LEFT])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_LEFT];
 
-		for (auto obj : collidableObjs)
-		{
-			if (checkCollisionType(*obj) != g::OBJ_WALL)
-				rect.x -= 10;
-		}
+		if (!sideCollision[RECT_L])
+			rect.x -= velocity;
+
 	}
 	else if (g::keyState[SDL_SCANCODE_RIGHT])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
 
-		for (auto obj : collidableObjs)
-		{
-			if (checkCollisionType(*obj) != g::OBJ_WALL)
-				rect.x += 10;
-		}
+		if(!sideCollision[RECT_R])
+			rect.x += velocity;
 	}
 
 }

@@ -21,14 +21,28 @@ class playerObj : public gameObj {
 		KEY_PRESS_TOTAL
 	};
 
+	// rectangle sides
+	enum rectSides
+	{
+		RECT_L,
+		RECT_R,
+		RECT_TOP,
+		RECT_BOTTOM,
+		RECT_TOTAL
+	};
+
+	int velocity; // player velocity
+
+	bool sideCollision[RECT_TOTAL]; // side of collision
+
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
 
 public:
 	playerObj(); // default constructor
-	playerObj(const int &xPos, const int &yPos, const int &width, const int &height = -1);
+	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1);
 
-	g::gameObjType checkCollisionType(gameObj &obj); // check for collision
+	bool checkCollision(gameObj &obj); // check for collision
 
-	void checkKeystate(const std::vector<gameObj*> &collidableObjs); // check keystate
+	void checkKeystate(); // check keystate
 };

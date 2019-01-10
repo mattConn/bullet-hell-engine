@@ -20,15 +20,17 @@ int main(int argc, char *argv[])
 	}
 
 	// construct player
-	playerObj player(1, 1, 100);
+	playerObj *player = new playerObj(1, 1, 10, 100);
 
-	// list of all objects with collidable rectangles
-	std::vector<gameObj*> currentCollidableObjs;
+	// list of all objects
+	std::vector<gameObj*> currentObjs;
 
 	// right wall
-	gameObj *wall = new gameObj(true, g::OBJ_WALL, g::SCREEN_WIDTH - 1, 0, 1, g::SCREEN_HEIGHT);
+	gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 1, 0, 1, g::SCREEN_HEIGHT);
+	gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 100);
 
-	currentCollidableObjs.push_back(wall);
+	currentObjs.push_back(wall);
+	currentObjs.push_back(block);
 
 	// game loop
 	//===========
@@ -52,11 +54,24 @@ int main(int argc, char *argv[])
 			g::quit = true;
 		#endif
 
-		player.checkKeystate(currentCollidableObjs);
+		for (auto obj : currentObjs)
+			player->checkCollision(*obj);
+
+		player->checkKeystate();
+
+		// render scene
+		// ============
 		
 		// update window
 		SDL_RenderClear(g::renderer);
-		SDL_RenderCopy(g::renderer, player.getCurrentTexture(), nullptr, &player.rect);
+
+		// render player
+		SDL_RenderCopy(g::renderer, player->getCurrentTexture(), nullptr, &player->rect);
+
+		// render all current objs
+		for(auto obj : currentObjs)
+			SDL_RenderCopy(g::renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
+
 		SDL_RenderPresent(g::renderer);
 
 		SDL_Delay(16);

@@ -23,7 +23,7 @@ namespace g {
 	enum gameObjType
 	{
 		OBJ_PLATFORM,
-		OBJ_WALL,
+		OBJ_BLOCK,
 		OBJ_PLAYER,
 		OBJ_ENEMY,
 		OBJ_GRAPHIC,

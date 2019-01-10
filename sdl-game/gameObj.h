@@ -15,7 +15,7 @@ protected:
 
 public:
 	gameObj(); // default constructor
-	gameObj(const bool &collisionBool, const g::gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
+	gameObj(const char textureName[], const bool &collisionBool, const g::gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
 
 	~gameObj(); // destructor
 
@@ -27,4 +27,9 @@ public:
 	g::gameObjType getType();
 	SDL_Texture *getCurrentTexture();
 
+	// get position of rect sides
+	int getRectTop();
+	int getRectBottom();
+	int getRectL();
+	int getRectR();
 };

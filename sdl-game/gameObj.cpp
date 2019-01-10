@@ -11,6 +11,12 @@ SDL_Texture *gameObj::getCurrentTexture()
 	return currentTexture;
 }
 
+// get rect sides
+int gameObj::getRectTop(){ return rect.y; }
+int gameObj::getRectBottom(){ return rect.y + rect.h; }
+int gameObj::getRectL() { return rect.x; }
+int gameObj::getRectR() { return rect.x + rect.w; }
+
 // default constructor
 gameObj::gameObj()
 {
@@ -22,8 +28,9 @@ gameObj::gameObj()
 
 // custom constructor
 // set collision, obj type, rect data
-gameObj::gameObj(const bool &collisionBool, const g::gameObjType &oType, const int &xPos, const int &yPos, const int &width, const int &height)
+gameObj::gameObj(const char textureName[], const bool &collisionBool, const g::gameObjType &oType, const int &xPos, const int &yPos, const int &width, const int &height)
 {
+	currentTexture = g::loadTexture(textureName);
 	collidable = collisionBool;
 	objType = oType;
 
@@ -37,7 +44,7 @@ gameObj::~gameObj()
 	currentTexture = nullptr;
 }
 
-inline bool gameObj::isCollidable()
+bool gameObj::isCollidable()
 {
 	return collidable;
 }
