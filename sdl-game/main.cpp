@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
 		player->checkCollision(currentObjs);
 
-		player->checkKeystate();
+		player->keystateUpdatePhysics();
 
 		// render scene
 		// ============

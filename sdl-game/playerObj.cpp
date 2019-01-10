@@ -91,52 +91,63 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 		// reset collisions detection sides
 		for (int i = 0; i < RECT_TOTAL; i++)
 			sideCollision[i] = false;
-
-		// fall until collide
-		rect.y += velocity;
 	}
 
 	return collision;
 }
 
-void playerObj::checkKeystate()
+void playerObj::keystateUpdatePhysics()
 {
+	// gravity/falling
+	// if no bottom collision and not jumping, fall
+	if (!sideCollision[RECT_BOTTOM] && !jumping)
+		rect.y += velocity*2;
+
+	// jumping
+	// if jumping for less than jump duration and nothing above, move upwards
+	if (jumping && !sideCollision[RECT_TOP] && SDL_GetTicks() - jumpStart < jumpDuration)
+		rect.y -= velocity*3;
+	else
+	{
+		// reset jumping
+		jumpStart = 0;
+		jumping = false;
+
+		// set end
+		jumpEnd = SDL_GetTicks();
+	}
 
 	// check keystate
 	//===============
 
-	if (g::keyState[SDL_SCANCODE_UP])
-	{
-		currentTexture = keypressTextures[KEY_PRESS_UP];
-
-		if (!sideCollision[RECT_TOP])
-			rect.y -= velocity;
-	}
-	else if (g::keyState[SDL_SCANCODE_DOWN])
-	{
-		currentTexture = keypressTextures[KEY_PRESS_DOWN];
-
-		if (!sideCollision[RECT_BOTTOM])
-			rect.y += velocity;
-	}
-	else if (g::keyState[SDL_SCANCODE_LEFT])
+	// move left
+	if (g::keyState[SDL_SCANCODE_LEFT])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_LEFT];
 
+		// if no left-side collision, move left
 		if (!sideCollision[RECT_L])
 			rect.x -= velocity;
 
 	}
+	// move right
 	else if (g::keyState[SDL_SCANCODE_RIGHT])
 	{
 		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
 
+		// if no right-side collision, move right
 		if (!sideCollision[RECT_R])
 			rect.x += velocity;
 	}
-	else if (g::keyState[SDL_SCANCODE_Z])
+
+	// jump
+	// if bottom collision and not already jumping
+	if (g::keyState[SDL_SCANCODE_Z] && !jumping && sideCollision[RECT_BOTTOM])
 	{
-			rect.y -= velocity;
+		
+		jumping = true;
+		jumpStart = SDL_GetTicks();
+		jumpEnd = 0;
 	}
 
 }

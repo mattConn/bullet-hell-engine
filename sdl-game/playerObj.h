@@ -38,6 +38,13 @@ class playerObj : public gameObj {
 	int velocity; // player velocity
 	bool sideCollision[RECT_TOTAL]; // side of collision
 
+	// jump data members
+	bool jumping = false;
+	int jumpStart = 0;
+	Uint8 jumpEnd = 0;
+	const Uint8 jumpDuration = 200;
+	const Uint8 jumpAgainDelay = 1000;
+
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
 
@@ -47,5 +54,5 @@ public:
 
 	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
 
-	void checkKeystate(); // check keystate
+	void keystateUpdatePhysics(); // check keystate
 };
