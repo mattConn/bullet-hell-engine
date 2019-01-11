@@ -67,6 +67,12 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 			SDL_Rect tmp;
 			SDL_IntersectRect(&rect, &obj->rect, &tmp);
 
+			#ifdef DEBUG_INTERSECTION
+			SDL_SetRenderDrawColor(g::renderer, 0xFF, 0x00, 0x00, 0xFF);
+			SDL_RenderFillRect(g::renderer, &tmp);
+			SDL_RenderPresent(g::renderer);
+			#endif // DEBUG: render intersection
+
 			// collision types
 			// ===============
 			if (obj->getType() == g::OBJ_BLOCK)

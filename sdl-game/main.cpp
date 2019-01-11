@@ -12,6 +12,8 @@
 
 int main(int argc, char *argv[])
 {
+	game_beginning: // label for debug game restart
+
 	// init sdl
 	if (!g::init(g::window, g::windowSurface))
 	{
@@ -54,6 +56,12 @@ int main(int argc, char *argv[])
 		#ifdef DEBUG
 		if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
 			g::quit = true;
+
+		if (g::keyState[SDL_SCANCODE_R]) // DEBUG: restart
+		{
+			DEBUG_MSG("\n** restart **\n");
+			goto restart_label;
+		}
 		#endif
 
 		player->checkCollision(currentObjs); // check collision against current objs
@@ -65,6 +73,7 @@ int main(int argc, char *argv[])
 		// ============
 		
 		// update window
+		SDL_SetRenderDrawColor(g::renderer, 0,0,0,0);
 		SDL_RenderClear(g::renderer);
 
 		// render player
@@ -86,4 +95,10 @@ int main(int argc, char *argv[])
 	g::close();
 
 	return 0;
+
+	#ifdef DEBUG
+	restart_label:
+	goto game_beginning;
+	#endif // DEBUG: game restarting
+
 }
