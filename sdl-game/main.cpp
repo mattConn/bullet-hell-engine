@@ -56,12 +56,10 @@ int main(int argc, char *argv[])
 			g::quit = true;
 		#endif
 
-		//for (auto obj : currentObjs)
-		//	player->checkCollision(*obj);
+		player->checkCollision(currentObjs); // check collision against current objs
 
-		player->checkCollision(currentObjs);
-
-		player->keystateUpdatePhysics();
+		player->checkKeyState(); // check keys, update flags
+		player->updatePhysics(); // update player physics
 
 		// render scene
 		// ============

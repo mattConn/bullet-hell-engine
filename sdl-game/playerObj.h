@@ -21,15 +21,6 @@ class playerObj : public gameObj {
 		KEY_PRESS_TOTAL
 	};
 
-	// rectangle sides
-	enum rectSides
-	{
-		RECT_L,
-		RECT_R,
-		RECT_TOP,
-		RECT_BOTTOM,
-		RECT_TOTAL
-	};
 
 	// min width and height of collision rectangles
 	const int MIN_COLLISION_H = 12;
@@ -37,13 +28,12 @@ class playerObj : public gameObj {
 
 	int velocity; // player velocity
 	bool sideCollision[RECT_TOTAL]; // side of collision
+	moveType movement = MOVE_NONE; // player movement
 
 	// jump data members
 	bool jumping = false;
 	unsigned int jumpStart = 0;
-	unsigned int jumpEnd = 0;
 	const unsigned int jumpDuration = 200;
-	const unsigned int jumpAgainDelay = 1000;
 
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
@@ -54,5 +44,6 @@ public:
 
 	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
 
-	void keystateUpdatePhysics(); // check keystate
+	void checkKeyState(); // check keystate
+	void updatePhysics(); // update physics based on flags
 };

@@ -13,6 +13,25 @@ protected:
 
 	SDL_Texture *currentTexture = nullptr;
 
+	// rectangle sides
+	enum rectSides
+	{
+		RECT_L,
+		RECT_R,
+		RECT_TOP,
+		RECT_BOTTOM,
+		RECT_TOTAL
+	};
+
+	// movement types
+	enum moveType
+	{
+		MOVE_NONE,
+		MOVE_R,
+		MOVE_L,
+		MOVE_TOTAL,
+	};
+
 public:
 	gameObj(); // default constructor
 	gameObj(const char textureName[], const bool &collisionBool, const g::gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);

@@ -96,20 +96,8 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 	return collision;
 }
 
-void playerObj::keystateUpdatePhysics()
+void playerObj::checkKeyState()
 {
-	// gravity/falling
-	// if no bottom collision and not jumping, fall
-	if (!sideCollision[RECT_BOTTOM] && !jumping)
-		rect.y += velocity * 2;
-
-	// jumping
-	// if jumping for less than jump duration and nothing above, move upwards
-	if (jumping && !sideCollision[RECT_TOP] && SDL_GetTicks() - jumpStart < jumpDuration)
-		rect.y -= velocity * 3;
-	else // set jumping to false after jumpDuration
-		jumping = false;
-
 
 	// check keystate
 	//===============
@@ -121,7 +109,7 @@ void playerObj::keystateUpdatePhysics()
 
 		// if no left-side collision, move left
 		if (!sideCollision[RECT_L])
-			rect.x -= velocity;
+			movement = MOVE_L;
 
 	}
 	// move right
@@ -131,8 +119,10 @@ void playerObj::keystateUpdatePhysics()
 
 		// if no right-side collision, move right
 		if (!sideCollision[RECT_R])
-			rect.x += velocity;
+			movement = MOVE_R;
 	}
+	else
+		movement = MOVE_NONE;
 
 	// jump
 	// if bottom collision and not already jumping
@@ -143,6 +133,40 @@ void playerObj::keystateUpdatePhysics()
 		jumpStart = SDL_GetTicks();
 		jumping = false;
 	}
+
+}
+
+void playerObj::updatePhysics()
+{
+	// directional movement
+	// ====================
+	switch (movement)
+	{
+	case MOVE_L:
+		rect.x -= velocity;
+		break;
+	case MOVE_R:
+		rect.x += velocity;
+		break;
+	default:
+		break;
+	}
+
+	// gravity/falling
+	// ===============
+
+	// if no bottom collision and not jumping, fall
+	if (!sideCollision[RECT_BOTTOM] && !jumping)
+		rect.y += velocity * 2;
+
+	// jumping
+	// =======
+
+	// if jumping for less than jump duration and nothing above, move upwards
+	if (jumping && !sideCollision[RECT_TOP] && SDL_GetTicks() - jumpStart < jumpDuration)
+		rect.y -= velocity * 3;
+	else // set jumping to false after jumpDuration
+		jumping = false;
 
 }
 
