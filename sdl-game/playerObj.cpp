@@ -18,6 +18,7 @@ playerObj::playerObj() // default constructor
 		i = false;
 
 	rect = g::makeRect(0, 0, 50);
+	jumpMaxHeight = 50*2;
 }
 
 // custom constructor: sets x, y, velocity, rect
@@ -27,6 +28,8 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int
 	objType = g::OBJ_PLAYER;
 
 	rect = g::makeRect(xPos, yPos, width, height);
+	
+	jumpMaxHeight = 300;
 
 	// set all sides to no collision
 	for (auto i : sideCollision)
@@ -126,11 +129,14 @@ void playerObj::checkKeyState()
 
 	// jump
 	// if bottom collision and not already jumping
-	if (g::keyState[SDL_SCANCODE_Z] && !jumping && sideCollision[RECT_BOTTOM])
+	// and the difference between current time and time of jump is small enough (SDL_GetTicks == jumpStartTime not possible).
+	//	(This time check is necessary to prevent key repeat.)
+	if (g::keyState[SDL_SCANCODE_Z] && !jumping && sideCollision[RECT_BOTTOM] && SDL_GetTicks() - jumpStartTime < JUMP_MIN_DELAY)
 		jumping = true;
 	else if (!g::keyState[SDL_SCANCODE_Z])
 	{
-		jumpStart = SDL_GetTicks();
+		jumpStartPos = rect.y;
+		jumpStartTime = SDL_GetTicks();
 		jumping = false;
 	}
 
@@ -162,10 +168,10 @@ void playerObj::updatePhysics()
 	// jumping
 	// =======
 
-	// if jumping for less than jump duration and nothing above, move upwards
-	if (jumping && !sideCollision[RECT_TOP] && SDL_GetTicks() - jumpStart < jumpDuration)
+	// If jumping and jumping height is less than max jump height and no top collision
+	if (jumping && !sideCollision[RECT_TOP] && jumpStartPos - rect.y < jumpMaxHeight)
 		rect.y -= velocity * 3;
-	else // set jumping to false after jumpDuration
+	else // set jumping to false after jumpMaxHeight
 		jumping = false;
 
 }

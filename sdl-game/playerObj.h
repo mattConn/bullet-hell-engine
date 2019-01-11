@@ -31,9 +31,13 @@ class playerObj : public gameObj {
 	moveType movement = MOVE_NONE; // player movement
 
 	// jump data members
-	bool jumping = false;
-	unsigned int jumpStart = 0;
-	const unsigned int jumpDuration = 200;
+	bool jumping = false; // currently jumping or not
+	unsigned int jumpStartTime = 0; // time jump starts
+	unsigned int jumpStartPos = 0; // y position of jump start
+	unsigned int jumpMaxHeight; // max jump height
+
+	// min. delay between current time and jump time
+	const unsigned int JUMP_MIN_DELAY = 50;
 
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
