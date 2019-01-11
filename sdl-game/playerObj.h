@@ -40,10 +40,10 @@ class playerObj : public gameObj {
 
 	// jump data members
 	bool jumping = false;
-	int jumpStart = 0;
-	Uint8 jumpEnd = 0;
-	const Uint8 jumpDuration = 200;
-	const Uint8 jumpAgainDelay = 1000;
+	unsigned int jumpStart = 0;
+	unsigned int jumpEnd = 0;
+	const unsigned int jumpDuration = 200;
+	const unsigned int jumpAgainDelay = 1000;
 
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];

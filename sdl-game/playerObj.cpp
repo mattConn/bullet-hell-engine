@@ -101,21 +101,15 @@ void playerObj::keystateUpdatePhysics()
 	// gravity/falling
 	// if no bottom collision and not jumping, fall
 	if (!sideCollision[RECT_BOTTOM] && !jumping)
-		rect.y += velocity*2;
+		rect.y += velocity * 2;
 
 	// jumping
 	// if jumping for less than jump duration and nothing above, move upwards
 	if (jumping && !sideCollision[RECT_TOP] && SDL_GetTicks() - jumpStart < jumpDuration)
-		rect.y -= velocity*3;
-	else
-	{
-		// reset jumping
-		jumpStart = 0;
+		rect.y -= velocity * 3;
+	else // set jumping to false after jumpDuration
 		jumping = false;
 
-		// set end
-		jumpEnd = SDL_GetTicks();
-	}
 
 	// check keystate
 	//===============
@@ -143,11 +137,11 @@ void playerObj::keystateUpdatePhysics()
 	// jump
 	// if bottom collision and not already jumping
 	if (g::keyState[SDL_SCANCODE_Z] && !jumping && sideCollision[RECT_BOTTOM])
-	{
-		
 		jumping = true;
+	else if (!g::keyState[SDL_SCANCODE_Z])
+	{
 		jumpStart = SDL_GetTicks();
-		jumpEnd = 0;
+		jumping = false;
 	}
 
 }
