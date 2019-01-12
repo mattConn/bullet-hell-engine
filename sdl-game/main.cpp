@@ -2,6 +2,7 @@
 #include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <Box2D/Box2D.h>
 #undef main
 
 #include "debug.h"

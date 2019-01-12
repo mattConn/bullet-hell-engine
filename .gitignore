@@ -266,6 +266,7 @@ game
 # library directories
 sdl2
 sdl2_image
+Box2D
 
 # windows symlinks
 *.lnk
