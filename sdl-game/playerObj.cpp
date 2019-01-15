@@ -58,27 +58,26 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
     {
 
         // bottom collision
-        if(getRectBottom() >= obj->getRectTop() && getRectR() >= obj->getRectL() && getRectL() <= obj->getRectR())
+        if(getRectBottom() >= obj->getRectTop() && getRectTop() < obj->getRectBottom() && getRectR() >= obj->getRectL() && getRectL() <= obj->getRectR())
         {
-            collision = true;
             rect.y -= abs(getRectBottom() - obj->getRectTop()); // clipping correction
             sideCollision[RECT_BOTTOM] = true;
         }
+        else
+        {
+            sideCollision[RECT_BOTTOM] = false; // reset bottom collision
+        }
+    } // end foreach
 
-        // right collision
-//        if(obj->getRectL() >= getRectR() && obj->getRectTop() <= getRectTop())
-//        {
-//            collision = true;
-//            sideCollision[RECT_R] = true;
-//        }
-    }
-
-    if(!collision)
+    // set collision bool
+    for(int i = 0; i < RECT_TOTAL; i++)
     {
-        for(int i = 0; i < RECT_TOTAL; i++)
-            sideCollision[i] = false;
+        if(sideCollision[i])
+        {
+            collision = true;
+            break;
+        }
     }
-
     return collision;
 }
 
