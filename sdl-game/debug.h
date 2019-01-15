@@ -11,4 +11,4 @@
 #endif
 
 // debug rectangle intersection
-#define DEBUG_INTERSECTION
+//#define DEBUG_INTERSECTION

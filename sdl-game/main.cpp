@@ -13,8 +13,6 @@
 
 int main(int argc, char *argv[])
 {
-    game_beginning: // label for debug game restart
-
     // init sdl
     if (!g::init(g::window, g::windowSurface))
     {
@@ -31,10 +29,10 @@ int main(int argc, char *argv[])
     // right wall
     gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
     gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
-    gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
+    gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 200, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH-300, 100);
 
     currentObjs.push_back(wall);
-    currentObjs.push_back(block);
+//    currentObjs.push_back(block);
     currentObjs.push_back(block2);
 
     // game loop
@@ -57,12 +55,6 @@ int main(int argc, char *argv[])
         #ifdef DEBUG
         if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
             g::quit = true;
-
-        if (g::keyState[SDL_SCANCODE_R]) // DEBUG: restart
-        {
-            DEBUG_MSG("\n** restart **\n");
-            goto restart_label;
-        }
         #endif
 
         player->checkCollision(currentObjs); // check collision against current objs
@@ -72,9 +64,11 @@ int main(int argc, char *argv[])
 
         // render scene
         // ============
-		
-        // update window
+        #ifdef DEBUG_INTERSECTION
         SDL_SetRenderDrawColor(g::renderer, 0,0,0,0);
+        #endif
+
+        // update window
         SDL_RenderClear(g::renderer);
 
         // render player
@@ -96,10 +90,4 @@ int main(int argc, char *argv[])
     g::close();
 
     return 0;
-
-    #ifdef DEBUG
-    restart_label:
-    goto game_beginning;
-    #endif // DEBUG: game restarting
-
 }
