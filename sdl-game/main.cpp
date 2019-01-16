@@ -21,18 +21,20 @@ int main(int argc, char *argv[])
     }
 
     // construct player
-    playerObj *player = new playerObj(1, 1, 10, 100);
+    playerObj *player = new playerObj(200, 1, 10, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs;
 
     // right wall
     gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
+    gameObj *wall2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, 0, 100, g::SCREEN_HEIGHT);
     gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
-    gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 200, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH-300, 100);
+    gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
 
     currentObjs.push_back(wall);
-//    currentObjs.push_back(block);
+    currentObjs.push_back(wall2);
+    currentObjs.push_back(block);
     currentObjs.push_back(block2);
 
     // game loop
@@ -52,10 +54,10 @@ int main(int argc, char *argv[])
 
         // check keystate
         //===============
-        #ifdef DEBUG
+#ifdef DEBUG
         if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
             g::quit = true;
-        #endif
+#endif
 
         player->checkCollision(currentObjs); // check collision against current objs
 
@@ -64,9 +66,9 @@ int main(int argc, char *argv[])
 
         // render scene
         // ============
-        #ifdef DEBUG_INTERSECTION
+#ifdef DEBUG_INTERSECTION
         SDL_SetRenderDrawColor(g::renderer, 0,0,0,0);
-        #endif
+#endif
 
         // update window
         SDL_RenderClear(g::renderer);

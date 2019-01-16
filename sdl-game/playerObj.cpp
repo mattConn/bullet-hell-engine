@@ -50,34 +50,48 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 {
     bool collision = false;
 
-    SDL_Rect lastPos;
-    lastPos.x = rect.x;
-    lastPos.y = rect.y;
+    for(int i = 0; i < RECT_TOTAL; i++) // reset side collision
+        sideCollision[i] = false;
+
+    SDL_Rect intersection; // intersection rect
 
     for(auto obj : objVector)
     {
-
-        // bottom collision
-        if(getRectBottom() >= obj->getRectTop() && getRectTop() < obj->getRectBottom() && getRectR() >= obj->getRectL() && getRectL() <= obj->getRectR())
-        {
-            rect.y -= abs(getRectBottom() - obj->getRectTop()); // clipping correction
-            sideCollision[RECT_BOTTOM] = true;
-        }
-        else
-        {
-            sideCollision[RECT_BOTTOM] = false; // reset bottom collision
-        }
-    } // end foreach
-
-    // set collision bool
-    for(int i = 0; i < RECT_TOTAL; i++)
-    {
-        if(sideCollision[i])
+        if(SDL_IntersectRect(&rect, &obj->rect, &intersection))
         {
             collision = true;
-            break;
+
+            if(obj->getRectTop() >= getRectTop()) // bottom collision
+            {
+                rect.y -= intersection.h-1;
+                sideCollision[RECT_BOTTOM] = true;
+            }
+
+            if(intersection.x == rect.x && intersection.y == rect.y) // top collision or left collision
+            {
+                if(intersection.w == rect.w) // top collision
+                {
+                    rect.y += intersection.h-1;
+                    sideCollision[RECT_TOP] = true;
+                }
+                else // left collision
+                {
+                    rect.x += intersection.w;
+                    sideCollision[RECT_L] = true;
+                }
+            }
+
+            if(intersection.x > rect.x && intersection.y == rect.y) // right collision
+            {
+                rect.x -= intersection.w;
+                sideCollision[RECT_R] = true;
+            }
+
         }
-    }
+
+    } // end foreach
+
+
     return collision;
 }
 
