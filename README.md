@@ -1,7 +1,5 @@
 # sdl-game
 Making a game with SDL2.  
 
-# Compiling
-Download SDL2 and SDL2_Image, then symlink to `sdl-game` directory.  
-Windows: compiled via visual studio.  
-Mac: Compiled via makefile (in `sdl-game` directory).
+This project depends on SDL2 and SDL2_image. I followed along with Lazy Foo's tutorial to get started.  
+So far, it has compiled successfully on Windows 10 using Visual Studio and on Mac using QT Creator (or just using a makefile).
