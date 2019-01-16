@@ -21,10 +21,6 @@ class playerObj : public gameObj {
 		KEY_PRESS_TOTAL
 	};
 
-	// min width and height of collision rectangles
-	const int MIN_COLLISION_H = 12;
-	const int MIN_COLLISION_W = 5;
-
 	int velocity; // player velocity
     bool sideCollision[RECT_TOTAL]; // list of objects on side of collision
 	moveType movement = MOVE_NONE; // player movement

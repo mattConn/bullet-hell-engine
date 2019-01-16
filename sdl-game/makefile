@@ -15,7 +15,7 @@ CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefau
 DEFINES       = -DQT_QML_DEBUG
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.11 -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.11 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I. -I. -Isdl2/2.0.9/include/SDL2 -Isdl2_image/2.0.4/include/SDL2 -Isdl2/2.0.9/include -Isdl2_image/2.0.4/lib -I/Users/matthew/Qt/5.11.1/clang_64/mkspecs/macx-clang
+INCPATH       = -I. -Isdl2/2.0.9/include/SDL2 -Isdl2_image/2.0.4/include/SDL2 -Isdl2/2.0.9/include -Isdl2_image/2.0.4/lib -I/Users/matthew/Qt/5.11.1/clang_64/mkspecs/macx-clang
 QMAKE         = /Users/matthew/Qt/5.11.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d

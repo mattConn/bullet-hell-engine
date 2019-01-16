@@ -15,7 +15,7 @@ playerObj::playerObj() // default constructor
 
     // set all sides to no collision
     for (auto i : sideCollision)
-        i = nullptr;
+        i = false;
 
     rect = g::makeRect(0, 0, 50);
     jumpMaxHeight = 50*2;
@@ -33,7 +33,7 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int
 
     // set all sides to no collision
     for (auto i : sideCollision)
-        i = nullptr;
+        i = false;
 
     velocity = vel;
 

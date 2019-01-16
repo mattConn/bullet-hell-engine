@@ -268,7 +268,6 @@ sdl2
 SDL2
 sdl2_image
 SLD2_image
-Box2D
 
 # windows symlinks
 *.lnk

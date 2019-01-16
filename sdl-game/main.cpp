@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
 
         // check keystate
         //===============
-#ifdef DEBUG
+        #ifdef DEBUG
         if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
             g::quit = true;
-#endif
+        #endif
 
         player->checkCollision(currentObjs); // check collision against current objs
 
@@ -66,9 +66,6 @@ int main(int argc, char *argv[])
 
         // render scene
         // ============
-#ifdef DEBUG_INTERSECTION
-        SDL_SetRenderDrawColor(g::renderer, 0,0,0,0);
-#endif
 
         // update window
         SDL_RenderClear(g::renderer);
