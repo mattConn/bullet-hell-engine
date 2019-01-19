@@ -274,7 +274,10 @@ SLD2_image
 
 *.o
 
-sdl-game
+# game binary
+sdl-game/sdl-game
+
+sdl-game/.qmake.stash
 
 # QT Creatir gitignore
 # C++ objects and libs
