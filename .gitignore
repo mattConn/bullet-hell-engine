@@ -279,6 +279,9 @@ sdl-game/sdl-game
 
 sdl-game/.qmake.stash
 
+# ignoring precompiled headers
+*.gch
+
 # QT Creatir gitignore
 # C++ objects and libs
 *.slo

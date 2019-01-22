@@ -24,7 +24,7 @@ SDL_Surface *windowSurface = nullptr; // surface for main window
 SDL_Renderer *renderer = nullptr; // main renderer
 
 // realtime keystate
-extern const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
+const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
 
 // event handler
 SDL_Event event;
