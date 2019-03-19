@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "global.h"
 #include "debug.h"
 #include "playerObj.h"
