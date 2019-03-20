@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
 	// name to display in window
 	windowName = "new SDL game";
 
+	// set screen dimensions
+	const int SCREEN_WIDTH = 800;
+	const int SCREEN_HEIGHT = 600;
+
 	// error file and output file
 	errFile = stderr;
 	outFile = stdout;

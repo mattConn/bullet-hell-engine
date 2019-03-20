@@ -36,14 +36,14 @@ enum screenEdgePos
 };
 
 // obj types
-enum entityKind
+typedef enum EntityKind
 {
 	PLATFORM,
 	PLAYER,
 	ENEMY,
 	GRAPHIC,
 	TOTAL_KINDS
-};
+} entityKind;
 
 // array of screen edges rectangles (1 px thick)
 SDL_Rect screenEdge[];

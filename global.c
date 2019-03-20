@@ -28,8 +28,6 @@ void writeMsg(const char *err)
 }
 #endif
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
 
 // left, right, top, bottom screen edge
 SDL_Rect screenEdge[SCREEN_EDGE_TOTAL];
