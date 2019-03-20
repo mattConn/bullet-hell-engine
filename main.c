@@ -8,6 +8,10 @@
 
 int main(int argc, char *argv[])
 {
+	// all entities present in game
+	entityStack allEntities;
+	initEntityStack(&allEntities);
+
 	// name to display in window
 	windowName = "new SDL game";
 
@@ -26,29 +30,21 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-	entity wall;
-    // right wall
-	initPlatformEntity(&wall, SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT, "hello_world.bmp");
+    //  walls
+	entity rwall, lwall, floor;
+	initPlatformEntity(&rwall, SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT, "hello_world.bmp");
+	initPlatformEntity(&lwall, 0, 0, 100, SCREEN_HEIGHT, "hello_world.bmp");
+	initPlatformEntity(&floor, 0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100, "hello_world.bmp");
 
-/*
-    // construct player
-    playerObj *player = new playerObj(200, 1, 10, 100);
+	// store in allEntities stack
+	pushEntityStack(&allEntities, &lwall);
+	pushEntityStack(&allEntities, &rwall);
+	pushEntityStack(&allEntities, &floor);
 
-    // list of all objects
-    std::vector<gameObj*> currentObjs;
-
-    // right wall
-    gameObj *wall = new gameObj("hello_world.bmp", true, OBJ_BLOCK, SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT);
-    gameObj *wall2 = new gameObj("hello_world.bmp", true, OBJ_BLOCK, 0, 0, 100, SCREEN_HEIGHT);
-    gameObj *block = new gameObj("hello_world.bmp", true, OBJ_BLOCK, SCREEN_WIDTH/4, SCREEN_HEIGHT/4, 300, 100);
-    gameObj *block2 = new gameObj("hello_world.bmp", true, OBJ_BLOCK, 0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100);
-
-    currentObjs.push_back(wall);
-    currentObjs.push_back(wall2);
-    currentObjs.push_back(block);
-    currentObjs.push_back(block2);
-
-*/
+	entity block;
+	initPlatformEntity(&block, 200, 50, 100, 100, "hello_world.bmp");
+	block.weight = 1;
+	pushEntityStack(&allEntities, &block);
 
     // game loop
     //===========
@@ -85,16 +81,16 @@ int main(int argc, char *argv[])
         // update window
         SDL_RenderClear(renderer);
 
-        // render player
-        // SDL_RenderCopy(renderer, player->getCurrentTexture(), nullptr, &player->rect);
-
         // render all current objs
-		/*
-        for(auto obj : currentObjs)
-            SDL_RenderCopy(renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
-		*/
+		for(int i = 0; i < allEntities.count; i++)
+		{
+			// update entities physics
+			updateEntityPhysics(&allEntities.arr[i]);
 
-        SDL_RenderCopy(renderer, wall.graphic, NULL, &wall.rect);
+			// render entities
+        	SDL_RenderCopy(renderer, allEntities.arr[i].graphic, NULL, &allEntities.arr[i].rect);
+		}
+
         SDL_RenderPresent(renderer);
 
         SDL_Delay(16);
@@ -105,6 +101,9 @@ int main(int argc, char *argv[])
 
     // close SDL subsystems
     close();
+
+	// free all entities
+	free(allEntities.arr);
 
     return 0;
 }

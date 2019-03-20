@@ -60,6 +60,7 @@ SDL_Rect makeRect(int x, int y, int w, int h)
 
 bool init(SDL_Window *window, SDL_Surface *windowSurface)
 {
+
 	// define screen edges
 	screenEdge[SCREEN_EDGE_LEFT] = makeRect(0, 0, 1, SCREEN_HEIGHT);
 	screenEdge[SCREEN_EDGE_RIGHT] = makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT);
@@ -164,6 +165,7 @@ SDL_Texture *loadTexture(char *fileName)
 
 	return texture;
 }
+
 
 bool close()
 {
