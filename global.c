@@ -8,6 +8,8 @@ bool quit = false;
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 
+int gravity = 1;
+
 // error function
 #ifdef DEBUG
 void writeErr(const char *err, char *more)

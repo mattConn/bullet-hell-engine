@@ -11,3 +11,6 @@ typedef struct Entity {
 
 // init platform entity
 bool initPlatformEntity(entity *e, int x, int y, int w, int h, char *textureName);
+
+// init player entity
+bool initPlayerEntity(entity *e, int weight, int x, int y, int w, int h, char *textureName);

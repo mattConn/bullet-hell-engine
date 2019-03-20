@@ -25,6 +25,9 @@ void writeMsg(const char *err);
 extern int SCREEN_HEIGHT;
 extern int SCREEN_WIDTH;
 
+// gravity
+extern int gravity;
+
 // wall position enum
 enum screenEdgePos
 {
