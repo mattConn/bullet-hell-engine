@@ -22,8 +22,8 @@ void writeErr(const char *err, char *more);
 void writeMsg(const char *err);
 
 // screen dimensions
-const int SCREEN_HEIGHT;
-const int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
+extern int SCREEN_WIDTH;
 
 // wall position enum
 enum screenEdgePos

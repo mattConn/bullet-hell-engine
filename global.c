@@ -5,6 +5,9 @@
 
 bool quit = false;
 
+int SCREEN_WIDTH = 0;
+int SCREEN_HEIGHT = 0;
+
 // error function
 #ifdef DEBUG
 void writeErr(const char *err, char *more)

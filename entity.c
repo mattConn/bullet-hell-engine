@@ -8,4 +8,6 @@ bool initPlatformEntity(entity *e, int x, int y, int w, int h, char *textureName
 	e->graphic = loadTexture(textureName);
 	e->rect = makeRect(x,y,w,h);
 	e->kind = PLATFORM;
+
+	writeMsg("Successful init platform.");
 }

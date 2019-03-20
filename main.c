@@ -4,6 +4,7 @@
 //#undef main
 
 #include "global.h"
+#include "entity.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +12,8 @@ int main(int argc, char *argv[])
 	windowName = "new SDL game";
 
 	// set screen dimensions
-	const int SCREEN_WIDTH = 800;
-	const int SCREEN_HEIGHT = 600;
+	SCREEN_WIDTH = 800;
+	SCREEN_HEIGHT = 600;
 
 	// error file and output file
 	errFile = stderr;
@@ -24,6 +25,10 @@ int main(int argc, char *argv[])
 		writeErr("Init failed.", NULL);
         return 1;
     }
+
+	entity wall;
+    // right wall
+	initPlatformEntity(&wall, SCREEN_WIDTH - 100, 0, 100, SCREEN_HEIGHT, "hello_world.bmp");
 
 /*
     // construct player
@@ -89,6 +94,7 @@ int main(int argc, char *argv[])
             SDL_RenderCopy(renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
 		*/
 
+        SDL_RenderCopy(renderer, wall.graphic, NULL, &wall.rect);
         SDL_RenderPresent(renderer);
 
         SDL_Delay(16);
