@@ -1,65 +1,79 @@
-#pragma once
+#ifndef GLOBAL_H
+#define GLOBAL_H
+
 #include <SDL2/SDL.h>
-#include <vector>
+#include <stdio.h>
 
-namespace g {
-	extern bool quit;
+typedef enum Bool { false, true } bool;
 
-	// screen dimensions
-	extern const int SCREEN_HEIGHT;
-	extern const int SCREEN_WIDTH;
+bool quit;
 
-	// wall position enum
-	enum screenEdgePos
-	{
-		SCREEN_EDGE_LEFT,
-		SCREEN_EDGE_RIGHT,
-		SCREEN_EDGE_TOP,
-		SCREEN_EDGE_BOTTOM,
-		SCREEN_EDGE_TOTAL
-	};
+// name to display in window
+const char *windowName;
 
-	// obj types
-	enum gameObjType
-	{
-		OBJ_PLATFORM,
-		OBJ_BLOCK,
-		OBJ_PLAYER,
-		OBJ_ENEMY,
-		OBJ_GRAPHIC,
-		OBJ_NO_COLLISION,
-		OBJ_TOTAL
-	};
+// error file and output file
+FILE *errFile;
+FILE *outFile;
 
-	// array of screen edges rectangles (1 px thick)
-	extern SDL_Rect screenEdge[];
+// error function
+void writeErr(const char *err, char *more);
 
-	extern SDL_Window *window; // main window
-	extern SDL_Surface *windowSurface; // surface for main window
-	extern SDL_Renderer *renderer; // main renderer
+// print function
+void writeMsg(const char *err);
 
-	// real-time state of key
-	extern const Uint8 *keyState;
+// screen dimensions
+const int SCREEN_HEIGHT;
+const int SCREEN_WIDTH;
 
-	// event handler
-	extern SDL_Event event;
+// wall position enum
+enum screenEdgePos
+{
+	SCREEN_EDGE_LEFT,
+	SCREEN_EDGE_RIGHT,
+	SCREEN_EDGE_TOP,
+	SCREEN_EDGE_BOTTOM,
+	SCREEN_EDGE_TOTAL
+};
 
-	// function prototypes
-	// ===================
+// obj types
+enum entityKind
+{
+	PLATFORM,
+	PLAYER,
+	ENEMY,
+	GRAPHIC,
+	TOTAL_KINDS
+};
 
-	// SDL rect wrapper
-	extern SDL_Rect makeRect(const int &x, const int &y, const int &w, const int &h = -1);
+// array of screen edges rectangles (1 px thick)
+SDL_Rect screenEdge[];
 
-	// init SDL subsystems, windows etc.
-	extern bool init(SDL_Window *&window, SDL_Surface *&windowSurface);
+SDL_Window *window; // main window
+SDL_Surface *windowSurface; // surface for main window
+SDL_Renderer *renderer; // main renderer
 
-	// load image and optimize
-	extern SDL_Surface *loadImage(char fileName[]);
+// real-time state of key
+const Uint8 *keyState;
 
-	// SDL image wrapper
-	extern SDL_Texture *loadTexture(const char filename[]);
+// event handler
+SDL_Event event;
 
-	// free memory and quit SDL subsytems
-	extern bool close();
+// function prototypes
+// ===================
 
-} // end namespace
+// SDL rect wrapper
+SDL_Rect makeRect(int x, int y, int w, int h);
+
+// init SDL subsystems, windows etc.
+bool init(SDL_Window *window, SDL_Surface *windowSurface);
+
+// load image and optimize
+SDL_Surface *loadImage(const char *fileName);
+
+// SDL image wrapper
+SDL_Texture *loadTexture(char *filename);
+
+// free memory and quit SDL subsytems
+bool close();
+
+#endif
