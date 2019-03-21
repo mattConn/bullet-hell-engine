@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     // end game loop
 
     // close SDL subsystems
-    close();
+    closeSDLSubsystems();
 
 	// free all entities
 	free(allEntities.arr);

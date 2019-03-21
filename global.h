@@ -77,6 +77,6 @@ SDL_Surface *loadImage(const char *fileName);
 SDL_Texture *loadTexture(char *filename);
 
 // free memory and quit SDL subsytems
-bool close();
+bool closeSDLSubsystems();
 
 #endif
