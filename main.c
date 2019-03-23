@@ -12,6 +12,11 @@ int main(int argc, char *argv[])
 	entityStack allEntities;
 	initEntityStack(&allEntities);
 
+	// all entities with collision
+	entityStack collisionEntities;
+	initEntityStack(&collisionEntities);
+
+
 	// name to display in window
 	windowName = "new SDL game";
 
@@ -45,6 +50,13 @@ int main(int argc, char *argv[])
 	initPlatformEntity(&block, 200, 50, 100, 100, "hello_world.bmp");
 	block.weight = 1;
 	pushEntityStack(&allEntities, &block);
+
+	// store all entities with collision enabled
+	for(int i=0; i < allEntities.count; i++)
+	{
+		if(allEntities.arr[i].collision)
+			pushEntityStack(&collisionEntities, &allEntities.arr[i]);
+	}
 
     // game loop
     //===========
@@ -84,6 +96,15 @@ int main(int argc, char *argv[])
         // render all current objs
 		for(int i = 0; i < allEntities.count; i++)
 		{
+			for(int j = 0; j < allEntities.count; j++)
+			{
+				if(j != i) // don't check for collision with self
+				{
+					// check for collision on all entities
+					setEntityCollision(&allEntities.arr[i], &allEntities.arr[j]);
+				}
+			}
+
 			// update entities physics
 			updateEntityPhysics(&allEntities.arr[i]);
 
@@ -102,8 +123,9 @@ int main(int argc, char *argv[])
     // close SDL subsystems
     closeSDLSubsystems();
 
-	// free all entities
+	// free entity stacks
 	free(allEntities.arr);
+	free(collisionEntities.arr);
 
     return 0;
 }

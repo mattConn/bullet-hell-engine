@@ -166,7 +166,6 @@ SDL_Texture *loadTexture(char *fileName)
 	return texture;
 }
 
-
 bool closeSDLSubsystems()
 {
 	//Deallocate windowSurface

@@ -3,13 +3,50 @@
 
 #include "global.h"
 
+// obj types
+typedef enum EntityKind
+{
+	PLATFORM,
+	PLAYER,
+	ENEMY,
+	GRAPHIC,
+	TOTAL_KINDS
+} entityKind;
+
+// entity movement
+typedef enum EntityMovement
+{
+	MOVEMENT_H_PATROL,
+	MOVEMENT_V_PATROL,
+	MOVEMENT_SINE,
+	MOVEMENT_COSINE,
+	TOTAL_MOVEMENT
+} entityMovement;
+
+// sides of collision
+typedef enum CollisionSides
+{
+	SIDE_LEFT,
+	SIDE_RIGHT,
+	SIDE_TOP,
+	SIDE_BOTTOM,
+	TOTAL_SIDES
+} collisionSides;
+
 // base game entity
 typedef struct Entity {
 	int weight;
-	bool collision;
 	SDL_Texture *graphic;
 	SDL_Rect rect;
 	entityKind kind;
+
+	// movement 
+	bool movement;
+	bool movementKind[TOTAL_MOVEMENT];
+	int directionSign;
+
+	bool collision;
+	bool collisionSide[TOTAL_SIDES];
 } entity;
 
 // stack for storage of entities
@@ -27,6 +64,9 @@ bool pushEntityStack(entityStack *es, entity *e);
 
 // init platform entity
 bool initPlatformEntity(entity *e, int x, int y, int w, int h, char *textureName);
+
+// set collision state of entity e1 by checking for collision with e2
+bool setEntityCollision(entity *e1, entity *e2);
 
 // init player entity
 bool initPlayerEntity(entity *e, int weight, int x, int y, int w, int h, char *textureName);
