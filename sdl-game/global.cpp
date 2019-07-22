@@ -8,8 +8,10 @@ namespace g {
 
 bool quit = false;
 
+bool fullscreen = false;
+
 const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_HEIGHT = 768;
 
 // left, right, top, bottom
 SDL_Rect screenEdge[SCREEN_EDGE_TOTAL] = {

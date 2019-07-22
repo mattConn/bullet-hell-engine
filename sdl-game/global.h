@@ -5,6 +5,8 @@
 namespace g {
 	extern bool quit;
 
+	extern bool fullscreen;
+
 	// screen dimensions
 	extern const int SCREEN_HEIGHT;
 	extern const int SCREEN_WIDTH;

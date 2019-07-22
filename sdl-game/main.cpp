@@ -57,6 +57,17 @@ int main(int argc, char *argv[])
         #ifdef DEBUG
         if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
             g::quit = true;
+
+		if (g::keyState[SDL_SCANCODE_F11])
+		{
+			if (!g::fullscreen)
+				SDL_SetWindowFullscreen(g::window, SDL_WINDOW_FULLSCREEN);
+			else
+				SDL_SetWindowFullscreen(g::window, 0);
+
+			g::fullscreen = !g::fullscreen;
+		}
+
         #endif
 
         player->checkCollision(currentObjs); // check collision against current objs
