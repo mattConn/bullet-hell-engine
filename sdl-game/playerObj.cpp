@@ -10,7 +10,6 @@ playerObj::playerObj() // default constructor
 {
     collidable = true;
     objType = g::OBJ_PLAYER;
-
     velocity = 10;
 
     // set all sides to no collision
@@ -18,24 +17,7 @@ playerObj::playerObj() // default constructor
         i = false;
 
     rect = g::makeRect(0, 0, 50);
-    jumpMaxHeight = 50*2;
-}
-
-// custom constructor: sets x, y, velocity, rect
-playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height)
-{
-    collidable = true;
-    objType = g::OBJ_PLAYER;
-
-    rect = g::makeRect(xPos, yPos, width, height);
-
     jumpMaxHeight = 300;
-
-    // set all sides to no collision
-    for (auto i : sideCollision)
-        i = false;
-
-    velocity = vel;
 
     // load all keyPress images
     keypressTextures[KEY_PRESS_DEFAULT] = g::loadTexture("hello_world.bmp");
@@ -43,6 +25,17 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int
     keypressTextures[KEY_PRESS_DOWN] = g::loadTexture("arrows_down.bmp");
     keypressTextures[KEY_PRESS_LEFT] = g::loadTexture("arrows_left.bmp");
     keypressTextures[KEY_PRESS_RIGHT] = g::loadTexture("arrows_right.bmp");
+
+    currentTexture = keypressTextures[KEY_PRESS_LEFT];
+}
+
+// custom constructor: sets x, y, velocity, rect
+playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height, const KeyPresses &direction) : playerObj()
+{
+    rect = g::makeRect(xPos, yPos, width, height);
+    velocity = vel;
+
+    currentTexture = keypressTextures[direction];
 }
 
 // check for collision

@@ -39,7 +39,7 @@ class playerObj : public gameObj {
 
 public:
 	playerObj(); // default constructor
-	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1);
+	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1, const KeyPresses &direction = KEY_PRESS_RIGHT);
 
 	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
 
