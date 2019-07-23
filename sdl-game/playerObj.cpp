@@ -17,7 +17,6 @@ playerObj::playerObj() // default constructor
         i = false;
 
     rect = g::makeRect(0, 0, 50);
-    jumpMaxHeight = 300;
 
     // load all keyPress images
     keypressTextures[KEY_PRESS_DEFAULT] = g::loadTexture("hello_world.bmp");
@@ -56,7 +55,7 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
 
             if(obj->getRectTop() >= getRectTop()) // bottom collision
             {
-                rect.y -= intersection.h-1;
+                obj->rect.y += intersection.h-1;
                 sideCollision[RECT_BOTTOM] = true;
             }
 
@@ -64,20 +63,14 @@ bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
             {
                 if(intersection.w == rect.w) // top collision
                 {
-                    rect.y += intersection.h-1;
+                    //obj->rect.y -= intersection.h-1;
                     sideCollision[RECT_TOP] = true;
                 }
                 else // left collision
                 {
-                    rect.x += intersection.w;
+                    obj->rect.x -= intersection.w;
                     sideCollision[RECT_L] = true;
                 }
-            }
-
-            if(intersection.x > rect.x && intersection.y == rect.y) // right collision
-            {
-                rect.x -= intersection.w;
-                sideCollision[RECT_R] = true;
             }
 
         }
@@ -95,73 +88,64 @@ void playerObj::checkKeyState()
     //===============
 
     // move left
-    if (g::keyState[SDL_SCANCODE_LEFT])
-    {
-        currentTexture = keypressTextures[KEY_PRESS_LEFT];
+	if (g::keyState[SDL_SCANCODE_LEFT])
+	{
+		currentTexture = keypressTextures[KEY_PRESS_LEFT];
 
-        // if no left-side collision, move left
-        if (!sideCollision[RECT_L])
-            movement = MOVE_L;
+		// if no left-side collision, move left
+		if (!sideCollision[RECT_L])
+			movement = MOVE_L;
 
-    }
-    // move right
-    else if (g::keyState[SDL_SCANCODE_RIGHT])
-    {
-        currentTexture = keypressTextures[KEY_PRESS_RIGHT];
+	}
+	// move right
+	else if (g::keyState[SDL_SCANCODE_RIGHT])
+	{
+		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
 
-        // if no right-side collision, move right
-        if (!sideCollision[RECT_R])
-            movement = MOVE_R;
-    }
-    else
-        movement = MOVE_NONE;
+		// if no right-side collision, move right
+		if (!sideCollision[RECT_R])
+			movement = MOVE_R;
+	}
+	// move up/down
+	else if (g::keyState[SDL_SCANCODE_UP])
+	{
+		if (!sideCollision[RECT_TOP])
+			movement = MOVE_UP;
+	}
+	else if (g::keyState[SDL_SCANCODE_DOWN])
+	{
+		if (!sideCollision[RECT_BOTTOM])
+			movement = MOVE_DOWN;
+	}
+	else
+		movement = MOVE_NONE;
 
-    // jump
-    // if bottom collision and not already jumping
-    // and the difference between current time and time of jump is small enough (SDL_GetTicks == jumpStartTime not possible).
-    //	(This time check is necessary to prevent key repeat.)
-    if (g::keyState[SDL_SCANCODE_Z] && !jumping && sideCollision[RECT_BOTTOM] && SDL_GetTicks() - jumpStartTime < JUMP_MIN_DELAY)
-        jumping = true;
-    else if (!g::keyState[SDL_SCANCODE_Z])
-    {
-        jumpStartPos = rect.y;
-        jumpStartTime = SDL_GetTicks();
-        jumping = false;
-    }
 
 }
 
-void playerObj::updatePhysics()
+void playerObj::updatePhysics(std::vector<gameObj*>& objVector)
 {
     // directional movement
     // ====================
-    switch (movement)
-    {
-    case MOVE_L:
-        rect.x -= velocity;
-        break;
-    case MOVE_R:
-        rect.x += velocity;
-        break;
-    default:
-        break;
-    }
-
-    // gravity/falling
-    // ===============
-
-    // if no bottom collision and not jumping, fall
-    if (!sideCollision[RECT_BOTTOM] && !jumping)
-        rect.y += velocity * 2;
-
-    // jumping
-    // =======
-
-    // If jumping and jumping height is less than max jump height and no top collision
-    if (jumping && !sideCollision[RECT_TOP] && jumpStartPos - rect.y < jumpMaxHeight)
-        rect.y -= velocity * 3;
-    else // set jumping to false after jumpMaxHeight
-        jumping = false;
+	for (auto obj : objVector)
+	{
+		switch (movement)
+		{
+		case MOVE_L:
+			obj->rect.x += velocity;
+			break;
+		case MOVE_R:
+			obj->rect.x -= velocity;
+			break;
+		case MOVE_UP:
+			obj->rect.y += velocity;
+			break;
+		case MOVE_DOWN:
+			obj->rect.y -= velocity;
+		default:
+			break;
+		}
+	}
 
 }
 
@@ -170,7 +154,7 @@ void playerObj::updatePlayer(std::vector<gameObj*>& objVector)
 {
 	checkCollision(objVector);
 	checkKeyState();
-	updatePhysics();
+	updatePhysics(objVector);
 }
 
 // =============================

@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	SDL_ShowCursor(SDL_DISABLE);
 
     // construct player
-    playerObj *player = new playerObj(200, 1, 10, 100);
+    playerObj *player = new playerObj(g::SCREEN_WIDTH/2 - 10/2, g::SCREEN_HEIGHT/2 - 100/2, 10, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs;
@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
     gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
     gameObj *wall2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, 0, 100, g::SCREEN_HEIGHT);
     gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
-    gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
+    //gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
 
     currentObjs.push_back(wall);
     currentObjs.push_back(wall2);
     currentObjs.push_back(block);
-    currentObjs.push_back(block2);
+    //currentObjs.push_back(block2);
 
     // game loop
     //===========

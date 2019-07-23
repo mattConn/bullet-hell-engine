@@ -29,6 +29,8 @@ protected:
 		MOVE_NONE,
 		MOVE_R,
 		MOVE_L,
+		MOVE_UP,
+		MOVE_DOWN,
 		MOVE_TOTAL,
 	};
 

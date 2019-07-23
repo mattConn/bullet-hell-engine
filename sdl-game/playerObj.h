@@ -25,15 +25,6 @@ class playerObj : public gameObj {
     bool sideCollision[RECT_TOTAL]; // list of objects on side of collision
 	moveType movement = MOVE_NONE; // player movement
 
-	// jump data members
-	bool jumping = false; // currently jumping or not
-	unsigned int jumpStartTime = 0; // time jump starts
-	unsigned int jumpStartPos = 0; // y position of jump start
-	unsigned int jumpMaxHeight; // max jump height
-
-	// min. delay between current time and jump time
-	const unsigned int JUMP_MIN_DELAY = 50;
-
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
 
@@ -43,7 +34,7 @@ public:
 
 	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
 	void checkKeyState(); // check keystate
-	void updatePhysics(); // update physics based on flags
+	void updatePhysics(std::vector<gameObj*>& objVector); // update physics based on flags
 
 	// wrapper for player state functions
 	void updatePlayer(std::vector<gameObj*>& objVector);
