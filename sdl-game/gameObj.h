@@ -48,6 +48,12 @@ public:
 	g::gameObjType getType();
 	SDL_Texture *getCurrentTexture();
 
+	// mutators
+	void incRectX(const int n);
+	void incRectY(const int n);
+	void decRectX(const int n);
+	void decRectY(const int n);
+
 	// get position of rect sides
 	int getRectTop();
 	int getRectBottom();

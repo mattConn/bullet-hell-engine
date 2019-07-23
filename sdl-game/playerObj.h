@@ -32,10 +32,13 @@ public:
 	playerObj(); // default constructor
 	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1, const KeyPresses &direction = KEY_PRESS_RIGHT);
 
-	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
+	void checkCollision(std::vector<gameObj*> &objVector); // check for collision
+	void resetCollision();
 	void checkKeyState(); // check keystate
 	void updatePhysics(std::vector<gameObj*>& objVector); // update physics based on flags
 
+
 	// wrapper for player state functions
-	void updatePlayer(std::vector<gameObj*>& objVector);
+	void getUserInput(std::vector<gameObj*>& objVector);
+	void updateWorldPosition(std::vector<gameObj*>& objVector, const int x = 0, const int y = 0);
 };

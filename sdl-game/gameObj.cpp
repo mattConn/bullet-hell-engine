@@ -54,6 +54,12 @@ g::gameObjType gameObj::getType()
 	return objType;
 }
 
+// mutators
+void gameObj::incRectX(const int n) { rect.x += n; }
+void gameObj::incRectY(const int n) { rect.y += n; }
+
+void gameObj::decRectX(const int n) { rect.x += n; }
+void gameObj::decRectY(const int n) { rect.y += n; }
 
 // ===========================
 // end game object definitions

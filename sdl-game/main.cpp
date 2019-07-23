@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 		}
 
 		// check collision, keystate, update physics
-		player->updatePlayer(currentObjs);
+		player->getUserInput(currentObjs);
 
         // render scene
         // ============

@@ -37,50 +37,6 @@ playerObj::playerObj(const int &xPos, const int &yPos, const int &vel, const int
     currentTexture = keypressTextures[direction];
 }
 
-// check for collision
-bool playerObj::checkCollision(std::vector<gameObj*> &objVector)
-{
-    bool collision = false;
-
-    for(int i = 0; i < RECT_TOTAL; i++) // reset side collision
-        sideCollision[i] = false;
-
-    SDL_Rect intersection; // intersection rect
-
-    for(auto obj : objVector)
-    {
-        if(SDL_IntersectRect(&rect, &obj->rect, &intersection))
-        {
-            collision = true;
-
-            if(obj->getRectTop() >= getRectTop()) // bottom collision
-            {
-                obj->rect.y += intersection.h-1;
-                sideCollision[RECT_BOTTOM] = true;
-            }
-
-            if(intersection.x == rect.x && intersection.y == rect.y) // top collision or left collision
-            {
-                if(intersection.w == rect.w) // top collision
-                {
-                    //obj->rect.y -= intersection.h-1;
-                    sideCollision[RECT_TOP] = true;
-                }
-                else // left collision
-                {
-                    obj->rect.x -= intersection.w;
-                    sideCollision[RECT_L] = true;
-                }
-            }
-
-        }
-
-    } // end foreach
-
-
-    return collision;
-}
-
 void playerObj::checkKeyState()
 {
 
@@ -150,12 +106,80 @@ void playerObj::updatePhysics(std::vector<gameObj*>& objVector)
 }
 
 // wrapper for player state functions
-void playerObj::updatePlayer(std::vector<gameObj*>& objVector)
+void playerObj::getUserInput(std::vector<gameObj*>& objVector)
 {
-	checkCollision(objVector);
-	checkKeyState();
-	updatePhysics(objVector);
+
+	// move left
+	if (g::keyState[SDL_SCANCODE_LEFT] && !sideCollision[RECT_L])
+	{
+		checkCollision(objVector);
+		currentTexture = keypressTextures[KEY_PRESS_LEFT];
+		updateWorldPosition(objVector, velocity);
+	}
+
+	// move right
+	if (g::keyState[SDL_SCANCODE_RIGHT] && !sideCollision[RECT_R])
+	{
+		checkCollision(objVector);
+		currentTexture = keypressTextures[KEY_PRESS_RIGHT];
+		updateWorldPosition(objVector, -velocity);
+	}
+
+	// move up
+	if (g::keyState[SDL_SCANCODE_UP] && !sideCollision[RECT_TOP])
+	{
+		checkCollision(objVector);
+		currentTexture = keypressTextures[KEY_PRESS_UP];
+		updateWorldPosition(objVector, 0, velocity);
+	}
+
+	// move down
+	if (g::keyState[SDL_SCANCODE_DOWN] && !sideCollision[RECT_BOTTOM])
+	{
+		checkCollision(objVector);
+		currentTexture = keypressTextures[KEY_PRESS_DOWN];
+		updateWorldPosition(objVector, 0, -velocity);
+	}
 }
 
+void playerObj::updateWorldPosition(std::vector<gameObj*>& objVector, const int x, const int y)
+{
+	for (auto obj : objVector)
+	{
+		obj->incRectX(x);
+		obj->incRectY(y);
+	}
+}
+
+void playerObj::checkCollision(std::vector<gameObj*>& objVector)
+{
+	resetCollision();
+
+	for (auto obj : objVector)
+	{
+		SDL_Rect intersection; // intersection rect
+
+		if (SDL_IntersectRect(&rect, &obj->rect, &intersection))
+		{
+			if (intersection.y <= getRectTop()) // top collision
+				sideCollision[RECT_TOP] = true;
+
+			if (intersection.y + intersection.h >= getRectBottom()) // bottom collision
+				sideCollision[RECT_BOTTOM] = true;
+
+			if (intersection.x <= getRectL()) // left collision
+				sideCollision[RECT_L] = true;
+
+			if (intersection.x + intersection.w >= getRectR()) // right collision
+				sideCollision[RECT_R] = true;
+		}
+	} // end foreach
+}
+
+void playerObj::resetCollision()
+{
+	for (int i = 0; i < RECT_TOTAL; i++)
+		sideCollision[i] = false;
+}
 // =============================
 // end player object definitions
