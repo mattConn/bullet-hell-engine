@@ -20,6 +20,9 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+	// hide cursor
+	SDL_ShowCursor(SDL_DISABLE);
+
     // construct player
     playerObj *player = new playerObj(200, 1, 10, 100);
 
@@ -57,23 +60,17 @@ int main(int argc, char *argv[])
         #ifdef DEBUG
         if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
             g::quit = true;
-
-		if (g::keyState[SDL_SCANCODE_F11])
-		{
-			if (!g::fullscreen)
-				SDL_SetWindowFullscreen(g::window, SDL_WINDOW_FULLSCREEN);
-			else
-				SDL_SetWindowFullscreen(g::window, 0);
-
-			g::fullscreen = !g::fullscreen;
-		}
-
         #endif
 
-        player->checkCollision(currentObjs); // check collision against current objs
+		// toggle fullscreen F11
+		if (g::keyState[SDL_SCANCODE_F11])
+		{
+			g::screenMode = g::screenMode == g::SCREEN_FULL ? g::SCREEN_WINDOWED : g::SCREEN_FULL;
+			SDL_SetWindowFullscreen(g::window, g::screenMode);
+		}
 
-        player->checkKeyState(); // check keys, update flags
-        player->updatePhysics(); // update player physics
+		// check collision, keystate, update physics
+		player->updatePlayer(currentObjs);
 
         // render scene
         // ============

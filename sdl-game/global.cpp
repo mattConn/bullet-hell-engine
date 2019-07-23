@@ -8,7 +8,9 @@ namespace g {
 
 bool quit = false;
 
-bool fullscreen = false;
+const Uint8 SCREEN_WINDOWED = 0;
+const Uint8 SCREEN_FULL = SDL_WINDOW_FULLSCREEN;
+Uint8 screenMode = SCREEN_WINDOWED;
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;

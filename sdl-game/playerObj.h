@@ -42,7 +42,9 @@ public:
 	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1, const KeyPresses &direction = KEY_PRESS_RIGHT);
 
 	bool checkCollision(std::vector<gameObj*> &objVector); // check for collision
-
 	void checkKeyState(); // check keystate
 	void updatePhysics(); // update physics based on flags
+
+	// wrapper for player state functions
+	void updatePlayer(std::vector<gameObj*>& objVector);
 };

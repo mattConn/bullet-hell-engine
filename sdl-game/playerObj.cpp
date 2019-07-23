@@ -165,5 +165,13 @@ void playerObj::updatePhysics()
 
 }
 
+// wrapper for player state functions
+void playerObj::updatePlayer(std::vector<gameObj*>& objVector)
+{
+	checkCollision(objVector);
+	checkKeyState();
+	updatePhysics();
+}
+
 // =============================
 // end player object definitions
