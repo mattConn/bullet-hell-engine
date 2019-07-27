@@ -30,14 +30,14 @@ int main(int argc, char *argv[])
     std::vector<gameObj*> currentObjs;
 
     // right wall
-    gameObj *wall = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
-    gameObj *wall2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, 0, 100, g::SCREEN_HEIGHT);
-    gameObj *block = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
+    gameObj *wall = new gameObj("hello_world.bmp", g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
+    gameObj *wall2 = new gameObj("hello_world.bmp", 0, 0, 100, g::SCREEN_HEIGHT);
+    gameObj *block = new gameObj("hello_world.bmp", g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
     //gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
 
-    currentObjs.push_back(wall);
-    currentObjs.push_back(wall2);
-    currentObjs.push_back(block);
+    //currentObjs.push_back(wall);
+    //currentObjs.push_back(wall2);
+    //currentObjs.push_back(block);
     //currentObjs.push_back(block2);
 
     // game loop
@@ -57,10 +57,8 @@ int main(int argc, char *argv[])
 
         // check keystate
         //===============
-        #ifdef DEBUG
-        if (g::keyState[SDL_SCANCODE_RETURN]) // DEBUG: quick quitting
-            g::quit = true;
-        #endif
+        if (g::keyState[SDL_SCANCODE_RETURN])
+			g::quit = true;
 
 		// toggle fullscreen F11
 		if (g::keyState[SDL_SCANCODE_F11])
@@ -69,8 +67,29 @@ int main(int argc, char *argv[])
 			SDL_SetWindowFullscreen(g::window, g::screenMode);
 		}
 
-		// check collision, keystate, update physics
-		player->getUserInput(currentObjs);
+		// control player
+		// ==============
+		// slow down
+		if (g::keyState[SDL_SCANCODE_LSHIFT])
+			player->setVelocityMod(.35);
+		else
+			player->setVelocityMod(1);
+
+		// move left
+		if (g::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
+			player->incRectX(-player->getVelocity() * player->getVelocityMod());
+
+		// move right
+		if (g::keyState[SDL_SCANCODE_RIGHT] && player->getRectR() < g::SCREEN_WIDTH)
+			player->incRectX(player->getVelocity() * player->getVelocityMod());
+
+		// move up
+		if (g::keyState[SDL_SCANCODE_UP] && player->getRectTop() > 0)
+			player->incRectY(-player->getVelocity() * player->getVelocityMod());
+
+		// move down
+		if (g::keyState[SDL_SCANCODE_DOWN] && player->getRectBottom() < g::SCREEN_HEIGHT)
+			player->incRectY(player->getVelocity() * player->getVelocityMod());
 
         // render scene
         // ============

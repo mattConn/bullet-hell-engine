@@ -21,23 +21,18 @@ class playerObj : public gameObj {
 		KEY_PRESS_TOTAL
 	};
 
-	int velocity; // player velocity
-    bool sideCollision[RECT_TOTAL]; // list of objects on side of collision
-	moveType movement = MOVE_NONE; // player movement
+	double velocity; // player velocity
+	double velocityMod = 1; // player velocity modifier
 
 	// textures for keypresses
 	SDL_Texture *keypressTextures[KEY_PRESS_TOTAL];
 
 public:
 	playerObj(); // default constructor
-	playerObj(const int &xPos, const int &yPos, const int &vel, const int &width, const int &height = -1, const KeyPresses &direction = KEY_PRESS_RIGHT);
+	playerObj(const int &xPos, const int &yPos, const double &vel, const int &width, const int &height = -1, const KeyPresses &direction = KEY_PRESS_UP);
 
-	void checkCollision(std::vector<gameObj*> &objVector); // check for collision
-	void resetCollision();
-	void updatePhysics(std::vector<gameObj*>& objVector); // update physics based on flags
+	double getVelocity(){ return velocity; }
+	double getVelocityMod(){ return velocityMod; }
 
-
-	// wrapper for player state functions
-	void getUserInput(std::vector<gameObj*>& objVector);
-	void updateWorldPosition(std::vector<gameObj*>& objVector, const int x = 0, const int y = 0);
+	void setVelocityMod(const double &v){ velocityMod = {v}; }
 };

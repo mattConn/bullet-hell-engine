@@ -8,8 +8,6 @@
 // ===============
 class gameObj {
 protected:
-	bool collidable;
-	g::gameObjType objType;
 
 	SDL_Texture *currentTexture = nullptr;
 
@@ -23,40 +21,45 @@ protected:
 		RECT_TOTAL
 	};
 
-	// movement types
-	enum moveType
-	{
-		MOVE_NONE,
-		MOVE_R,
-		MOVE_L,
-		MOVE_UP,
-		MOVE_DOWN,
-		MOVE_TOTAL,
-	};
-
 public:
-	gameObj(); // default constructor
-	gameObj(const char textureName[], const bool &collisionBool, const g::gameObjType &objType, const int &xPos, const int &yPos, const int &width, const int &height = -1);
+	// default constructor
+	gameObj()
+	{
+		rect = g::makeRect(0, 0, 1);
+	}
+	gameObj(const char textureName[],  const int &xPos, const int &yPos, const int &width, const int &height = -1)
+	{
+		currentTexture = g::loadTexture(textureName);
+		rect = g::makeRect(xPos, yPos, width, height);
+	}
 
-	~gameObj(); // destructor
+	// destructor
+	~gameObj() 
+	{
+		SDL_DestroyTexture(currentTexture);
+		currentTexture = nullptr;
+	}
 
 	// obj rect
 	SDL_Rect rect;
 
 	// accessors
-	bool isCollidable();
-	g::gameObjType getType();
-	SDL_Texture *getCurrentTexture();
+	SDL_Texture *getCurrentTexture()
+	{
+		return currentTexture;
+	}
+
+	// get rect sides
+	int getRectTop(){ return rect.y; }
+	int getRectBottom(){ return rect.y + rect.h; }
+	int getRectL() { return rect.x; }
+	int getRectR() { return rect.x + rect.w; }
+
 
 	// mutators
-	void incRectX(const int n);
-	void incRectY(const int n);
-	void decRectX(const int n);
-	void decRectY(const int n);
+	void incRectX(const int n) { rect.x += n; }
+	void incRectY(const int n) { rect.y += n; }
 
-	// get position of rect sides
-	int getRectTop();
-	int getRectBottom();
-	int getRectL();
-	int getRectR();
+	void decRectX(const int n) { rect.x += n; }
+	void decRectY(const int n) { rect.y += n; }
 };

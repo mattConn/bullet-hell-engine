@@ -22,18 +22,6 @@ namespace g {
 		SCREEN_EDGE_TOTAL
 	};
 
-	// obj types
-	enum gameObjType
-	{
-		OBJ_PLATFORM,
-		OBJ_BLOCK,
-		OBJ_PLAYER,
-		OBJ_ENEMY,
-		OBJ_GRAPHIC,
-		OBJ_NO_COLLISION,
-		OBJ_TOTAL
-	};
-
 	// array of screen edges rectangles (1 px thick)
 	extern SDL_Rect screenEdge[];
 
