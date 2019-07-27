@@ -11,6 +11,8 @@ protected:
 
 	SDL_Texture *currentTexture = nullptr;
 
+	bool bullet = false;
+
 	// rectangle sides
 	enum rectSides
 	{
@@ -27,9 +29,9 @@ public:
 	{
 		rect = g::makeRect(0, 0, 1);
 	}
-	gameObj(const char textureName[],  const int &xPos, const int &yPos, const int &width, const int &height = -1)
+	gameObj(SDL_Texture *texture,  const int &xPos, const int &yPos, const int &width, const int &height = -1)
 	{
-		currentTexture = g::loadTexture(textureName);
+		currentTexture = texture;
 		rect = g::makeRect(xPos, yPos, width, height);
 	}
 
@@ -55,11 +57,15 @@ public:
 	int getRectL() { return rect.x; }
 	int getRectR() { return rect.x + rect.w; }
 
+	bool isBullet() { return bullet; }
+	void setBullet(const bool &b) { bullet = b; }
+	
+
 
 	// mutators
 	void incRectX(const int n) { rect.x += n; }
 	void incRectY(const int n) { rect.y += n; }
 
-	void decRectX(const int n) { rect.x += n; }
-	void decRectY(const int n) { rect.y += n; }
+	void decRectX(const int n) { rect.x -= n; }
+	void decRectY(const int n) { rect.y -= n; }
 };

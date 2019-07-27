@@ -6,6 +6,7 @@
 #undef main
 
 #include "debug.h"
+#include "texture.h"
 #include "global.h"
 #include "gameObj.h"
 #include "playerObj.h"
@@ -23,22 +24,23 @@ int main(int argc, char *argv[])
 	// hide cursor
 	SDL_ShowCursor(SDL_DISABLE);
 
+	// load textures
+	std::vector<texture *> allTextures = {
+		new texture("hello_world.bmp"),
+		new texture("arrows_up.bmp"),
+	};
+
     // construct player
     playerObj *player = new playerObj(g::SCREEN_WIDTH/2 - 10/2, g::SCREEN_HEIGHT/2 - 100/2, 10, 100);
 
     // list of all objects
-    std::vector<gameObj*> currentObjs;
+    std::vector<gameObj*> currentObjs = {
+    	new gameObj(allTextures[0]->getLoadedTexture(), g::SCREEN_WIDTH - 100, 0, 10)
+	};
 
-    // right wall
-    gameObj *wall = new gameObj("hello_world.bmp", g::SCREEN_WIDTH - 100, 0, 100, g::SCREEN_HEIGHT);
-    gameObj *wall2 = new gameObj("hello_world.bmp", 0, 0, 100, g::SCREEN_HEIGHT);
-    gameObj *block = new gameObj("hello_world.bmp", g::SCREEN_WIDTH/4, g::SCREEN_HEIGHT/4, 300, 100);
-    //gameObj *block2 = new gameObj("hello_world.bmp", true, g::OBJ_BLOCK, 0, g::SCREEN_HEIGHT - 100, g::SCREEN_WIDTH, 100);
+	// player bullet container
+    std::vector<gameObj*> currentPlayerBullets;
 
-    //currentObjs.push_back(wall);
-    //currentObjs.push_back(wall2);
-    //currentObjs.push_back(block);
-    //currentObjs.push_back(block2);
 
     // game loop
     //===========
@@ -75,6 +77,10 @@ int main(int argc, char *argv[])
 		else
 			player->setVelocityMod(1);
 
+		// fire
+		if (g::keyState[SDL_SCANCODE_Z])
+			currentPlayerBullets.push_back( new gameObj(allTextures[0]->getLoadedTexture(), player->getRectL(), player->getRectTop(), 10) );
+
 		// move left
 		if (g::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
 			player->incRectX(-player->getVelocity() * player->getVelocityMod());
@@ -101,8 +107,23 @@ int main(int argc, char *argv[])
         SDL_RenderCopy(g::renderer, player->getCurrentTexture(), nullptr, &player->rect);
 
         // render all current objs
-        for(auto obj : currentObjs)
+        // =======================
+		for(auto obj : currentObjs)
             SDL_RenderCopy(g::renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
+
+        // render all player bullets
+        // =========================
+		for(int i = 0; i < currentPlayerBullets.size(); i++)
+		{
+			currentPlayerBullets[i]->decRectY(10);
+
+			// remove bullets when offscreen
+			if(currentPlayerBullets[i]->getRectBottom() < 0)
+				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
+
+			//render
+            SDL_RenderCopy(g::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, &currentPlayerBullets[i]->rect);
+		}
 
         SDL_RenderPresent(g::renderer);
 

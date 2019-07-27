@@ -1,3 +1,3 @@
-collision detection
-gravity
-smooth start/stop running
+passing textures, call getTexture in passing or within body? overload passing?
+search allTextures with name string
+gameObjs should all have velocity
