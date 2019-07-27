@@ -34,7 +34,6 @@ public:
 
 	void checkCollision(std::vector<gameObj*> &objVector); // check for collision
 	void resetCollision();
-	void checkKeyState(); // check keystate
 	void updatePhysics(std::vector<gameObj*>& objVector); // update physics based on flags
 
 
