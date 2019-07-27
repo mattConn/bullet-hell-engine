@@ -27,12 +27,12 @@ public:
 	// default constructor
 	gameObj()
 	{
-		rect = g::makeRect(0, 0, 1);
+		rect = global::makeRect(0, 0, 1);
 	}
 	gameObj(SDL_Texture *texture,  const int &xPos, const int &yPos, const int &width, const int &height = -1)
 	{
 		currentTexture = texture;
-		rect = g::makeRect(xPos, yPos, width, height);
+		rect = global::makeRect(xPos, yPos, width, height);
 	}
 
 	// destructor
@@ -49,6 +49,11 @@ public:
 	SDL_Texture *getCurrentTexture()
 	{
 		return currentTexture;
+	}
+
+	void setCurrentTexture(SDL_Texture *texture)
+	{
+		currentTexture = texture;
 	}
 
 	// get rect sides

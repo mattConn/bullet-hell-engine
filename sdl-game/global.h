@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-namespace g {
+namespace global {
 	extern bool quit;
 
 	extern const Uint8 SCREEN_WINDOWED, SCREEN_FULL;
@@ -20,6 +20,17 @@ namespace g {
 		SCREEN_EDGE_TOP,
 		SCREEN_EDGE_BOTTOM,
 		SCREEN_EDGE_TOTAL
+	};
+
+	// keypress enum for relating textures to keypress events
+	enum KeyPresses
+	{
+		KEY_PRESS_DEFAULT,
+		KEY_PRESS_UP,
+		KEY_PRESS_DOWN,
+		KEY_PRESS_LEFT,
+		KEY_PRESS_RIGHT,
+		KEY_PRESS_TOTAL
 	};
 
 	// array of screen edges rectangles (1 px thick)

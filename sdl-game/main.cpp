@@ -15,7 +15,7 @@
 int main(int argc, char *argv[])
 {
     // init sdl
-    if (!g::init(g::window, g::windowSurface))
+    if (!global::init(global::window, global::windowSurface))
     {
         DEBUG_MSG("Init failed");
         return -1;
@@ -31,11 +31,11 @@ int main(int argc, char *argv[])
 	};
 
     // construct player
-    playerObj *player = new playerObj(g::SCREEN_WIDTH/2 - 10/2, g::SCREEN_HEIGHT/2 - 100/2, 10, 100);
+    playerObj *player = new playerObj(global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 10, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures[0]->getLoadedTexture(), g::SCREEN_WIDTH - 100, 0, 10)
+    	new gameObj(allTextures[0]->getLoadedTexture(), global::SCREEN_WIDTH - 100, 0, 10)
 	};
 
 	// player bullet container
@@ -44,72 +44,72 @@ int main(int argc, char *argv[])
 
     // game loop
     //===========
-    while (!g::quit)
+    while (!global::quit)
     {
         // event polling loop
-        while (SDL_PollEvent(&g::event))
+        while (SDL_PollEvent(&global::event))
         {
             // window close event
-            if (g::event.type == SDL_QUIT)
+            if (global::event.type == SDL_QUIT)
             {
-                g::quit = true;
+                global::quit = true;
                 break;
             }
         }
 
         // check keystate
         //===============
-        if (g::keyState[SDL_SCANCODE_RETURN])
-			g::quit = true;
+        if (global::keyState[SDL_SCANCODE_RETURN])
+			global::quit = true;
 
 		// toggle fullscreen F11
-		if (g::keyState[SDL_SCANCODE_F11])
+		if (global::keyState[SDL_SCANCODE_F11])
 		{
-			g::screenMode = g::screenMode == g::SCREEN_FULL ? g::SCREEN_WINDOWED : g::SCREEN_FULL;
-			SDL_SetWindowFullscreen(g::window, g::screenMode);
+			global::screenMode = global::screenMode == global::SCREEN_FULL ? global::SCREEN_WINDOWED : global::SCREEN_FULL;
+			SDL_SetWindowFullscreen(global::window, global::screenMode);
 		}
 
 		// control player
 		// ==============
 		// slow down
-		if (g::keyState[SDL_SCANCODE_LSHIFT])
+		if (global::keyState[SDL_SCANCODE_LSHIFT])
 			player->setVelocityMod(.35);
 		else
 			player->setVelocityMod(1);
 
 		// fire
-		if (g::keyState[SDL_SCANCODE_Z])
+		if (global::keyState[SDL_SCANCODE_Z])
 			currentPlayerBullets.push_back( new gameObj(allTextures[0]->getLoadedTexture(), player->getRectL(), player->getRectTop(), 10) );
 
 		// move left
-		if (g::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
+		if (global::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
 			player->incRectX(-player->getVelocity() * player->getVelocityMod());
 
 		// move right
-		if (g::keyState[SDL_SCANCODE_RIGHT] && player->getRectR() < g::SCREEN_WIDTH)
+		if (global::keyState[SDL_SCANCODE_RIGHT] && player->getRectR() < global::SCREEN_WIDTH)
 			player->incRectX(player->getVelocity() * player->getVelocityMod());
 
 		// move up
-		if (g::keyState[SDL_SCANCODE_UP] && player->getRectTop() > 0)
+		if (global::keyState[SDL_SCANCODE_UP] && player->getRectTop() > 0)
 			player->incRectY(-player->getVelocity() * player->getVelocityMod());
 
 		// move down
-		if (g::keyState[SDL_SCANCODE_DOWN] && player->getRectBottom() < g::SCREEN_HEIGHT)
+		if (global::keyState[SDL_SCANCODE_DOWN] && player->getRectBottom() < global::SCREEN_HEIGHT)
 			player->incRectY(player->getVelocity() * player->getVelocityMod());
 
         // render scene
         // ============
 
         // update window
-        SDL_RenderClear(g::renderer);
+        SDL_RenderClear(global::renderer);
 
         // render player
-        SDL_RenderCopy(g::renderer, player->getCurrentTexture(), nullptr, &player->rect);
+        SDL_RenderCopy(global::renderer, player->getCurrentTexture(), nullptr, &player->rect);
 
         // render all current objs
         // =======================
 		for(auto obj : currentObjs)
-            SDL_RenderCopy(g::renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
+            SDL_RenderCopy(global::renderer, obj->getCurrentTexture(), nullptr, &obj->rect);
 
         // render all player bullets
         // =========================
@@ -122,10 +122,10 @@ int main(int argc, char *argv[])
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
 
 			//render
-            SDL_RenderCopy(g::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, &currentPlayerBullets[i]->rect);
+            SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, &currentPlayerBullets[i]->rect);
 		}
 
-        SDL_RenderPresent(g::renderer);
+        SDL_RenderPresent(global::renderer);
 
         SDL_Delay(16);
     }
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
     // end game loop
 
     // close SDL subsystems
-    g::close();
+    global::close();
 
     return 0;
 }
