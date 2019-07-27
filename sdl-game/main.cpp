@@ -113,16 +113,17 @@ int main(int argc, char *argv[])
 
         // render all player bullets
         // =========================
+		std::cout << "BULLVEC: " << currentPlayerBullets.size() << "\n" << std::endl;
 		for(int i = 0; i < currentPlayerBullets.size(); i++)
 		{
 			currentPlayerBullets[i]->decRectY(10);
 
-			// remove bullets when offscreen
+			// remove bullet if offscreen
 			if(currentPlayerBullets[i]->getRectBottom() < 0)
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
-
-			//render
-            SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, &currentPlayerBullets[i]->rect);
+			else
+			//render bullet
+				SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, &currentPlayerBullets[i]->rect);
 		}
 
         SDL_RenderPresent(global::renderer);

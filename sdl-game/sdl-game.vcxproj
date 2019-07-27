@@ -124,7 +124,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gameObj.cpp" />
     <ClCompile Include="playerObj.cpp" />
     <ClCompile Include="playerObj.h" />
     <ClCompile Include="global.cpp" />

@@ -24,9 +24,6 @@
     <ClCompile Include="playerObj.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameObj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="playerObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
