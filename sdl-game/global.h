@@ -50,7 +50,7 @@ namespace global {
 	// ===================
 
 	// SDL rect wrapper
-	extern SDL_Rect makeRect(const int &x, const int &y, const int &w, const int &h = -1);
+	extern SDL_Rect makeRect(const int &x, const int &y, const int &w, const int &h);
 
 	// init SDL subsystems, windows etc.
 	extern bool init(SDL_Window *&window, SDL_Surface *&windowSurface);

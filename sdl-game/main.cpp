@@ -2,14 +2,12 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-//#include <Box2D/Box2D.h>
 #undef main
 
 #include "debug.h"
 #include "texture.h"
 #include "global.h"
 #include "gameObj.h"
-#include "playerObj.h"
 
 
 int main(int argc, char *argv[])
@@ -31,11 +29,11 @@ int main(int argc, char *argv[])
 	};
 
     // construct player
-    playerObj *player = new playerObj(global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 10, 100);
+    gameObj *player = new gameObj(allTextures[1]->getLoadedTexture(), 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures[0]->getLoadedTexture(), global::SCREEN_WIDTH - 100, 0, 10)
+    	new gameObj(allTextures[0]->getLoadedTexture(), 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
 	};
 
 	// player bullet container
@@ -79,7 +77,7 @@ int main(int argc, char *argv[])
 
 		// fire
 		if (global::keyState[SDL_SCANCODE_Z])
-			currentPlayerBullets.push_back( new gameObj(allTextures[0]->getLoadedTexture(), player->getRectL(), player->getRectTop(), 10) );
+			currentPlayerBullets.push_back( new gameObj(allTextures[0]->getLoadedTexture(), 10, player->getRectL(), player->getRectTop(), 10, 10) );
 
 		// move left
 		if (global::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
@@ -113,7 +111,6 @@ int main(int argc, char *argv[])
 
         // render all player bullets
         // =========================
-		std::cout << "BULLVEC: " << currentPlayerBullets.size() << "\n" << std::endl;
 		for(int i = 0; i < currentPlayerBullets.size(); i++)
 		{
 			currentPlayerBullets[i]->decRectY(10);

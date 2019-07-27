@@ -124,8 +124,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="playerObj.cpp" />
-    <ClCompile Include="playerObj.h" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -133,6 +131,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="gameObj.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

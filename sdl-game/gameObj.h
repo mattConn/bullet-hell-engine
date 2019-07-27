@@ -10,8 +10,8 @@ class gameObj {
 protected:
 
 	SDL_Texture *currentTexture = nullptr;
-
-	bool bullet = false;
+	double velocity = 1;
+	double velocityMod = 1;
 
 	// rectangle sides
 	enum rectSides
@@ -27,11 +27,10 @@ public:
 	// default constructor
 	gameObj()
 	{
-		rect = global::makeRect(0, 0, 1);
+		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(SDL_Texture *texture,  const int &xPos, const int &yPos, const int &width, const int &height = -1)
+	gameObj(SDL_Texture *texture, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(texture), velocity(vel)
 	{
-		currentTexture = texture;
 		rect = global::makeRect(xPos, yPos, width, height);
 	}
 
@@ -56,16 +55,17 @@ public:
 		currentTexture = texture;
 	}
 
+	// get velocity
+	double getVelocity() { return velocity; }
+	double getVelocityMod() { return velocityMod; }
+
+	void setVelocityMod(const double& v) { velocityMod = v; }
+
 	// get rect sides
 	int getRectTop(){ return rect.y; }
 	int getRectBottom(){ return rect.y + rect.h; }
 	int getRectL() { return rect.x; }
 	int getRectR() { return rect.x + rect.w; }
-
-	bool isBullet() { return bullet; }
-	void setBullet(const bool &b) { bullet = b; }
-	
-
 
 	// mutators
 	void incRectX(const int n) { rect.x += n; }

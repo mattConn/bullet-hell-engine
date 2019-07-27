@@ -44,7 +44,7 @@ SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int 
 
 	rect.y = yPos;
 	rect.w = width;
-	rect.h = height == -1 ? width : height;
+	rect.h = height;
 
 	return rect;
 }

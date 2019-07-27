@@ -11,7 +11,7 @@ class texture {
 
 public:
 	texture(){ loadedTexture = nullptr; }
-	texture(const char name[]) : name(name) { loadedTexture = IMG_LoadTexture(global::renderer, name);}
+	texture(const char name[]) : name(name) { loadedTexture = global::loadTexture(name);}
 
 	SDL_Texture *getLoadedTexture(){ return loadedTexture; }
 
