@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     std::vector<gameObj*> currentPlayerBullets;
 
 	// bullet firing delay
-	int playerBulletTimeout = SDL_GetTicks() + 150;
+	int playerBulletTimeout = SDL_GetTicks() + 100;
 
     // game loop
     //===========
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 		// fire
 		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), playerBulletTimeout))
 		{
-			currentPlayerBullets.push_back(new gameObj(allTextures[0]->getLoadedTexture(), 10, player->getRectL(), player->getRectTop(), 10, 10));
-			playerBulletTimeout = SDL_GetTicks() + 150;
+			currentPlayerBullets.push_back(new gameObj(allTextures[0]->getLoadedTexture(), 25, player->getRectL(), player->getRectTop(), 10, 10));
+			playerBulletTimeout = SDL_GetTicks() + 100;
 		}
 
 		// move left

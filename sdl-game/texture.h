@@ -15,6 +15,8 @@ public:
 
 	SDL_Texture *getLoadedTexture(){ return loadedTexture; }
 
+	std::string getName() { return name; }
+
 	~texture()
 	{
         SDL_DestroyTexture(loadedTexture);
