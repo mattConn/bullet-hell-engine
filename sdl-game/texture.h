@@ -13,7 +13,7 @@ public:
 	texture(){ loadedTexture = nullptr; }
 	texture(const char name[]) : name(name) { loadedTexture = global::loadTexture(name);}
 
-	SDL_Texture *getLoadedTexture(){ return loadedTexture; }
+	SDL_Texture *getLoadedTexture() const { return loadedTexture; }
 
 	std::string getName() { return name; }
 

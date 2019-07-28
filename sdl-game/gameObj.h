@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "texture.h"
 #include "global.h"
 
 // any game object
@@ -29,9 +30,10 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(SDL_Texture *texture, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(texture), velocity(vel)
+	gameObj(const texture *t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : velocity(vel)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
+		currentTexture = t->getLoadedTexture();
 	}
 
 	// destructor
@@ -50,9 +52,9 @@ public:
 		return currentTexture;
 	}
 
-	void setCurrentTexture(SDL_Texture *texture)
+	void setCurrentTexture(const texture *t)
 	{
-		currentTexture = texture;
+		currentTexture = t->getLoadedTexture();
 	}
 
 	bool isOffscreen() {
