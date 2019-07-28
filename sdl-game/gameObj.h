@@ -8,9 +8,10 @@
 // any game object
 // ===============
 class gameObj {
-protected:
+private:
 
 	SDL_Texture *currentTexture = nullptr;
+	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity = 1;
 	double velocityMod = 1;
 
@@ -43,9 +44,6 @@ public:
 		currentTexture = nullptr;
 	}
 
-	// obj rect
-	SDL_Rect rect;
-
 	// accessors
 	SDL_Texture *getCurrentTexture()
 	{
@@ -74,6 +72,14 @@ public:
 	int getRectBottom(){ return rect.y + rect.h; }
 	int getRectL() { return rect.x; }
 	int getRectR() { return rect.x + rect.w; }
+
+	int getRectX() { return rect.x; }
+	int getRectY() { return rect.y; }
+
+	void setRectX(const int &x) { rect.x = x; }
+	void setRectY(const int &y) { rect.y = y; }
+
+	SDL_Rect getRect() { return rect; }
 
 	// mutators
 	void incRectX(const int n) { rect.x += n; }
