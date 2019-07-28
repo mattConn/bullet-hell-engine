@@ -15,14 +15,6 @@ Uint8 screenMode = SCREEN_WINDOWED;
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
-// left, right, top, bottom
-SDL_Rect screenEdge[SCREEN_EDGE_TOTAL] = {
-	makeRect(0, 0, 1, SCREEN_HEIGHT),
-	makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT),
-	makeRect(0, 0, SCREEN_WIDTH, 1),
-	makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1)
-};
-
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
 SDL_Renderer *renderer = nullptr; // main renderer

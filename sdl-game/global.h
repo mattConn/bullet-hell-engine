@@ -12,16 +12,6 @@ namespace global {
 	extern const int SCREEN_HEIGHT;
 	extern const int SCREEN_WIDTH;
 
-	// wall position enum
-	enum screenEdgePos
-	{
-		SCREEN_EDGE_LEFT,
-		SCREEN_EDGE_RIGHT,
-		SCREEN_EDGE_TOP,
-		SCREEN_EDGE_BOTTOM,
-		SCREEN_EDGE_TOTAL
-	};
-
 	// keypress enum for relating textures to keypress events
 	enum KeyPresses
 	{
@@ -32,9 +22,6 @@ namespace global {
 		KEY_PRESS_RIGHT,
 		KEY_PRESS_TOTAL
 	};
-
-	// array of screen edges rectangles (1 px thick)
-	extern SDL_Rect screenEdge[];
 
 	extern SDL_Window *window; // main window
 	extern SDL_Surface *windowSurface; // surface for main window
