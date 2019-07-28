@@ -74,7 +74,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 		DEBUG_MSG("SDL window creation error: " << SDL_GetError());
 		return false;
 	}
-	DEBUG_MSG("Created window");
+	DEBUG_MSG("Created window: w: " << SCREEN_WIDTH << " h: " << SCREEN_HEIGHT );
 
 	// init renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);

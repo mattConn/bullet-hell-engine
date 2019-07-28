@@ -21,6 +21,10 @@ private:
 	double velocity = 1;
 	double velocityMod = 1;
 
+	// starting position
+	int initialX = 0;
+	int initialY = 0;
+
 public:
 	// default constructor
 	gameObj()
@@ -30,6 +34,8 @@ public:
 	gameObj(SDL_Texture *t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
+		setInitialX(xPos);
+		setInitialY(yPos);
 	}
 	// copy constructor
 	gameObj(const gameObj& g) : currentTexture(g.currentTexture), velocity(g.velocity)
@@ -57,7 +63,10 @@ public:
 
 	bool isOffscreen() {
 		if (getRectR() < 0 || getRectL() > global::SCREEN_WIDTH || getRectTop() > global::SCREEN_HEIGHT || getRectBottom() < 0)
+		{
+			DEBUG_MSG("Offscreen: gameObj &: " << this << " x: " << getRectX() << " y: " << getRectY());
 			return true;
+		}
 		return false;
 	}
 
@@ -80,6 +89,20 @@ public:
 	void setRectY(const int &y) { rect.y = y; }
 
 	SDL_Rect getRect() const { return rect; }
+
+	// get initial position
+	int getInitialX() { return initialX; }
+	int getInitialY() { return initialY; }
+	
+	// set initial position
+	void setInitialX(const int& x) { initialX = x; };
+	void setInitialY(const int& y) { initialY = y; };
+
+	void setInitialPos(const int& x, const int& y)
+	{
+		setInitialX(x);
+		setInitialY(y);
+	}
 
 	// get bullet
 	gameObj* getNewBullet()

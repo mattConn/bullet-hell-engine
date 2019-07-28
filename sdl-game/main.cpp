@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 	// list of all objects
 	std::vector<gameObj*> currentObjs = {
-		new gameObj(allTextures["hello_world"], 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
+		new gameObj(allTextures["hello_world"], 10, 500, 10, 50, 50)
 	};
 
 	// player bullet container
@@ -119,9 +119,20 @@ int main(int argc, char *argv[])
 
         // render all current objs
         // =======================
-		for(auto obj : currentObjs)
-            SDL_RenderCopy(global::renderer, obj->getCurrentTexture(), nullptr, &obj->getRect());
+		// TEMP ANIMATION
+		for (int i = 0; i < currentObjs.size(); i++)
+		{
+			if (abs(currentObjs[i]->getInitialY() - currentObjs[i]->getRectY()) < 100)
+				currentObjs[i]->incRectY(5);
+			else
+				currentObjs[i]->decRectX(5);
 
+			if (currentObjs[i]->isOffscreen())
+				currentObjs.erase(currentObjs.begin() + i);
+			else
+				SDL_RenderCopy(global::renderer, currentObjs[i]->getCurrentTexture(), nullptr, &currentObjs[i]->getRect());
+		}
+		
         // render all player bullets
         // =========================
 		for(int i = 0; i < currentPlayerBullets.size(); i++)
