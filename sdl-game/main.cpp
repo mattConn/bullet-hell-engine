@@ -22,27 +22,31 @@ int main(int argc, char *argv[])
 	// hide cursor
 	SDL_ShowCursor(SDL_DISABLE);
 
+	// containers
+	// ==========
+
 	// load textures
 	std::map<std::string, SDL_Texture *> allTextures = {
 		{"hello_world", global::loadTexture("hello_world.bmp")},
 		{"arrows_up", global::loadTexture("arrows_up.bmp")},
 	};
 
+	// list of all objects
+	std::vector<gameObj*> currentObjs = {
+		new gameObj(allTextures["hello_world"], 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
+	};
+
+	// player bullet container
+	std::vector<gameObj*> currentPlayerBullets;
+
 	// make player 
 	// ===========
 
     // construct player
     gameObj *player = new gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+
 	// set player bullet properties
 	player->setBullet(allTextures["hello_world"], 25, 10, 10, 100);
-
-    // list of all objects
-    std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures["hello_world"], 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
-	};
-
-	// player bullet container
-    std::vector<gameObj*> currentPlayerBullets;
 
     // game loop
     //===========
@@ -58,9 +62,11 @@ int main(int argc, char *argv[])
                 break;
             }
         }
+		
+		// keybindings
+		// ===========
 
-        // check keystate
-        //===============
+		// quit
         if (global::keyState[SDL_SCANCODE_RETURN])
 			global::quit = true;
 
@@ -71,8 +77,8 @@ int main(int argc, char *argv[])
 			SDL_SetWindowFullscreen(global::window, global::screenMode);
 		}
 
-		// control player
-		// ==============
+		// player keybindings
+		// ==================
 		// slow down
 		if (global::keyState[SDL_SCANCODE_LSHIFT])
 			player->setVelocityMod(.35);

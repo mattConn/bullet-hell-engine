@@ -48,7 +48,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	// init video
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cout << "SDL could not init video: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("SDL could not init video: " << SDL_GetError());
 		return false;
 	}
 	DEBUG_MSG("Init video");
@@ -56,7 +56,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	// init PNG loading
 	if (!IMG_Init(IMG_INIT_PNG))
 	{
-		std::cout << "Could not init PNG loading: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Could not init PNG loading: " << SDL_GetError());
 		return false;
 	}
 	DEBUG_MSG("Init PNG loading");
@@ -71,7 +71,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 
 	if (window == nullptr)
 	{
-		std::cout << "SDL window creation error: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("SDL window creation error: " << SDL_GetError());
 		return false;
 	}
 	DEBUG_MSG("Created window");
@@ -81,7 +81,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 
 	if (renderer == nullptr)
 	{
-		std::cout << "Could not init renderer: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Could not init renderer: " << SDL_GetError());
 		return false;
 	}
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
@@ -103,7 +103,7 @@ SDL_Surface *loadImage(const char fileName[])
 
 	if (imageSurface == nullptr)
 	{
-		std::cout << "Unable to load image " << fileName << ": " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Unable to load image " << fileName << ": " << SDL_GetError());
 		return nullptr;
 	}
 
@@ -111,7 +111,7 @@ SDL_Surface *loadImage(const char fileName[])
 	optimizedSurface = SDL_ConvertSurface(imageSurface, windowSurface->format, 0);
 	if (optimizedSurface == nullptr)
 	{
-		std::cout << "Unable to optimize surface " << fileName << ": " << std::endl;
+		DEBUG_MSG("Unable to optimize surface " << fileName << ": " << SDL_GetError());
 		return nullptr;
 	}
 
@@ -130,7 +130,7 @@ SDL_Texture *loadTexture(const char fileName[])
 
 	if (texture == nullptr)
 	{
-		std::cout << "Unable to load texture: " << fileName << " : " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Unable to load texture: " << fileName << " : " << SDL_GetError());
 		return nullptr;
 	}
 
