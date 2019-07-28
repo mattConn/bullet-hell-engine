@@ -6,7 +6,6 @@
 #undef main
 
 #include "debug.h"
-#include "texture.h"
 #include "global.h"
 #include "gameObj.h"
 
@@ -24,22 +23,22 @@ int main(int argc, char *argv[])
 	SDL_ShowCursor(SDL_DISABLE);
 
 	// load textures
-	std::map<std::string, texture *> allTextures = {
-		{"hello_world", new texture("hello_world.bmp")},
-		{"arrows_up", new texture("arrows_up.bmp")},
+	std::map<std::string, SDL_Texture *> allTextures = {
+		{"hello_world", global::loadTexture("hello_world.bmp")},
+		{"arrows_up", global::loadTexture("arrows_up.bmp")},
 	};
 
 	// make player 
 	// ===========
 
     // construct player
-    gameObj *player = new gameObj(allTextures["arrows_up"]->getLoadedTexture(), 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj *player = new gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
 	// set player bullet properties
-	player->setBullet(allTextures["hello_world"]->getLoadedTexture(), 25, 10, 10, 100);
+	player->setBullet(allTextures["hello_world"], 25, 10, 10, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures["hello_world"]->getLoadedTexture(), 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
+    	new gameObj(allTextures["hello_world"], 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
 	};
 
 	// player bullet container
