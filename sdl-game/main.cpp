@@ -29,19 +29,21 @@ int main(int argc, char *argv[])
 		{"arrows_up", new texture("arrows_up.bmp")},
 	};
 
+	// make player 
+	// ===========
+
     // construct player
-    gameObj *player = new gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj *player = new gameObj(allTextures["arrows_up"]->getLoadedTexture(), 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+	// set player bullet properties
+	player->setBullet(allTextures["hello_world"]->getLoadedTexture(), 25, 10, 10, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures["hello_world"], 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
+    	new gameObj(allTextures["hello_world"]->getLoadedTexture(), 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
 	};
 
 	// player bullet container
     std::vector<gameObj*> currentPlayerBullets;
-
-	// bullet firing delay
-	int playerBulletTimeout = SDL_GetTicks() + 100;
 
     // game loop
     //===========
@@ -79,10 +81,10 @@ int main(int argc, char *argv[])
 			player->setVelocityMod(1);
 
 		// fire
-		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), playerBulletTimeout))
+		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player->getBullet()->getTimeout()))
 		{
-			currentPlayerBullets.push_back(new gameObj(allTextures["hello_world"], 25, player->getRectL(), player->getRectTop(), 10, 10));
-			playerBulletTimeout = SDL_GetTicks() + 100;
+			currentPlayerBullets.push_back(player->getNewBullet());
+			player->getBullet()->resetTimeout();
 		}
 
 		// move left

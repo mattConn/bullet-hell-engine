@@ -5,25 +5,22 @@
 #include "texture.h"
 #include "global.h"
 
+class bulletObj;
+
 // any game object
 // ===============
 class gameObj {
 private:
 
 	SDL_Texture *currentTexture = nullptr;
+
+	gameObj* bullet = nullptr;
+	int duration = 0;
+	int timeout = 0;
+
 	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity = 1;
 	double velocityMod = 1;
-
-	// rectangle sides
-	enum rectSides
-	{
-		RECT_L,
-		RECT_R,
-		RECT_TOP,
-		RECT_BOTTOM,
-		RECT_TOTAL
-	};
 
 public:
 	// default constructor
@@ -31,10 +28,14 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(const texture *t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : velocity(vel)
+	gameObj(SDL_Texture *t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
-		currentTexture = t->getLoadedTexture();
+	}
+	// copy constructor
+	gameObj(const gameObj& g) : currentTexture(g.currentTexture), velocity(g.velocity)
+	{
+		rect = g.rect;
 	}
 
 	// destructor
@@ -50,9 +51,9 @@ public:
 		return currentTexture;
 	}
 
-	void setCurrentTexture(const texture *t)
+	void setCurrentTexture(SDL_Texture *t)
 	{
-		currentTexture = t->getLoadedTexture();
+		currentTexture = t;
 	}
 
 	bool isOffscreen() {
@@ -79,7 +80,25 @@ public:
 	void setRectX(const int &x) { rect.x = x; }
 	void setRectY(const int &y) { rect.y = y; }
 
-	SDL_Rect getRect() { return rect; }
+	SDL_Rect getRect() const { return rect; }
+
+	// get bullet
+	gameObj* getNewBullet()
+	{ 
+		gameObj *newBullet = new gameObj(*bullet); // copy of bullet
+		newBullet->setRectX(getRectX());
+		newBullet->setRectY(getRectY());
+
+		return newBullet;
+	}
+
+	// set bullet
+	void setBullet(SDL_Texture* t, const double& vel, const int& width, const int& height, const int& d)
+	{
+		bullet = new gameObj(t, vel, 0, 0, width, height);
+		bullet->duration = d;
+		bullet->timeout = d + SDL_GetTicks();
+	}
 
 	// mutators
 	void incRectX(const int n) { rect.x += n; }
@@ -87,4 +106,13 @@ public:
 
 	void decRectX(const int n) { rect.x -= n; }
 	void decRectY(const int n) { rect.y -= n; }
+
+	void setDuration(const int& d) { duration = d; }
+	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
+
+	// accessors
+	gameObj* getBullet() { return bullet; }
+	int getDuration() { return duration; }
+	int getTimeout() { return timeout; }
+
 };

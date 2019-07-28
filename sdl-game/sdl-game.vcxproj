@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bulletObj.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="gameObj.h" />
     <ClInclude Include="global.h" />
