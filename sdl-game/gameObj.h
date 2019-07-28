@@ -55,6 +55,12 @@ public:
 		currentTexture = texture;
 	}
 
+	bool isOffscreen() {
+		if (getRectR() < 0 || getRectL() > global::SCREEN_WIDTH || getRectTop() > global::SCREEN_HEIGHT || getRectBottom() < 0)
+			return true;
+		return false;
+	}
+
 	// get velocity
 	double getVelocity() { return velocity; }
 	double getVelocityMod() { return velocityMod; }

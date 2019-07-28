@@ -113,10 +113,10 @@ int main(int argc, char *argv[])
         // =========================
 		for(int i = 0; i < currentPlayerBullets.size(); i++)
 		{
-			currentPlayerBullets[i]->decRectY(10);
+			currentPlayerBullets[i]->decRectY(currentPlayerBullets[i]->getVelocity());
 
 			// remove bullet if offscreen
-			if(currentPlayerBullets[i]->getRectBottom() < 0)
+			if(currentPlayerBullets[i]->isOffscreen())
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
 			else
 			//render bullet
