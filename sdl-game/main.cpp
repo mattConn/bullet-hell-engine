@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #undef main
@@ -23,17 +24,17 @@ int main(int argc, char *argv[])
 	SDL_ShowCursor(SDL_DISABLE);
 
 	// load textures
-	std::vector<texture *> allTextures = {
-		new texture("hello_world.bmp"),
-		new texture("arrows_up.bmp"),
+	std::map<std::string, texture *> allTextures = {
+		{"hello_world", new texture("hello_world.bmp")},
+		{"arrows_up", new texture("arrows_up.bmp")},
 	};
 
     // construct player
-    gameObj *player = new gameObj(allTextures[1]->getLoadedTexture(), 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj *player = new gameObj(allTextures["arrows_up"]->getLoadedTexture(), 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
 
     // list of all objects
     std::vector<gameObj*> currentObjs = {
-    	new gameObj(allTextures[0]->getLoadedTexture(), 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
+    	new gameObj(allTextures["hello_world"]->getLoadedTexture(), 0, global::SCREEN_WIDTH - 100, 0, 10, 10)
 	};
 
 	// player bullet container
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
 		// fire
 		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), playerBulletTimeout))
 		{
-			currentPlayerBullets.push_back(new gameObj(allTextures[0]->getLoadedTexture(), 25, player->getRectL(), player->getRectTop(), 10, 10));
+			currentPlayerBullets.push_back(new gameObj(allTextures["hello_world"]->getLoadedTexture(), 25, player->getRectL(), player->getRectTop(), 10, 10));
 			playerBulletTimeout = SDL_GetTicks() + 100;
 		}
 
