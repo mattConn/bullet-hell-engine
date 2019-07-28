@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
 	// player bullet container
     std::vector<gameObj*> currentPlayerBullets;
 
+	// bullet firing delay
+	int playerBulletTimeout = SDL_GetTicks() + 150;
 
     // game loop
     //===========
@@ -76,8 +78,11 @@ int main(int argc, char *argv[])
 			player->setVelocityMod(1);
 
 		// fire
-		if (global::keyState[SDL_SCANCODE_Z])
-			currentPlayerBullets.push_back( new gameObj(allTextures[0]->getLoadedTexture(), 10, player->getRectL(), player->getRectTop(), 10, 10) );
+		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), playerBulletTimeout))
+		{
+			currentPlayerBullets.push_back(new gameObj(allTextures[0]->getLoadedTexture(), 10, player->getRectL(), player->getRectTop(), 10, 10));
+			playerBulletTimeout = SDL_GetTicks() + 150;
+		}
 
 		// move left
 		if (global::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
