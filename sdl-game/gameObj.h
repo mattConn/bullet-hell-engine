@@ -95,7 +95,7 @@ public:
 	void setRectX(const int &x) { rect.x = x; }
 	void setRectY(const int &y) { rect.y = y; }
 
-	SDL_Rect getRect() const { return rect; }
+	SDL_Rect *getRect() { return &rect; }
 
 	// get initial position
 	int getInitialX() const { return initialX; }
