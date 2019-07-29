@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <cassert>
 #include "global.h"
 
 class bulletObj;
@@ -64,7 +65,11 @@ public:
 	}
 
 	void setAnimation(bool (*anim)(gameObj*) ) { animation = anim; }
-	bool playAnimation() { return animation(this); }
+	bool playAnimation()
+	{
+		assert(animation != nullptr);
+		return animation(this); 
+	}
 
 	bool isOffscreen() const {
 		if (getRectR() < 0 || getRectL() > global::SCREEN_WIDTH || getRectTop() > global::SCREEN_HEIGHT || getRectBottom() < 0)
@@ -135,7 +140,11 @@ public:
 	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
 
 	// accessors
-	gameObj* getBullet() const { return bullet; }
+	gameObj* getBullet() const 
+	{ 
+		assert(bullet != nullptr);
+		return bullet;
+	}
 	int getDuration() const { return duration; }
 	int getTimeout() const { return timeout; }
 
