@@ -25,6 +25,8 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
+	bool (*animation)(gameObj *) = nullptr;
+
 public:
 	// default constructor
 	gameObj()
@@ -51,7 +53,7 @@ public:
 	}
 
 	// accessors
-	SDL_Texture *getCurrentTexture()
+	SDL_Texture *getCurrentTexture() const
 	{
 		return currentTexture;
 	}
@@ -61,29 +63,29 @@ public:
 		currentTexture = t;
 	}
 
-	bool isOffscreen() {
+	void setAnimation(bool (*anim)(gameObj*) ) { animation = anim; }
+	bool playAnimation() { return animation(this); }
+
+	bool isOffscreen() const {
 		if (getRectR() < 0 || getRectL() > global::SCREEN_WIDTH || getRectTop() > global::SCREEN_HEIGHT || getRectBottom() < 0)
-		{
-			DEBUG_MSG("Offscreen: gameObj &: " << this << " x: " << getRectX() << " y: " << getRectY());
 			return true;
-		}
 		return false;
 	}
 
 	// get velocity
-	double getVelocity() { return velocity; }
-	double getVelocityMod() { return velocityMod; }
+	double getVelocity() const { return velocity; }
+	double getVelocityMod() const { return velocityMod; }
 
 	void setVelocityMod(const double& v) { velocityMod = v; }
 
 	// get rect sides
-	int getRectTop(){ return rect.y; }
-	int getRectBottom(){ return rect.y + rect.h; }
-	int getRectL() { return rect.x; }
-	int getRectR() { return rect.x + rect.w; }
+	int getRectTop() const { return rect.y; }
+	int getRectBottom() const { return rect.y + rect.h; }
+	int getRectL() const { return rect.x; }
+	int getRectR() const { return rect.x + rect.w; }
 
-	int getRectX() { return rect.x; }
-	int getRectY() { return rect.y; }
+	int getRectX() const { return rect.x; }
+	int getRectY() const { return rect.y; }
 
 	void setRectX(const int &x) { rect.x = x; }
 	void setRectY(const int &y) { rect.y = y; }
@@ -91,8 +93,8 @@ public:
 	SDL_Rect getRect() const { return rect; }
 
 	// get initial position
-	int getInitialX() { return initialX; }
-	int getInitialY() { return initialY; }
+	int getInitialX() const { return initialX; }
+	int getInitialY() const { return initialY; }
 	
 	// set initial position
 	void setInitialX(const int& x) { initialX = x; };
@@ -133,8 +135,8 @@ public:
 	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
 
 	// accessors
-	gameObj* getBullet() { return bullet; }
-	int getDuration() { return duration; }
-	int getTimeout() { return timeout; }
+	gameObj* getBullet() const { return bullet; }
+	int getDuration() const { return duration; }
+	int getTimeout() const { return timeout; }
 
 };
