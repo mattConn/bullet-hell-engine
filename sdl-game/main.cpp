@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
 	// ===========
 
     // construct player
-    gameObj *player = new gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj player = gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
 
 	// set player bullet properties
-	player->setBullet(allTextures["hello_world"], 25, 10, 10, 100);
+	player.setBullet(allTextures["hello_world"], 25, 10, 10, 100);
 
     // game loop
     //===========
@@ -88,32 +88,32 @@ int main(int argc, char *argv[])
 		// ==================
 		// slow down
 		if (global::keyState[SDL_SCANCODE_LSHIFT])
-			player->setVelocityMod(.35);
+			player.setVelocityMod(.35);
 		else
-			player->setVelocityMod(1);
+			player.setVelocityMod(1);
 
 		// fire
-		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player->getBullet()->getTimeout()))
+		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBullet()->getTimeout()))
 		{
-			currentPlayerBullets.push_back(player->getNewBullet());
-			player->getBullet()->resetTimeout();
+			currentPlayerBullets.push_back(player.getNewBullet());
+			player.getBullet()->resetTimeout();
 		}
 
 		// move left
-		if (global::keyState[SDL_SCANCODE_LEFT] && player->getRectL() > 0)
-			player->incRectX(-player->getVelocity() * player->getVelocityMod());
+		if (global::keyState[SDL_SCANCODE_LEFT] && player.getRectL() > 0)
+			player.incRectX(-player.getVelocity() * player.getVelocityMod());
 
 		// move right
-		if (global::keyState[SDL_SCANCODE_RIGHT] && player->getRectR() < global::SCREEN_WIDTH)
-			player->incRectX(player->getVelocity() * player->getVelocityMod());
+		if (global::keyState[SDL_SCANCODE_RIGHT] && player.getRectR() < global::SCREEN_WIDTH)
+			player.incRectX(player.getVelocity() * player.getVelocityMod());
 
 		// move up
-		if (global::keyState[SDL_SCANCODE_UP] && player->getRectTop() > 0)
-			player->incRectY(-player->getVelocity() * player->getVelocityMod());
+		if (global::keyState[SDL_SCANCODE_UP] && player.getRectTop() > 0)
+			player.incRectY(-player.getVelocity() * player.getVelocityMod());
 
 		// move down
-		if (global::keyState[SDL_SCANCODE_DOWN] && player->getRectBottom() < global::SCREEN_HEIGHT)
-			player->incRectY(player->getVelocity() * player->getVelocityMod());
+		if (global::keyState[SDL_SCANCODE_DOWN] && player.getRectBottom() < global::SCREEN_HEIGHT)
+			player.incRectY(player.getVelocity() * player.getVelocityMod());
 
         // render scene
         // ============
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         SDL_RenderClear(global::renderer);
 
         // render player
-        SDL_RenderCopy(global::renderer, player->getCurrentTexture(), nullptr, player->getRectPtr());
+        SDL_RenderCopy(global::renderer, player.getCurrentTexture(), nullptr, player.getRectPtr());
 
         // render all current objs
         // =======================
