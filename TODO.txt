@@ -1,1 +1,2 @@
-add assertion for calling playAnimation
+player bullet collision with enemy
+enemy bullet collision with player, player death and spawn protection

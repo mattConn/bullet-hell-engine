@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 	// load textures
 	global::allTextures["hello_world"] = global::loadTexture("hello_world.bmp");
 	global::allTextures["arrows_up"] = global::loadTexture("arrows_up.bmp");
+	global::allTextures["player"] = global::loadTexture("player.png");
+	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
 
 	// list of all objects
 	std::vector<gameObj> currentObjs = {
@@ -48,10 +50,10 @@ int main(int argc, char *argv[])
 	// ===========
 
     // construct player
-    gameObj player = gameObj("arrows_up", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj player = gameObj("player", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 50, 100);
 
 	// set player bullet properties
-	player.setBullet("hello_world", 25, 10, 10, 100);
+	player.setBullet("player-bullet", 20, 15, 15, 150);
 
     // game loop
     //===========

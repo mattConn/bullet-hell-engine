@@ -80,11 +80,15 @@ public:
 	int getRectL() const { return rect.x; }
 	int getRectR() const { return rect.x + rect.w; }
 
-	int getRectX() const { return rect.x; }
 	int getRectY() const { return rect.y; }
+	int getRectX() const { return rect.x; }
+	int getRectW() const { return rect.w; }
+	int getRectH() const { return rect.h; }
 
 	void setRectX(const int &x) { rect.x = x; }
 	void setRectY(const int &y) { rect.y = y; }
+	void setRectW(const int &w) { rect.w = w; }
+	void setRectH(const int &h) { rect.h = h; }
 
 	SDL_Rect *getRectPtr() { return &rect; }
 
@@ -114,7 +118,7 @@ public:
 	gameObj getBulletCopy()
 	{ 
 		gameObj newBullet = gameObj(bullet); // copy of bullet
-		newBullet.setRectX(getRectX());
+		newBullet.setRectX(getRectX() + getRectW()/2); // center bullet
 		newBullet.setRectY(getRectY());
 
 		return newBullet;
