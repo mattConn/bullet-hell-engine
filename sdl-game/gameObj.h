@@ -15,9 +15,11 @@ private:
 
 	std::string currentTexture;
 
-	gameObj* bullet = nullptr;
-	int duration = 0;
-	int timeout = 0;
+	static gameObj bullet; // defined in gameObj.cpp
+
+	// fire rate members
+	int duration = 0; // duration of old bullet on screen
+	int timeout = 0; // time before bullet shoul be fired
 
 	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity = 1;
@@ -40,18 +42,6 @@ public:
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
 		setInitialY(yPos);
-	}
-	// copy constructor
-	gameObj(const gameObj& g) : currentTexture(g.currentTexture), velocity(g.velocity)
-	{
-		rect = g.rect;
-	}
-
-	// destructor
-	~gameObj() 
-	{
-		//SDL_DestroyTexture(global::allTextures[currentTexture]);
-		//global::allTextures[currentTexture] = nullptr;
 	}
 
 	// accessors
@@ -112,22 +102,32 @@ public:
 		setInitialY(y);
 	}
 
+	// get fire rate info
+	int getDuration() const { return duration; }
+	int getTimeout() const { return timeout; }
+
+	// set fire rate info
+	void setDuration(const int& d) { duration = d; }
+	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
+
 	// get bullet
-	gameObj* getNewBullet()
+	gameObj getBulletCopy()
 	{ 
-		gameObj *newBullet = new gameObj(*bullet); // copy of bullet
-		newBullet->setRectX(getRectX());
-		newBullet->setRectY(getRectY());
+		gameObj newBullet = gameObj(bullet); // copy of bullet
+		newBullet.setRectX(getRectX());
+		newBullet.setRectY(getRectY());
 
 		return newBullet;
 	}
 
+	gameObj* getBulletPtr() const { return &bullet; }
+
 	// set bullet
 	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
 	{
-		bullet = new gameObj(t, vel, 0, 0, width, height);
-		bullet->duration = d;
-		bullet->timeout = d + SDL_GetTicks();
+		bullet = gameObj(t, vel, 0, 0, width, height);
+		bullet.duration = d;
+		bullet.timeout = d + SDL_GetTicks();
 	}
 
 	// mutators
@@ -136,17 +136,5 @@ public:
 
 	void decRectX(const int n) { rect.x -= n; }
 	void decRectY(const int n) { rect.y -= n; }
-
-	void setDuration(const int& d) { duration = d; }
-	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
-
-	// accessors
-	gameObj* getBullet() const 
-	{ 
-		assert(bullet != nullptr);
-		return bullet;
-	}
-	int getDuration() const { return duration; }
-	int getTimeout() const { return timeout; }
 
 };

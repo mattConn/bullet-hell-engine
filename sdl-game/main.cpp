@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	currentObjs[2].setAnimation(animation::downAndLeft);
 
 	// player bullet container
-	std::vector<gameObj*> currentPlayerBullets;
+	std::vector<gameObj> currentPlayerBullets;
 
 	// make player 
 	// ===========
@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
 			player.setVelocityMod(1);
 
 		// fire
-		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBullet()->getTimeout()))
+		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
 		{
-			currentPlayerBullets.push_back(player.getNewBullet());
-			player.getBullet()->resetTimeout();
+			currentPlayerBullets.push_back(player.getBulletCopy());
+			player.getBulletPtr()->resetTimeout();
 		}
 
 		// move left
@@ -137,14 +137,14 @@ int main(int argc, char *argv[])
         // =========================
 		for(int i = 0; i < currentPlayerBullets.size(); i++)
 		{
-			currentPlayerBullets[i]->decRectY(currentPlayerBullets[i]->getVelocity());
+			currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
 
 			// remove bullet if offscreen
-			if(currentPlayerBullets[i]->isOffscreen())
+			if(currentPlayerBullets[i].isOffscreen())
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
 			else
 			//render bullet
-				SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i]->getCurrentTexture()], nullptr, currentPlayerBullets[i]->getRectPtr());
+				SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
 		}
 
         SDL_RenderPresent(global::renderer);
