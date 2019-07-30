@@ -6,4 +6,4 @@ This project depends on SDL2 and SDL2_image. I followed along with Lazy Foo's tu
 ## Compiling
 On Mac and Linux, use the makefile in `sdl-game`.
 
-On Windows, use the solution in `./`.
+On Windows, open the solution file in the top-level directory with Visual Studio. 
