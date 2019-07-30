@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <string>
 #include <vector>
+#include <map>
 
 namespace global {
 	extern bool quit;
@@ -26,6 +28,8 @@ namespace global {
 	extern SDL_Window *window; // main window
 	extern SDL_Surface *windowSurface; // surface for main window
 	extern SDL_Renderer *renderer; // main renderer
+
+	extern std::map<std::string, SDL_Texture*> allTextures;
 
 	// real-time state of key
 	extern const Uint8 *keyState;

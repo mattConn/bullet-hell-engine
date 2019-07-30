@@ -27,21 +27,19 @@ int main(int argc, char *argv[])
 	// ==========
 
 	// load textures
-	std::map<std::string, SDL_Texture *> allTextures = {
-		{"hello_world", global::loadTexture("hello_world.bmp")},
-		{"arrows_up", global::loadTexture("arrows_up.bmp")},
-	};
+	global::allTextures["hello_world"] = global::loadTexture("hello_world.bmp");
+	global::allTextures["arrows_up"] = global::loadTexture("arrows_up.bmp");
 
 	// list of all objects
-	std::vector<gameObj*> currentObjs = {
-		new gameObj(allTextures["hello_world"], 10, 500, 10, 50, 50),
-		new gameObj(allTextures["hello_world"], 10, 700, 50, 50, 50),
-		new gameObj(allTextures["hello_world"], 10, 900, 60, 50, 50),
+	std::vector<gameObj> currentObjs = {
+		gameObj("hello_world", 10, 500, 10, 50, 50),
+		gameObj("hello_world", 10, 700, 50, 50, 50),
+		gameObj("hello_world", 10, 900, 60, 50, 50),
 	};
 
-	currentObjs[0]->setAnimation(animation::downAndLeft);
-	currentObjs[1]->setAnimation(animation::downAndLeft);
-	currentObjs[2]->setAnimation(animation::downAndLeft);
+	currentObjs[0].setAnimation(animation::downAndLeft);
+	currentObjs[1].setAnimation(animation::downAndLeft);
+	currentObjs[2].setAnimation(animation::downAndLeft);
 
 	// player bullet container
 	std::vector<gameObj*> currentPlayerBullets;
@@ -50,10 +48,10 @@ int main(int argc, char *argv[])
 	// ===========
 
     // construct player
-    gameObj player = gameObj(allTextures["arrows_up"], 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
+    gameObj player = gameObj("arrows_up", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 100, 100);
 
 	// set player bullet properties
-	player.setBullet(allTextures["hello_world"], 25, 10, 10, 100);
+	player.setBullet("hello_world", 25, 10, 10, 100);
 
     // game loop
     //===========
@@ -122,15 +120,15 @@ int main(int argc, char *argv[])
         SDL_RenderClear(global::renderer);
 
         // render player
-        SDL_RenderCopy(global::renderer, player.getCurrentTexture(), nullptr, player.getRectPtr());
+        SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
 
         // render all current objs
         // =======================
 		// TEMP ANIMATION
 		for (int i = 0; i < currentObjs.size(); i++)
 		{
-			if(currentObjs[i]->playAnimation())
-				SDL_RenderCopy(global::renderer, currentObjs[i]->getCurrentTexture(), nullptr, currentObjs[i]->getRectPtr());
+			if(currentObjs[i].playAnimation())
+				SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i].getCurrentTexture()], nullptr, currentObjs[i].getRectPtr());
 			else
 				currentObjs.erase(currentObjs.begin() + i);
 		}
@@ -146,7 +144,7 @@ int main(int argc, char *argv[])
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
 			else
 			//render bullet
-				SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, currentPlayerBullets[i]->getRectPtr());
+				SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i]->getCurrentTexture()], nullptr, currentPlayerBullets[i]->getRectPtr());
 		}
 
         SDL_RenderPresent(global::renderer);

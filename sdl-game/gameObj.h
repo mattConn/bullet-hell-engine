@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <cassert>
+#include <string>
 #include "global.h"
 
 class bulletObj;
@@ -12,7 +13,7 @@ class bulletObj;
 class gameObj {
 private:
 
-	SDL_Texture *currentTexture = nullptr;
+	std::string currentTexture;
 
 	gameObj* bullet = nullptr;
 	int duration = 0;
@@ -34,7 +35,7 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(SDL_Texture *t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
+	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
@@ -49,17 +50,17 @@ public:
 	// destructor
 	~gameObj() 
 	{
-		SDL_DestroyTexture(currentTexture);
-		currentTexture = nullptr;
+		//SDL_DestroyTexture(global::allTextures[currentTexture]);
+		//global::allTextures[currentTexture] = nullptr;
 	}
 
 	// accessors
-	SDL_Texture *getCurrentTexture() const
+	std::string getCurrentTexture() const
 	{
 		return currentTexture;
 	}
 
-	void setCurrentTexture(SDL_Texture *t)
+	void setCurrentTexture(std::string t)
 	{
 		currentTexture = t;
 	}
@@ -122,7 +123,7 @@ public:
 	}
 
 	// set bullet
-	void setBullet(SDL_Texture* t, const double& vel, const int& width, const int& height, const int& d)
+	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
 	{
 		bullet = new gameObj(t, vel, 0, 0, width, height);
 		bullet->duration = d;

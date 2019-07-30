@@ -1,6 +1,8 @@
 #include "global.h"
 #include "debug.h"
 #include <iostream>
+#include <map>
+#include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -18,6 +20,8 @@ const int SCREEN_HEIGHT = 768;
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
 SDL_Renderer *renderer = nullptr; // main renderer
+
+std::map<std::string, SDL_Texture*> allTextures;
 
 // realtime keystate
 const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
@@ -151,6 +155,10 @@ bool close()
 
 	// Destroy renderer
 	SDL_DestroyRenderer(renderer);
+
+	// Destroy textures
+	for (auto texture : allTextures)
+		SDL_DestroyTexture(texture.second);
 
 	//Quit SDL subsystems
 	IMG_Quit();
