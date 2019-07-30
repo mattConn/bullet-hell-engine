@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         SDL_RenderClear(global::renderer);
 
         // render player
-        SDL_RenderCopy(global::renderer, player->getCurrentTexture(), nullptr, player->getRect());
+        SDL_RenderCopy(global::renderer, player->getCurrentTexture(), nullptr, player->getRectPtr());
 
         // render all current objs
         // =======================
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 		for (int i = 0; i < currentObjs.size(); i++)
 		{
 			if(currentObjs[i]->playAnimation())
-				SDL_RenderCopy(global::renderer, currentObjs[i]->getCurrentTexture(), nullptr, currentObjs[i]->getRect());
+				SDL_RenderCopy(global::renderer, currentObjs[i]->getCurrentTexture(), nullptr, currentObjs[i]->getRectPtr());
 			else
 				currentObjs.erase(currentObjs.begin() + i);
 		}
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
 			else
 			//render bullet
-				SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, currentPlayerBullets[i]->getRect());
+				SDL_RenderCopy(global::renderer, currentPlayerBullets[i]->getCurrentTexture(), nullptr, currentPlayerBullets[i]->getRectPtr());
 		}
 
         SDL_RenderPresent(global::renderer);
