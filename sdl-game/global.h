@@ -1,8 +1,10 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <string>
 #include <vector>
+#include <map>
 
-namespace g {
+namespace global {
 	extern bool quit;
 
 	extern const Uint8 SCREEN_WINDOWED, SCREEN_FULL;
@@ -12,34 +14,22 @@ namespace g {
 	extern const int SCREEN_HEIGHT;
 	extern const int SCREEN_WIDTH;
 
-	// wall position enum
-	enum screenEdgePos
+	// keypress enum for relating textures to keypress events
+	enum KeyPresses
 	{
-		SCREEN_EDGE_LEFT,
-		SCREEN_EDGE_RIGHT,
-		SCREEN_EDGE_TOP,
-		SCREEN_EDGE_BOTTOM,
-		SCREEN_EDGE_TOTAL
+		KEY_PRESS_DEFAULT,
+		KEY_PRESS_UP,
+		KEY_PRESS_DOWN,
+		KEY_PRESS_LEFT,
+		KEY_PRESS_RIGHT,
+		KEY_PRESS_TOTAL
 	};
-
-	// obj types
-	enum gameObjType
-	{
-		OBJ_PLATFORM,
-		OBJ_BLOCK,
-		OBJ_PLAYER,
-		OBJ_ENEMY,
-		OBJ_GRAPHIC,
-		OBJ_NO_COLLISION,
-		OBJ_TOTAL
-	};
-
-	// array of screen edges rectangles (1 px thick)
-	extern SDL_Rect screenEdge[];
 
 	extern SDL_Window *window; // main window
 	extern SDL_Surface *windowSurface; // surface for main window
 	extern SDL_Renderer *renderer; // main renderer
+
+	extern std::map<std::string, SDL_Texture*> allTextures;
 
 	// real-time state of key
 	extern const Uint8 *keyState;
@@ -51,7 +41,7 @@ namespace g {
 	// ===================
 
 	// SDL rect wrapper
-	extern SDL_Rect makeRect(const int &x, const int &y, const int &w, const int &h = -1);
+	extern SDL_Rect makeRect(const int &x, const int &y, const int &w, const int &h);
 
 	// init SDL subsystems, windows etc.
 	extern bool init(SDL_Window *&window, SDL_Surface *&windowSurface);

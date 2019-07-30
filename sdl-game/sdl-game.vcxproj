@@ -125,12 +125,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gameObj.cpp" />
-    <ClCompile Include="playerObj.cpp" />
-    <ClCompile Include="playerObj.h" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animation.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="gameObj.h" />
     <ClInclude Include="global.h" />

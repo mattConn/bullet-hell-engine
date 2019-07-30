@@ -1,10 +1,12 @@
 #include "global.h"
 #include "debug.h"
 #include <iostream>
+#include <map>
+#include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-namespace g {
+namespace global {
 
 bool quit = false;
 
@@ -15,17 +17,11 @@ Uint8 screenMode = SCREEN_WINDOWED;
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
-// left, right, top, bottom
-SDL_Rect screenEdge[SCREEN_EDGE_TOTAL] = {
-	makeRect(0, 0, 1, SCREEN_HEIGHT),
-	makeRect(SCREEN_WIDTH - 1, 0, 1, SCREEN_HEIGHT),
-	makeRect(0, 0, SCREEN_WIDTH, 1),
-	makeRect(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, 1)
-};
-
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
 SDL_Renderer *renderer = nullptr; // main renderer
+
+std::map<std::string, SDL_Texture*> allTextures;
 
 // realtime keystate
 const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
@@ -44,7 +40,7 @@ SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int 
 
 	rect.y = yPos;
 	rect.w = width;
-	rect.h = height == -1 ? width : height;
+	rect.h = height;
 
 	return rect;
 }
@@ -56,7 +52,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	// init video
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cout << "SDL could not init video: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("SDL could not init video: " << SDL_GetError());
 		return false;
 	}
 	DEBUG_MSG("Init video");
@@ -64,7 +60,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	// init PNG loading
 	if (!IMG_Init(IMG_INIT_PNG))
 	{
-		std::cout << "Could not init PNG loading: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Could not init PNG loading: " << SDL_GetError());
 		return false;
 	}
 	DEBUG_MSG("Init PNG loading");
@@ -79,17 +75,17 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 
 	if (window == nullptr)
 	{
-		std::cout << "SDL window creation error: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("SDL window creation error: " << SDL_GetError());
 		return false;
 	}
-	DEBUG_MSG("Created window");
+	DEBUG_MSG("Created window: w: " << SCREEN_WIDTH << " h: " << SCREEN_HEIGHT );
 
 	// init renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	if (renderer == nullptr)
 	{
-		std::cout << "Could not init renderer: " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Could not init renderer: " << SDL_GetError());
 		return false;
 	}
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
@@ -111,7 +107,7 @@ SDL_Surface *loadImage(const char fileName[])
 
 	if (imageSurface == nullptr)
 	{
-		std::cout << "Unable to load image " << fileName << ": " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Unable to load image " << fileName << ": " << SDL_GetError());
 		return nullptr;
 	}
 
@@ -119,7 +115,7 @@ SDL_Surface *loadImage(const char fileName[])
 	optimizedSurface = SDL_ConvertSurface(imageSurface, windowSurface->format, 0);
 	if (optimizedSurface == nullptr)
 	{
-		std::cout << "Unable to optimize surface " << fileName << ": " << std::endl;
+		DEBUG_MSG("Unable to optimize surface " << fileName << ": " << SDL_GetError());
 		return nullptr;
 	}
 
@@ -138,7 +134,7 @@ SDL_Texture *loadTexture(const char fileName[])
 
 	if (texture == nullptr)
 	{
-		std::cout << "Unable to load texture: " << fileName << " : " << SDL_GetError() << std::endl;
+		DEBUG_MSG("Unable to load texture: " << fileName << " : " << SDL_GetError());
 		return nullptr;
 	}
 
@@ -159,6 +155,10 @@ bool close()
 
 	// Destroy renderer
 	SDL_DestroyRenderer(renderer);
+
+	// Destroy textures
+	for (auto texture : allTextures)
+		SDL_DestroyTexture(texture.second);
 
 	//Quit SDL subsystems
 	IMG_Quit();

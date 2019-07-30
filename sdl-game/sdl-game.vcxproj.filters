@@ -21,13 +21,7 @@
     <ClCompile Include="global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="playerObj.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="gameObj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="playerObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gameObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
