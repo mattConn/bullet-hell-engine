@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	// ===========
 
     // construct player
-    gameObj player = gameObj("player", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 70, 118);
+    gameObj player = gameObj("player", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 50, 85);
 
 	// set player bullet properties
 	player.setBullet("player-bullet", 10, 20, 20, 100);
