@@ -35,13 +35,11 @@ int main(int argc, char *argv[])
 	// list of all objects
 	std::vector<gameObj> currentObjs = {
 		gameObj("hello_world", 10, 500, 10, 50, 50),
-		gameObj("hello_world", 10, 700, 50, 50, 50),
-		gameObj("hello_world", 10, 900, 60, 50, 50),
+		gameObj("hello_world", 10, 600, 50, 50, 50),
 	};
 
 	currentObjs[0].setAnimation(animation::downAndLeft);
 	currentObjs[1].setAnimation(animation::downAndLeft);
-	currentObjs[2].setAnimation(animation::downAndLeft);
 
 	// player bullet container
 	std::vector<gameObj> currentPlayerBullets;

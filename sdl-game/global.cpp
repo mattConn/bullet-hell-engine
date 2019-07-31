@@ -66,7 +66,7 @@ bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 	DEBUG_MSG("Init PNG loading");
 
 	// create window
-	window = SDL_CreateWindow("SDL Game",
+	window = SDL_CreateWindow("Bullet Hell",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		SCREEN_WIDTH,
