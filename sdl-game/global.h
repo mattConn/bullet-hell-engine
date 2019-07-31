@@ -5,7 +5,6 @@
 #include <map>
 
 namespace global {
-	extern bool quit;
 
 	extern const Uint8 SCREEN_WINDOWED, SCREEN_FULL;
 	extern Uint8 screenMode;

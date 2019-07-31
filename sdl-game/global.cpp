@@ -8,8 +8,6 @@
 
 namespace global {
 
-bool quit = false;
-
 const Uint8 SCREEN_WINDOWED = 0;
 const Uint8 SCREEN_FULL = SDL_WINDOW_FULLSCREEN;
 Uint8 screenMode = SCREEN_WINDOWED;

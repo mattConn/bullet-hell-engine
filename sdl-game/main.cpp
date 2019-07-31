@@ -53,9 +53,11 @@ int main(int argc, char *argv[])
 	// set player bullet properties
 	player.setBullet("player-bullet", 10, 20, 20, 100);
 
+	bool quit = false;
+
     // game loop
     //===========
-    while (!global::quit)
+    while (!quit)
     {
         // event polling loop
         while (SDL_PollEvent(&global::event))
@@ -63,7 +65,7 @@ int main(int argc, char *argv[])
             // window close event
             if (global::event.type == SDL_QUIT)
             {
-                global::quit = true;
+                quit = true;
                 break;
             }
         }
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
 
 		// quit
         if (global::keyState[SDL_SCANCODE_RETURN])
-			global::quit = true;
+			quit = true;
 
 		// toggle fullscreen F11
 		if (global::keyState[SDL_SCANCODE_F11])
