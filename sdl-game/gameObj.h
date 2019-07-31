@@ -118,7 +118,7 @@ public:
 	gameObj getBulletCopy()
 	{ 
 		gameObj newBullet = gameObj(bullet); // copy of bullet
-		newBullet.setRectX(getRectX() + getRectW()/2); // center bullet
+		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
 		newBullet.setRectY(getRectY());
 
 		return newBullet;

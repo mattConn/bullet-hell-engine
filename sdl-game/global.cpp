@@ -14,8 +14,8 @@ const Uint8 SCREEN_WINDOWED = 0;
 const Uint8 SCREEN_FULL = SDL_WINDOW_FULLSCREEN;
 Uint8 screenMode = SCREEN_WINDOWED;
 
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
