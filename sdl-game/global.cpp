@@ -21,11 +21,6 @@ SDL_Renderer *renderer = nullptr; // main renderer
 
 std::map<std::string, SDL_Texture*> allTextures;
 
-// realtime keystate
-const Uint8 *keyState = SDL_GetKeyboardState(nullptr);
-
-// event handler
-SDL_Event event;
 
 // functions
 // =========

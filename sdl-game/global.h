@@ -30,11 +30,6 @@ namespace global {
 
 	extern std::map<std::string, SDL_Texture*> allTextures;
 
-	// real-time state of key
-	extern const Uint8 *keyState;
-
-	// event handler
-	extern SDL_Event event;
 
 	// function prototypes
 	// ===================
