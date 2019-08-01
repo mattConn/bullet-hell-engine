@@ -11,14 +11,14 @@
 #include "gameObj.h"
 
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    // init sdl
-    if (!global::init(global::window, global::windowSurface))
-    {
-        DEBUG_MSG("Init failed");
-        return -1;
-    }
+	// init sdl
+	if (!global::init(global::window, global::windowSurface))
+	{
+		DEBUG_MSG("Init failed");
+		return -1;
+	}
 
 	// hide cursor
 	SDL_ShowCursor(SDL_DISABLE);
@@ -47,118 +47,128 @@ int main(int argc, char *argv[])
 	// make player 
 	// ===========
 
-    // construct player
-    gameObj player = gameObj("player", 10, global::SCREEN_WIDTH/2 - 10/2, global::SCREEN_HEIGHT/2 - 100/2, 50, 85);
+	// construct player
+	gameObj player = gameObj("player", 10, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
 
 	// set player bullet properties
 	player.setBullet("player-bullet", 10, 20, 20, 100);
 
 	bool quit = false;
+	bool paused = false;
 
-    // game loop
-    //===========
-    while (!quit)
-    {
-        // event polling loop
-        while (SDL_PollEvent(&global::event))
-        {
-            // window close event
-            if (global::event.type == SDL_QUIT)
-            {
-                quit = true;
-                break;
-            }
-        }
-		
-		// keybindings
-		// ===========
-
-		// quit
-        if (global::keyState[SDL_SCANCODE_RETURN])
-			quit = true;
-
-		// toggle fullscreen F11
-		if (global::keyState[SDL_SCANCODE_F11])
+	// game loop
+	//===========
+	while (!quit)
+	{
+		// event polling loop
+		while (SDL_PollEvent(&global::event))
 		{
-			global::screenMode = global::screenMode == global::SCREEN_FULL ? global::SCREEN_WINDOWED : global::SCREEN_FULL;
-			SDL_SetWindowFullscreen(global::window, global::screenMode);
-		}
+			// window close event
+			if (global::event.type == SDL_QUIT)
+			{
+				quit = true;
+				break;
+			}
 
-		// player keybindings
-		// ==================
-		// slow down
-		if (global::keyState[SDL_SCANCODE_LSHIFT])
-			player.setVelocityMod(.35);
-		else
-			player.setVelocityMod(1);
+			// keyboard events
+			if (global::event.type == SDL_KEYDOWN)
+			{
+				switch (global::event.key.keysym.sym)
+				{
+				case SDLK_ESCAPE: // pause
+					paused = paused ? false : true;
+					break;
+				//case SDLK_F11: // fullscreen
+				//	global::screenMode = global::screenMode == global::SCREEN_FULL ? global::SCREEN_WINDOWED : global::SCREEN_FULL;
+				//	SDL_SetWindowFullscreen(global::window, global::screenMode);
+				//	break;
+				case SDLK_RETURN: // quit
+					quit = true;
+					break;
+				}
+			} // end get keyboard events
+		} // end poll events
 
-		// fire
-		if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
+
+		// run when not paused
+		if (!paused)
 		{
-			currentPlayerBullets.push_back(player.getBulletCopy());
-			player.getBulletPtr()->resetTimeout();
-		}
 
-		// move left
-		if (global::keyState[SDL_SCANCODE_LEFT] && player.getRectL() > 0)
-			player.incRectX(-player.getVelocity() * player.getVelocityMod());
-
-		// move right
-		if (global::keyState[SDL_SCANCODE_RIGHT] && player.getRectR() < global::SCREEN_WIDTH)
-			player.incRectX(player.getVelocity() * player.getVelocityMod());
-
-		// move up
-		if (global::keyState[SDL_SCANCODE_UP] && player.getRectTop() > 0)
-			player.incRectY(-player.getVelocity() * player.getVelocityMod());
-
-		// move down
-		if (global::keyState[SDL_SCANCODE_DOWN] && player.getRectBottom() < global::SCREEN_HEIGHT)
-			player.incRectY(player.getVelocity() * player.getVelocityMod());
-
-        // render scene
-        // ============
-
-        // update window
-        SDL_RenderClear(global::renderer);
-
-        // render player
-        SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
-
-        // render all current objs
-        // =======================
-		// TEMP ANIMATION
-		for (int i = 0; i < currentObjs.size(); i++)
-		{
-			if(currentObjs[i].playAnimation())
-				SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i].getCurrentTexture()], nullptr, currentObjs[i].getRectPtr());
+			// player keybindings
+			// ==================
+			// slow down
+			if (global::keyState[SDL_SCANCODE_LSHIFT])
+				player.setVelocityMod(.35);
 			else
-				currentObjs.erase(currentObjs.begin() + i);
-		}
-		
-        // render all player bullets
-        // =========================
-		for(int i = 0; i < currentPlayerBullets.size(); i++)
-		{
-			currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
+				player.setVelocityMod(1);
 
-			// remove bullet if offscreen
-			if(currentPlayerBullets[i].isOffscreen())
-				currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
-			else
-			//render bullet
-				SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
-		}
+			// fire
+			if (global::keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
+			{
+				currentPlayerBullets.push_back(player.getBulletCopy());
+				player.getBulletPtr()->resetTimeout();
+			}
 
-        SDL_RenderPresent(global::renderer);
+			// move left
+			if (global::keyState[SDL_SCANCODE_LEFT] && player.getRectL() > 0)
+				player.incRectX(-player.getVelocity() * player.getVelocityMod());
 
-        SDL_Delay(16);
-    }
+			// move right
+			if (global::keyState[SDL_SCANCODE_RIGHT] && player.getRectR() < global::SCREEN_WIDTH)
+				player.incRectX(player.getVelocity() * player.getVelocityMod());
 
-    //==============
-    // end game loop
+			// move up
+			if (global::keyState[SDL_SCANCODE_UP] && player.getRectTop() > 0)
+				player.incRectY(-player.getVelocity() * player.getVelocityMod());
 
-    // close SDL subsystems
-    global::close();
+			// move down
+			if (global::keyState[SDL_SCANCODE_DOWN] && player.getRectBottom() < global::SCREEN_HEIGHT)
+				player.incRectY(player.getVelocity() * player.getVelocityMod());
 
-    return 0;
+			// render scene
+			// ============
+
+			// update window
+			SDL_RenderClear(global::renderer);
+
+			// render player
+			SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
+
+			// render all current objs
+			// =======================
+			for (int i = 0; i < currentObjs.size(); i++)
+			{
+				if (currentObjs[i].playAnimation())
+					SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i].getCurrentTexture()], nullptr, currentObjs[i].getRectPtr());
+				else
+					currentObjs.erase(currentObjs.begin() + i);
+			}
+
+			// render all player bullets
+			// =========================
+			for (int i = 0; i < currentPlayerBullets.size(); i++)
+			{
+				currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
+
+				// remove bullet if offscreen
+				if (currentPlayerBullets[i].isOffscreen())
+					currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
+				else
+					//render bullet
+					SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
+			}
+		} // end if not paused block
+
+		SDL_RenderPresent(global::renderer);
+
+		SDL_Delay(16);
+	}
+
+	//==============
+	// end game loop
+
+	// close SDL subsystems
+	global::close();
+
+	return 0;
 }
