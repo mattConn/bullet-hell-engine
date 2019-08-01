@@ -36,10 +36,12 @@ int main(int argc, char* argv[])
 	std::vector<gameObj> currentObjs = {
 		gameObj("hello_world", 10, 500, 10, 50, 50),
 		gameObj("hello_world", 10, 600, 50, 50, 50),
+		gameObj("hello_world", 10, 400, 20, 50, 50),
 	};
 
 	currentObjs[0].setAnimation(animation::downAndLeft);
 	currentObjs[1].setAnimation(animation::downAndLeft);
+	currentObjs[2].setAnimation(animation::downAndLeft);
 
 	// player bullet container
 	std::vector<gameObj> currentPlayerBullets;
@@ -138,9 +140,23 @@ int main(int argc, char* argv[])
 			// =======================
 			for (int i = 0; i < currentObjs.size(); i++)
 			{
-				if (currentObjs[i].playAnimation())
+				if (currentObjs[i].playAnimation()) // if playing animation
+				{
+					// render
 					SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i].getCurrentTexture()], nullptr, currentObjs[i].getRectPtr());
-				else
+
+					// check for player bullet collision
+					for (int j = 0; j < currentPlayerBullets.size(); j++)
+					{
+						if (SDL_HasIntersection(currentObjs[i].getRectPtr(), currentPlayerBullets[j].getRectPtr()))
+						{
+							currentObjs.erase(currentObjs.begin() + i);
+							currentPlayerBullets.erase(currentPlayerBullets.begin() + j);
+							break; // avoid out of range index
+						}
+					}
+				}
+				else // no animation, offscreen: remove
 					currentObjs.erase(currentObjs.begin() + i);
 			}
 
@@ -148,6 +164,7 @@ int main(int argc, char* argv[])
 			// =========================
 			for (int i = 0; i < currentPlayerBullets.size(); i++)
 			{
+				// translate up
 				currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
 
 				// remove bullet if offscreen
