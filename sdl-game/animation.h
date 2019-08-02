@@ -1,6 +1,8 @@
 #pragma once
 
+#include <SDL2/SDL.h>
 #include "gameObj.h"
+#include "bulletContainers.h"
 
 namespace animation {
 	bool endAnimation(const gameObj* g)

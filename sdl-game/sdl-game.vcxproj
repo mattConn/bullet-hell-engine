@@ -130,6 +130,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
+    <ClInclude Include="bulletContainers.h" />
+    <ClInclude Include="bulletObj.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="gameObj.h" />
     <ClInclude Include="global.h" />

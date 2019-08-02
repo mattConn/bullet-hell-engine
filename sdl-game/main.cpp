@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "global.h"
 #include "animation.h"
+#include "bulletContainers.h"
 #include "gameObj.h"
 
 
@@ -39,12 +40,17 @@ int main(int argc, char* argv[])
 		gameObj("hello_world", 10, 400, 20, 50, 50),
 	};
 
-	currentObjs[0].setAnimation(animation::downAndLeft);
-	currentObjs[1].setAnimation(animation::downAndLeft);
-	currentObjs[2].setAnimation(animation::downAndLeft);
+	//for (auto &i : currentObjs)
+	//{
+	//	i.bullet = bulletObj("player-bullet", 500, 20, 20, 100);
+	//	i.setAnimation(animation::downAndLeft);
+	//}
 
-	// player bullet container
-	std::vector<gameObj> currentPlayerBullets;
+	for (int i = 0; i < currentObjs.size(); i++)
+	{
+		currentObjs[i].bullet = bulletObj("player-bullet", 500, 20, 20, 100);
+		currentObjs[i].setAnimation(animation::downAndLeft);
+	}
 
 	// make player 
 	// ===========
@@ -53,7 +59,7 @@ int main(int argc, char* argv[])
 	gameObj player = gameObj("player", 10, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
 
 	// set player bullet properties
-	player.setBullet("player-bullet", 10, 20, 20, 100);
+	player.bullet = bulletObj("player-bullet", 10, 20, 20, 100);
 
 	// game state booleans
 	bool quit = false;
@@ -112,10 +118,10 @@ int main(int argc, char* argv[])
 				player.setVelocityMod(1);
 
 			// fire
-			if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
+			if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.bullet.getTimeout()))
 			{
-				currentPlayerBullets.push_back(player.getBulletCopy());
-				player.getBulletPtr()->resetTimeout();
+				currentPlayerBullets.push_back(player.bullet.getCopyAtPos(player));
+				player.bullet.resetTimeout();
 			}
 
 			// move left
@@ -147,6 +153,12 @@ int main(int argc, char* argv[])
 			// =======================
 			for (int i = 0; i < currentObjs.size(); i++)
 			{
+				if (SDL_TICKS_PASSED(SDL_GetTicks(), currentObjs[i].bullet.getTimeout()))
+				{
+					currentEnemyBullets.push_back(currentObjs[i].bullet.getCopyAtPos(currentObjs[i]));
+					currentObjs[i].bullet.resetTimeout();
+				}
+
 				if (currentObjs[i].playAnimation()) // if playing animation
 				{
 					// render
@@ -181,6 +193,22 @@ int main(int argc, char* argv[])
 					//render bullet
 					SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
 			}
+
+			// render all enemy bullets
+			// =========================
+			for (int i = 0; i < currentEnemyBullets.size(); i++)
+			{
+				// translate up
+				currentEnemyBullets[i].incRectY(currentEnemyBullets[i].getVelocity());
+
+				// remove bullet if offscreen
+				if (currentEnemyBullets[i].isOffscreen())
+					currentEnemyBullets.erase(currentEnemyBullets.begin() + i);
+				else
+					//render bullet
+					SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
+			}
+
 		} // end if not paused block
 
 		SDL_RenderPresent(global::renderer);

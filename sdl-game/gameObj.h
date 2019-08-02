@@ -15,12 +15,6 @@ private:
 
 	std::string currentTexture;
 
-	static gameObj bullet; // defined in gameObj.cpp
-
-	// fire rate members
-	int duration = 0; // duration of old bullet on screen
-	int timeout = 0; // time before bullet shoul be fired
-
 	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity = 1;
 	double velocityMod = 1;
@@ -43,6 +37,8 @@ public:
 		setInitialX(xPos);
 		setInitialY(yPos);
 	}
+
+	static bulletObj bullet; // defined in bulletObj.cpp
 
 	// accessors
 	std::string getCurrentTexture() const
@@ -104,34 +100,6 @@ public:
 	{
 		setInitialX(x);
 		setInitialY(y);
-	}
-
-	// get fire rate info
-	int getDuration() const { return duration; }
-	int getTimeout() const { return timeout; }
-
-	// set fire rate info
-	void setDuration(const int& d) { duration = d; }
-	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
-
-	// get bullet
-	gameObj getBulletCopy()
-	{ 
-		gameObj newBullet = gameObj(bullet); // copy of bullet
-		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
-		newBullet.setRectY(getRectY());
-
-		return newBullet;
-	}
-
-	gameObj* getBulletPtr() const { return &bullet; }
-
-	// set bullet
-	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
-	{
-		bullet = gameObj(t, vel, 0, 0, width, height);
-		bullet.duration = d;
-		bullet.timeout = d + SDL_GetTicks();
 	}
 
 	// mutators

@@ -1,3 +1,4 @@
 #include "gameObj.h"
+#include "bulletObj.h"
 
-gameObj gameObj::bullet = gameObj();
+bulletObj gameObj::bullet = bulletObj();
