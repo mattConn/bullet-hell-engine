@@ -6,8 +6,6 @@
 #include <string>
 #include "global.h"
 
-class bulletObj;
-
 // any game object
 // ===============
 class gameObj {
@@ -15,7 +13,7 @@ private:
 
 	std::string currentTexture;
 
-	static gameObj bullet; // defined in gameObj.cpp
+	gameObj *bullet = nullptr;
 
 	// fire rate members
 	int duration = 0; // duration of old bullet on screen
@@ -42,6 +40,14 @@ public:
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
 		setInitialY(yPos);
+	}
+
+	~gameObj()
+	{
+/*
+		delete bullet;
+		bullet = nullptr;
+*/
 	}
 
 	// accessors
@@ -117,21 +123,22 @@ public:
 	// get bullet
 	gameObj getBulletCopy()
 	{ 
-		gameObj newBullet = gameObj(bullet); // copy of bullet
+		assert(bullet != nullptr);
+		gameObj newBullet = gameObj(*bullet); // copy of bullet
 		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
 		newBullet.setRectY(getRectY());
 
 		return newBullet;
 	}
 
-	gameObj* getBulletPtr() const { return &bullet; }
+	gameObj* getBulletPtr() const { return bullet; }
 
 	// set bullet
 	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
 	{
-		bullet = gameObj(t, vel, 0, 0, width, height);
-		bullet.duration = d;
-		bullet.timeout = d + SDL_GetTicks();
+		bullet = new gameObj(t, vel, 0, 0, width, height);
+		bullet->duration = d;
+		bullet->timeout = d + SDL_GetTicks();
 	}
 
 	// mutators

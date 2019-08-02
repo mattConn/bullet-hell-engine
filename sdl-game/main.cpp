@@ -40,9 +40,11 @@ int main(int argc, char* argv[])
 		gameObj("hello_world", 10, 400, 20, 50, 50),
 	};
 
-	currentObjs[0].setAnimation(animation::downAndLeft);
-	currentObjs[1].setAnimation(animation::downAndLeft);
-	currentObjs[2].setAnimation(animation::downAndLeft);
+	for(auto &i : currentObjs)
+	{
+		i.setAnimation(animation::downAndLeft);
+		i.setBullet("player-bullet", 10, 20, 20, 100);
+	}
 
 
 	// make player 
