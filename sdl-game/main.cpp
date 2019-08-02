@@ -28,16 +28,15 @@ int main(int argc, char* argv[])
 	// ==========
 
 	// load textures
-	global::allTextures["hello_world"] = global::loadTexture("hello_world.bmp");
-	global::allTextures["arrows_up"] = global::loadTexture("arrows_up.bmp");
+	global::allTextures["enemy"] = global::loadTexture("enemy.png");
 	global::allTextures["player"] = global::loadTexture("player.png");
 	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
 
 	// list of all objects
 	std::vector<gameObj> currentObjs = {
-		gameObj("hello_world", 10, 500, 10, 50, 50),
-		gameObj("hello_world", 10, 600, 50, 50, 50),
-		gameObj("hello_world", 10, 400, 20, 50, 50),
+		gameObj("enemy", 10, 500, 10, 50, 50),
+		gameObj("enemy", 10, 600, 50, 50, 50),
+		gameObj("enemy", 10, 400, 20, 50, 50),
 	};
 
 	for(auto &i : currentObjs)
