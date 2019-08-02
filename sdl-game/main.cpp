@@ -7,6 +7,7 @@
 
 #include "debug.h"
 #include "global.h"
+#include "bulletContainers.h"
 #include "animation.h"
 #include "gameObj.h"
 
@@ -43,8 +44,6 @@ int main(int argc, char* argv[])
 	currentObjs[1].setAnimation(animation::downAndLeft);
 	currentObjs[2].setAnimation(animation::downAndLeft);
 
-	// player bullet container
-	std::vector<gameObj> currentPlayerBullets;
 
 	// make player 
 	// ===========
