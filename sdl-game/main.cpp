@@ -180,6 +180,17 @@ int main(int argc, char* argv[])
 					//render bullet
 					SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
 			}
+
+			// render all enemy bullets
+			// ========================
+			for (int i = 0; i < currentEnemyBullets.size(); i++)
+			{
+				// translate up
+				currentEnemyBullets[i].incRectY(currentEnemyBullets[i].getVelocity());
+
+				SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
+			}
+
 		} // end if not paused block
 
 		SDL_RenderPresent(global::renderer);
