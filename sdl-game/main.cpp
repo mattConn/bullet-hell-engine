@@ -11,6 +11,10 @@
 #include "animation.h"
 #include "gameObj.h"
 
+#include "getPlayerInput.h"
+#include "renderEnemies.h"
+#include "renderBullets.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -33,13 +37,13 @@ int main(int argc, char* argv[])
 	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
 
 	// list of all objects
-	std::vector<gameObj*> currentObjs = {
+	std::vector<gameObj*> currentEnemies = {
 		new gameObj("enemy", 10, 500, 10, 50, 50),
 		new gameObj("enemy", 10, 600, 50, 50, 50),
 		new gameObj("enemy", 10, 400, 20, 50, 50),
 	};
 
-	for(auto i : currentObjs)
+	for(auto i : currentEnemies)
 	{
 		i->setAnimation(animation::downAndLeft);
 		i->setBullet("player-bullet", 10, 20, 20, 100);
@@ -53,7 +57,7 @@ int main(int argc, char* argv[])
 	gameObj player = gameObj("player", 10, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
 
 	// set player bullet properties
-	player.setBullet("player-bullet", 10, 20, 20, 100);
+	player.setBullet("player-bullet", -10, 20, 20, 100);
 
 	// game state booleans
 	bool quit = false;
@@ -102,37 +106,8 @@ int main(int argc, char* argv[])
 		// run when not paused
 		if (!paused)
 		{
-
-			// player keybindings
-			// ==================
-			// slow down
-			if (keyState[SDL_SCANCODE_LSHIFT])
-				player.setVelocityMod(.35);
-			else
-				player.setVelocityMod(1);
-
-			// fire
-			if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
-			{
-				currentPlayerBullets.push_back(player.getBulletCopy());
-				player.getBulletPtr()->resetTimeout();
-			}
-
-			// move left
-			if (keyState[SDL_SCANCODE_LEFT] && player.getRectL() > 0)
-				player.incRectX(-player.getVelocity() * player.getVelocityMod());
-
-			// move right
-			if (keyState[SDL_SCANCODE_RIGHT] && player.getRectR() < global::SCREEN_WIDTH)
-				player.incRectX(player.getVelocity() * player.getVelocityMod());
-
-			// move up
-			if (keyState[SDL_SCANCODE_UP] && player.getRectTop() > 0)
-				player.incRectY(-player.getVelocity() * player.getVelocityMod());
-
-			// move down
-			if (keyState[SDL_SCANCODE_DOWN] && player.getRectBottom() < global::SCREEN_HEIGHT)
-				player.incRectY(player.getVelocity() * player.getVelocityMod());
+			// get input
+			getPlayerInput(player, keyState);
 
 			// render scene
 			// ============
@@ -143,60 +118,13 @@ int main(int argc, char* argv[])
 			// render player
 			SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
 
-			// render all current objs
-			// =======================
-			for (int i = 0; i < currentObjs.size(); i++)
-			{
-				if (currentObjs[i]->playAnimation()) // if playing animation
-				{
-					// render
-					SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i]->getCurrentTexture()], nullptr, currentObjs[i]->getRectPtr());
+			// render enemies
+			renderEnemies(currentEnemies, currentPlayerBullets);
 
-					// check for player bullet collision
-					for (int j = 0; j < currentPlayerBullets.size(); j++)
-					{
-						if (SDL_HasIntersection(currentObjs[i]->getRectPtr(), currentPlayerBullets[j].getRectPtr()))
-						{
-							currentObjs.erase(currentObjs.begin() + i);
-							currentPlayerBullets.erase(currentPlayerBullets.begin() + j);
-							break; // avoid out of range index
-						}
-					}
-				}
-				else // no animation, offscreen: remove
-				{
-					delete currentObjs[i];
-					currentObjs.erase(currentObjs.begin() + i);
-				}
-			}
-
-			// render all player bullets
+			// render bullets
 			// =========================
-			for (int i = 0; i < currentPlayerBullets.size(); i++)
-			{
-				// translate up
-				currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
-
-				// remove bullet if offscreen
-				if (currentPlayerBullets[i].isOffscreen())
-					currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
-				else
-					//render bullet
-					SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
-			}
-
-			// render all enemy bullets
-			// ========================
-			for (int i = 0; i < currentEnemyBullets.size(); i++)
-			{
-				// translate up
-				currentEnemyBullets[i].incRectY(currentEnemyBullets[i].getVelocity());
-
-				if (currentEnemyBullets[i].isOffscreen())
-					currentEnemyBullets.erase(currentEnemyBullets.begin() + i);
-				else
-					SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
-			}
+			renderBullets(currentPlayerBullets);
+			renderBullets(currentEnemyBullets);
 
 		} // end if not paused block
 
