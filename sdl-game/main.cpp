@@ -189,7 +189,10 @@ int main(int argc, char* argv[])
 				// translate up
 				currentEnemyBullets[i].incRectY(currentEnemyBullets[i].getVelocity());
 
-				SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
+				if (currentEnemyBullets[i].isOffscreen())
+					currentEnemyBullets.erase(currentEnemyBullets.begin() + i);
+				else
+					SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
 			}
 
 		} // end if not paused block
