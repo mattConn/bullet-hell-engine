@@ -44,5 +44,8 @@
     <ClInclude Include="renderBullets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bulletContainers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
