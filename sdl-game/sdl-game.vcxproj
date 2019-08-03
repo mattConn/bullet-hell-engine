@@ -131,7 +131,10 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="gameObj.h" />
+    <ClInclude Include="getPlayerInput.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="renderBullets.h" />
+    <ClInclude Include="renderEnemies.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
