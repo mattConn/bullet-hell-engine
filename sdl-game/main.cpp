@@ -33,16 +33,16 @@ int main(int argc, char* argv[])
 	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
 
 	// list of all objects
-	std::vector<gameObj> currentObjs = {
-		gameObj("enemy", 10, 500, 10, 50, 50),
-		gameObj("enemy", 10, 600, 50, 50, 50),
-		gameObj("enemy", 10, 400, 20, 50, 50),
+	std::vector<gameObj*> currentObjs = {
+		new gameObj("enemy", 10, 500, 10, 50, 50),
+		new gameObj("enemy", 10, 600, 50, 50, 50),
+		new gameObj("enemy", 10, 400, 20, 50, 50),
 	};
 
-	for(auto &i : currentObjs)
+	for(auto i : currentObjs)
 	{
-		i.setAnimation(animation::downAndLeft);
-		i.setBullet("player-bullet", 10, 20, 20, 100);
+		i->setAnimation(animation::downAndLeft);
+		i->setBullet("player-bullet", 10, 20, 20, 100);
 	}
 
 
@@ -147,15 +147,15 @@ int main(int argc, char* argv[])
 			// =======================
 			for (int i = 0; i < currentObjs.size(); i++)
 			{
-				if (currentObjs[i].playAnimation()) // if playing animation
+				if (currentObjs[i]->playAnimation()) // if playing animation
 				{
 					// render
-					SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i].getCurrentTexture()], nullptr, currentObjs[i].getRectPtr());
+					SDL_RenderCopy(global::renderer, global::allTextures[currentObjs[i]->getCurrentTexture()], nullptr, currentObjs[i]->getRectPtr());
 
 					// check for player bullet collision
 					for (int j = 0; j < currentPlayerBullets.size(); j++)
 					{
-						if (SDL_HasIntersection(currentObjs[i].getRectPtr(), currentPlayerBullets[j].getRectPtr()))
+						if (SDL_HasIntersection(currentObjs[i]->getRectPtr(), currentPlayerBullets[j].getRectPtr()))
 						{
 							currentObjs.erase(currentObjs.begin() + i);
 							currentPlayerBullets.erase(currentPlayerBullets.begin() + j);
@@ -164,7 +164,10 @@ int main(int argc, char* argv[])
 					}
 				}
 				else // no animation, offscreen: remove
+				{
+					delete currentObjs[i];
 					currentObjs.erase(currentObjs.begin() + i);
+				}
 			}
 
 			// render all player bullets

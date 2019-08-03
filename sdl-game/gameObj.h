@@ -44,10 +44,8 @@ public:
 
 	~gameObj()
 	{
-/*
 		delete bullet;
 		bullet = nullptr;
-*/
 	}
 
 	// accessors
