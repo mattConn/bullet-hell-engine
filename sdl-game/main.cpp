@@ -10,7 +10,9 @@
 #include "bulletContainers.h"
 #include "animation.h"
 #include "gameObj.h"
+
 #include "getPlayerInput.h"
+#include "renderEnemies.h"
 
 
 int main(int argc, char* argv[])
@@ -115,32 +117,8 @@ int main(int argc, char* argv[])
 			// render player
 			SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
 
-			// render all current objs
-			// =======================
-			for (int i = 0; i < currentEnemies.size(); i++)
-			{
-				if (currentEnemies[i]->playAnimation()) // if playing animation
-				{
-					// render
-					SDL_RenderCopy(global::renderer, global::allTextures[currentEnemies[i]->getCurrentTexture()], nullptr, currentEnemies[i]->getRectPtr());
-
-					// check for player bullet collision
-					for (int j = 0; j < currentPlayerBullets.size(); j++)
-					{
-						if (SDL_HasIntersection(currentEnemies[i]->getRectPtr(), currentPlayerBullets[j].getRectPtr()))
-						{
-							currentEnemies.erase(currentEnemies.begin() + i);
-							currentPlayerBullets.erase(currentPlayerBullets.begin() + j);
-							break; // avoid out of range index
-						}
-					}
-				}
-				else // no animation, offscreen: remove
-				{
-					delete currentEnemies[i];
-					currentEnemies.erase(currentEnemies.begin() + i);
-				}
-			}
+			// render enemies
+			renderEnemies(currentEnemies, currentPlayerBullets);
 
 			// render all player bullets
 			// =========================
