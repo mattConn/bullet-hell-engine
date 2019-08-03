@@ -13,6 +13,7 @@
 
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
+#include "renderBullets.h"
 
 
 int main(int argc, char* argv[])
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 	gameObj player = gameObj("player", 10, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
 
 	// set player bullet properties
-	player.setBullet("player-bullet", 10, 20, 20, 100);
+	player.setBullet("player-bullet", -10, 20, 20, 100);
 
 	// game state booleans
 	bool quit = false;
@@ -120,33 +121,10 @@ int main(int argc, char* argv[])
 			// render enemies
 			renderEnemies(currentEnemies, currentPlayerBullets);
 
-			// render all player bullets
+			// render bullets
 			// =========================
-			for (int i = 0; i < currentPlayerBullets.size(); i++)
-			{
-				// translate up
-				currentPlayerBullets[i].decRectY(currentPlayerBullets[i].getVelocity());
-
-				// remove bullet if offscreen
-				if (currentPlayerBullets[i].isOffscreen())
-					currentPlayerBullets.erase(currentPlayerBullets.begin() + i);
-				else
-					//render bullet
-					SDL_RenderCopy(global::renderer, global::allTextures[currentPlayerBullets[i].getCurrentTexture()], nullptr, currentPlayerBullets[i].getRectPtr());
-			}
-
-			// render all enemy bullets
-			// ========================
-			for (int i = 0; i < currentEnemyBullets.size(); i++)
-			{
-				// translate up
-				currentEnemyBullets[i].incRectY(currentEnemyBullets[i].getVelocity());
-
-				if (currentEnemyBullets[i].isOffscreen())
-					currentEnemyBullets.erase(currentEnemyBullets.begin() + i);
-				else
-					SDL_RenderCopy(global::renderer, global::allTextures[currentEnemyBullets[i].getCurrentTexture()], nullptr, currentEnemyBullets[i].getRectPtr());
-			}
+			renderBullets(currentPlayerBullets);
+			renderBullets(currentEnemyBullets);
 
 		} // end if not paused block
 
