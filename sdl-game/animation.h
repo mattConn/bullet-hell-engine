@@ -11,16 +11,25 @@ namespace animation {
 		else
 			return true;
 	}
+	
+	bool wait(gameObj* g)
+	{
+		return true;
+	}
 
-	bool downAndLeft(gameObj *g)
+	bool fire(gameObj* g)
 	{
 		if (SDL_TICKS_PASSED(SDL_GetTicks(), g->getBulletPtr()->getTimeout()))
 		{
 			currentEnemyBullets.push_back(g->getBulletCopy());
 			g->getBulletPtr()->resetTimeout();
 		}
+		return true;
+	}
 
-		
+	bool downAndLeft(gameObj *g)
+	{
+
 		if (abs(g->getInitialY() - g->getRectY()) < 100)
 			g->incRectY(5);
 		else

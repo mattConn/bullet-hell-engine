@@ -83,6 +83,7 @@ public:
 	int getRectBottom() const { return rect.y + rect.h; }
 	int getRectL() const { return rect.x; }
 	int getRectR() const { return rect.x + rect.w; }
+	int getRectMiddle() const { return getRectR() - getRectW() / 2; }
 
 	int getRectY() const { return rect.y; }
 	int getRectX() const { return rect.x; }
