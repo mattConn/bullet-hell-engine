@@ -38,6 +38,14 @@ SDL_Rect makeRect(const int &xPos, const int &yPos, const int &width, const int 
 	return rect;
 }
 
+bool render(const std::string texture, const SDL_Rect *rect)
+{
+	if (SDL_RenderCopy(global::renderer, global::allTextures[texture], nullptr, rect) == 0)
+		return true;
+	else
+		return false;
+}
+
 bool init(SDL_Window *&window, SDL_Surface *&windowSurface)
 {
 	DEBUG_MSG("** Begin init **");

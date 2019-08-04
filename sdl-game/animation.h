@@ -1,5 +1,6 @@
 #pragma once
 
+#include "global.h"
 #include "gameObj.h"
 #include "bulletContainers.h"
 
@@ -41,7 +42,7 @@ namespace animation {
 	bool blink(gameObj* g)
 	{
 		if (SDL_GetTicks() & 1) // render on odd tick (blink)
-			SDL_RenderCopy(global::renderer, global::allTextures[g->getCurrentTexture()], nullptr, g->getRectPtr());
+			global::render(g->getCurrentTexture(), g->getRectPtr());
 
 		return true;
 	}

@@ -16,6 +16,6 @@ void renderBullets(std::vector<gameObj> &bullets)
 			bullets.erase(bullets.begin() + i);
 		else
 			//render bullet
-			SDL_RenderCopy(global::renderer, global::allTextures[bullets[i].getCurrentTexture()], nullptr, bullets[i].getRectPtr());
+			global::render(bullets[i].getCurrentTexture(), bullets[i].getRectPtr());
 	}
 }

@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
 				if (playerIsInvulnerable) // check invulnerability after respawn
 					animation::blink(&player);
 				else
-					SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
+					global::render(player.getCurrentTexture(), player.getRectPtr());
 
 				// check for enemy bullet collision (hitbox is player middle)
 				for (int i = 0; i < currentEnemyBullets.size(); i++)
