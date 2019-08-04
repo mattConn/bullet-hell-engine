@@ -141,10 +141,7 @@ int main(int argc, char* argv[])
 
 				// render player
 				if (playerIsInvulnerable) // check invulnerability after respawn
-				{
-					if(SDL_GetTicks() & 1) // render on odd tick (blink)
-						SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
-				}
+					animation::blink(&player);
 				else
 					SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
 

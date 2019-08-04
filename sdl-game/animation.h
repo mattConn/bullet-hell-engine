@@ -37,4 +37,12 @@ namespace animation {
 
 		return endAnimation(g);
 	}
+
+	bool blink(gameObj* g)
+	{
+		if (SDL_GetTicks() & 1) // render on odd tick (blink)
+			SDL_RenderCopy(global::renderer, global::allTextures[g->getCurrentTexture()], nullptr, g->getRectPtr());
+
+		return true;
+	}
 }
