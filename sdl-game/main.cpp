@@ -14,6 +14,7 @@
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
 #include "renderBullets.h"
+#include "hasMiddleCollision.h"
 
 
 int main(int argc, char* argv[])
@@ -146,22 +147,10 @@ int main(int argc, char* argv[])
 					global::render(player.getCurrentTexture(), player.getRectPtr());
 
 				// check for enemy bullet collision (hitbox is player middle)
-				for (int i = 0; i < currentEnemyBullets.size(); i++)
+				if(!playerIsInvulnerable && hasMiddleCollision(player, currentEnemyBullets))
 				{
-					gameObj intersection; // store intersection
-
-					// check collision
-					if (!playerIsInvulnerable && SDL_IntersectRect(currentEnemyBullets[i].getRectPtr(), player.getRectPtr(), intersection.getRectPtr()))
-					{
-						// check middle collision
-						if (intersection.getRectX() <= player.getRectMiddle() && intersection.getRectR() >= player.getRectMiddle())
-						{
-							playerIsDead = true;
-							deaths++;
-							break; // avoid out of range index
-						}
-						// else, count graze
-					}
+					playerIsDead = true;
+					deaths++;
 				}
 			}
 			else
@@ -200,6 +189,7 @@ int main(int argc, char* argv[])
 
 	// close SDL subsystems
 	global::close();
+	std::cout << "** Gameplay stats **" << std::endl;
 	std::cout << "Deaths: " << deaths << std::endl;
 	std::cout << "Graze: " << graze << std::endl;
 

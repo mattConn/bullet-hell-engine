@@ -47,5 +47,8 @@
     <ClInclude Include="bulletContainers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hasMiddleCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
