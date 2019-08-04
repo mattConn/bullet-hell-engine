@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 	for(auto i : currentEnemies)
 	{
-		i->setAnimation(animation::downAndLeft);
+		i->setAnimation(animation::wait);
 		i->setBullet("player-bullet", 10, 20, 20, 100);
 	}
 
@@ -69,6 +69,18 @@ int main(int argc, char* argv[])
 	// realtime keystate
 	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
 
+	// player life state bools
+	bool playerIsDead = false;
+	bool playerIsInvulnerable = false;
+	
+	// player life timeouts
+	int playerDeathTimeout;
+	int playerInvulnerableTimeout;
+
+	// scorekeeping
+	int deaths = 0;
+	int graze = 0;
+
 	// game loop
 	//===========
 	while (!quit)
@@ -91,10 +103,7 @@ int main(int argc, char* argv[])
 				case SDLK_ESCAPE: // pause
 					paused = paused ? false : true;
 					break;
-				//case SDLK_F11: // fullscreen
-				//	global::screenMode = global::screenMode == global::SCREEN_FULL ? global::SCREEN_WINDOWED : global::SCREEN_FULL;
-				//	SDL_SetWindowFullscreen(global::window, global::screenMode);
-				//	break;
+
 				case SDLK_RETURN: // quit
 					quit = true;
 					break;
@@ -106,25 +115,78 @@ int main(int argc, char* argv[])
 		// run when not paused
 		if (!paused)
 		{
-			// get input
-			getPlayerInput(player, keyState);
-
 			// render scene
 			// ============
 
 			// update window
 			SDL_RenderClear(global::renderer);
 
-			// render player
-			SDL_RenderCopy(global::renderer, global::allTextures[player.getCurrentTexture()], nullptr, player.getRectPtr());
+			// player alive routine (render player, enemy bullets)
+			// ===================================================
+			if (!playerIsDead)
+			{
+				playerDeathTimeout = SDL_GetTicks() + 500; // keep updating death timeout
+
+				// get input
+				getPlayerInput(player, keyState);
+
+				// enemies fire bullets
+				for (auto i : currentEnemies)
+					animation::fire(i);
+
+				// render bullets
+				// =========================
+				renderBullets(currentPlayerBullets);
+				renderBullets(currentEnemyBullets);
+
+				// render player
+				if (playerIsInvulnerable) // check invulnerability after respawn
+					animation::blink(&player);
+				else
+					global::render(player.getCurrentTexture(), player.getRectPtr());
+
+				// check for enemy bullet collision (hitbox is player middle)
+				for (int i = 0; i < currentEnemyBullets.size(); i++)
+				{
+					gameObj intersection; // store intersection
+
+					// check collision
+					if (!playerIsInvulnerable && SDL_IntersectRect(currentEnemyBullets[i].getRectPtr(), player.getRectPtr(), intersection.getRectPtr()))
+					{
+						// check middle collision
+						if (intersection.getRectX() <= player.getRectMiddle() && intersection.getRectR() >= player.getRectMiddle())
+						{
+							playerIsDead = true;
+							deaths++;
+							break; // avoid out of range index
+						}
+						// else, count graze
+					}
+				}
+			}
+			else
+			{
+				// dead, delay between respawn
+				// ===========================
+
+				playerInvulnerableTimeout = SDL_GetTicks() + 1000; // update invulnerability timeout
+
+				currentEnemyBullets.clear(); // remove bullets
+
+				// player comes back
+				if (SDL_TICKS_PASSED(SDL_GetTicks(), playerDeathTimeout))
+				{
+					playerIsDead = false;
+					playerIsInvulnerable = true;
+				}
+			}
+
+			// spawn protection
+			if (playerIsInvulnerable && SDL_TICKS_PASSED(SDL_GetTicks(), playerInvulnerableTimeout))
+				playerIsInvulnerable = false;
 
 			// render enemies
 			renderEnemies(currentEnemies, currentPlayerBullets);
-
-			// render bullets
-			// =========================
-			renderBullets(currentPlayerBullets);
-			renderBullets(currentEnemyBullets);
 
 		} // end if not paused block
 
@@ -138,6 +200,8 @@ int main(int argc, char* argv[])
 
 	// close SDL subsystems
 	global::close();
+	std::cout << "Deaths: " << deaths << std::endl;
+	std::cout << "Graze: " << graze << std::endl;
 
 	return 0;
 }

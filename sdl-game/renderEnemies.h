@@ -13,7 +13,7 @@ void renderEnemies(std::vector<gameObj *> &enemies, std::vector<gameObj> &bullet
 		if (enemies[i]->playAnimation()) // if playing animation
 		{
 			// render
-			SDL_RenderCopy(global::renderer, global::allTextures[enemies[i]->getCurrentTexture()], nullptr, enemies[i]->getRectPtr());
+			global::render(enemies[i]->getCurrentTexture(), enemies[i]->getRectPtr());
 
 			// check for player bullet collision
 			for (int j = 0; j < bullets.size(); j++)
