@@ -69,11 +69,18 @@ int main(int argc, char* argv[])
 	// realtime keystate
 	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
 
+	// player life state bools
 	bool playerIsDead = false;
 	bool playerIsInvulnerable = false;
-	int playerDeathTimeout = SDL_GetTicks() + 1000;
-	int playerInvulnerableTimeout = SDL_GetTicks() + 2000;
-	int DEATHS = 0;
+	
+	// player life timeouts
+	int playerDeathTimeout;
+	int playerInvulnerableTimeout;
+
+	// scorekeeping
+	int deaths = 0;
+	int graze = 0;
+
 	// game loop
 	//===========
 	while (!quit)
@@ -96,10 +103,7 @@ int main(int argc, char* argv[])
 				case SDLK_ESCAPE: // pause
 					paused = paused ? false : true;
 					break;
-				//case SDLK_F11: // fullscreen
-				//	global::screenMode = global::screenMode == global::SCREEN_FULL ? global::SCREEN_WINDOWED : global::SCREEN_FULL;
-				//	SDL_SetWindowFullscreen(global::window, global::screenMode);
-				//	break;
+
 				case SDLK_RETURN: // quit
 					quit = true;
 					break;
@@ -111,9 +115,6 @@ int main(int argc, char* argv[])
 		// run when not paused
 		if (!paused)
 		{
-			// get input
-			getPlayerInput(player, keyState);
-
 			// render scene
 			// ============
 
@@ -124,6 +125,11 @@ int main(int argc, char* argv[])
 			// ===================================================
 			if (!playerIsDead)
 			{
+				playerDeathTimeout = SDL_GetTicks() + 500; // keep updating death timeout
+
+				// get input
+				getPlayerInput(player, keyState);
+
 				// enemies fire bullets
 				for (auto i : currentEnemies)
 					animation::fire(i);
@@ -133,6 +139,7 @@ int main(int argc, char* argv[])
 				renderBullets(currentPlayerBullets);
 				renderBullets(currentEnemyBullets);
 
+				// render player
 				if (playerIsInvulnerable) // check invulnerability after respawn
 				{
 					if(SDL_GetTicks() & 1) // render on odd tick (blink)
@@ -152,16 +159,21 @@ int main(int argc, char* argv[])
 						// check middle collision
 						if (intersection.getRectX() <= player.getRectMiddle() && intersection.getRectR() >= player.getRectMiddle())
 						{
-							currentEnemyBullets.erase(currentEnemyBullets.begin() + i);
 							playerIsDead = true;
+							deaths++;
 							break; // avoid out of range index
 						}
+						// else, count graze
 					}
 				}
 			}
 			else
 			{
 				// dead, delay between respawn
+				// ===========================
+
+				playerInvulnerableTimeout = SDL_GetTicks() + 1000; // update invulnerability timeout
+
 				currentEnemyBullets.clear(); // remove bullets
 
 				// player comes back
@@ -169,20 +181,12 @@ int main(int argc, char* argv[])
 				{
 					playerIsDead = false;
 					playerIsInvulnerable = true;
-					playerDeathTimeout = SDL_GetTicks() + 1000;
 				}
 			}
 
 			// spawn protection
-			if (playerIsInvulnerable)
-			{
-				// player becomes vulnerable
-				if (SDL_TICKS_PASSED(SDL_GetTicks(), playerInvulnerableTimeout))
-				{
-					playerIsInvulnerable = false;
-					playerInvulnerableTimeout = SDL_GetTicks() + 2000;
-				}
-			}
+			if (playerIsInvulnerable && SDL_TICKS_PASSED(SDL_GetTicks(), playerInvulnerableTimeout))
+				playerIsInvulnerable = false;
 
 			// render enemies
 			renderEnemies(currentEnemies, currentPlayerBullets);
@@ -199,6 +203,8 @@ int main(int argc, char* argv[])
 
 	// close SDL subsystems
 	global::close();
+	std::cout << "Deaths: " << deaths << std::endl;
+	std::cout << "Graze: " << graze << std::endl;
 
 	return 0;
 }
