@@ -121,97 +121,99 @@ int main(int argc, char* argv[])
 		} // end poll events
 
 
-		// update rendered textures when not paused
-		if (!paused)
+		// skip scene updating when paused
+		if (paused) goto renderPresent;
+
+		// update scene
+		// ============
+
+		// clear window
+		SDL_RenderClear(global::renderer);
+
+		// background scrolling
+		if (bg.getRectY() > global::SCREEN_HEIGHT - 1) // reset bg positions
 		{
+			bg.setRectY(bg.getInitialY());
+			bgRect.y = -bg.getRectH();
+		}
+		else // scroll bg's
+		{
+			bg.incRectY(bg.getVelocity());
+			bgRect.y += bg.getVelocity();
+		}
 
-			// render scene
-			// ============
+		// render bgs
+		global::render(bg.getCurrentTexture(), bg.getRectPtr());
+		global::render(bg.getCurrentTexture(), &bgRect);
 
-			// update window
-			SDL_RenderClear(global::renderer);
+		// player alive routine (render player, enemy bullets)
+		// ===================================================
+		if (!playerIsDead)
+		{
+			playerDeathTimeout = SDL_GetTicks() + 500; // keep updating death timeout
 
-			// background scrolling
-			if (bg.getRectY() > global::SCREEN_HEIGHT - 1) // reset bg positions
-			{
-				bg.setRectY(bg.getInitialY());
-				bgRect.y = -bg.getRectH();
-			}
-			else // scroll bg's
-			{
-				bg.incRectY(bg.getVelocity());
-				bgRect.y += bg.getVelocity();
-			}
+			// get input
+			getPlayerInput(player, keyState);
 
-			// render bgs
-			global::render(bg.getCurrentTexture(), bg.getRectPtr());
-			global::render(bg.getCurrentTexture(), &bgRect);
+			// update hitbox position to middle of player
+			hitbox.setRectX(player.getRectX() + player.getRectW() / 2 - 2);
+			hitbox.setRectY(player.getRectY() + player.getRectH() / 2 - 2);
 
-			// player alive routine (render player, enemy bullets)
-			// ===================================================
-			if (!playerIsDead)
-			{
-				playerDeathTimeout = SDL_GetTicks() + 500; // keep updating death timeout
+			// enemies fire bullets
+			for (auto i : currentEnemies)
+				animation::fire(i);
 
-				// get input
-				getPlayerInput(player, keyState);
-				hitbox.setRectX(player.getRectX() + player.getRectW()/2 - 2);
-				hitbox.setRectY(player.getRectY() + player.getRectH()/2 - 2);
+			// render bullets
+			// =========================
+			renderBullets(currentPlayerBullets);
+			renderBullets(currentEnemyBullets);
 
-				// enemies fire bullets
-				for (auto i : currentEnemies)
-					animation::fire(i);
-
-				// render bullets
-				// =========================
-				renderBullets(currentPlayerBullets);
-				renderBullets(currentEnemyBullets);
-
-				// render player
-				if (playerIsInvulnerable) // check invulnerability after respawn
-					animation::blink(&player);
-				else
-				{
-					global::render(player.getCurrentTexture(), player.getRectPtr());
-					global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
-				}
-
-				// check for enemy bullet collision (hitbox is player middle)
-				for(auto bullet : currentEnemyBullets)
-				{
-					if(!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
-					{
-						playerIsDead = true;
-						deaths++;
-						break;
-					}
-				}
-			}
+			// render player
+			if (playerIsInvulnerable) // check invulnerability after respawn
+				animation::blink(&player);
 			else
 			{
-				// dead, delay between respawn
-				// ===========================
-
-				playerInvulnerableTimeout = SDL_GetTicks() + 1000; // update invulnerability timeout
-
-				currentEnemyBullets.clear(); // remove bullets
-
-				// player comes back
-				if (SDL_TICKS_PASSED(SDL_GetTicks(), playerDeathTimeout))
-				{
-					playerIsDead = false;
-					playerIsInvulnerable = true;
-				}
+				global::render(player.getCurrentTexture(), player.getRectPtr());
+				global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
 			}
 
-			// spawn protection
-			if (playerIsInvulnerable && SDL_TICKS_PASSED(SDL_GetTicks(), playerInvulnerableTimeout))
-				playerIsInvulnerable = false;
+			// check for enemy bullet collision (hitbox is player middle)
+			for (auto bullet : currentEnemyBullets)
+			{
+				if (!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
+				{
+					playerIsDead = true;
+					deaths++;
+					break;
+				}
+			}
+		}
+		else
+		{
+			// dead, delay between respawn
+			// ===========================
 
-			// render enemies
-			renderEnemies(currentEnemies, currentPlayerBullets);
+			playerInvulnerableTimeout = SDL_GetTicks() + 1000; // update invulnerability timeout
 
-		} // end if not paused block
+			currentEnemyBullets.clear(); // remove bullets
+
+			// player comes back
+			if (SDL_TICKS_PASSED(SDL_GetTicks(), playerDeathTimeout))
+			{
+				playerIsDead = false;
+				playerIsInvulnerable = true;
+			}
+		}
+
+		// spawn protection
+		if (playerIsInvulnerable && SDL_TICKS_PASSED(SDL_GetTicks(), playerInvulnerableTimeout))
+			playerIsInvulnerable = false;
+
+		// render enemies
+		renderEnemies(currentEnemies, currentPlayerBullets);
+
+		// render current textures
+		renderPresent:
 
 		SDL_RenderPresent(global::renderer);
 
