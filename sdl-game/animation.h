@@ -28,6 +28,34 @@ namespace animation {
 		return true;
 	}
 
+	bool up(gameObj *g)
+	{
+		g->decRectY(g->getVelocity());
+	
+		return true;
+	}
+
+	bool down(gameObj *g)
+	{
+		g->incRectY(g->getVelocity());
+	
+		return true;
+	}
+
+	bool left(gameObj *g)
+	{
+		g->decRectX(g->getVelocity());
+	
+		return true;
+	}
+
+	bool right(gameObj *g)
+	{
+		g->incRectX(g->getVelocity());
+	
+		return true;
+	}
+
 	bool downAndLeft(gameObj *g)
 	{
 

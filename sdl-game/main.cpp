@@ -14,7 +14,6 @@
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
 #include "renderBullets.h"
-#include "hasMiddleCollision.h"
 
 
 int main(int argc, char* argv[])
@@ -39,23 +38,25 @@ int main(int argc, char* argv[])
 
 	// list of all objects
 	std::vector<gameObj*> currentEnemies = {
-		new gameObj("enemy", 10, 500, 10, 50, 50),
-		new gameObj("enemy", 10, 600, 50, 50, 50),
-		new gameObj("enemy", 10, 400, 20, 50, 50),
+		new gameObj("enemy", 3, 500, 10, 50, 50),
+		new gameObj("enemy", 3, 600, 50, 50, 50),
+		new gameObj("enemy", 3, 400, 20, 50, 50),
 	};
 
 	for(auto i : currentEnemies)
-	{
-		i->setAnimation(animation::wait);
-		i->setBullet("player-bullet", 10, 20, 20, 100);
-	}
+		i->setBullet("player-bullet", 5, 20, 20, 200);
+
+	currentEnemies[0]->setAnimation(animation::down);
+	currentEnemies[1]->setAnimation(animation::left);
+	currentEnemies[2]->setAnimation(animation::right);
 
 
 	// make player 
 	// ===========
 
 	// construct player
-	gameObj player = gameObj("player", 10, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	gameObj hitbox = gameObj("enemy", player.getVelocity(), player.getRectX() + player.getRectW()/2 - 2, player.getRectY() + player.getRectH()/2 - 2, 5, 5);
 
 	// set player bullet properties
 	player.setBullet("player-bullet", -10, 20, 20, 100);
@@ -130,6 +131,8 @@ int main(int argc, char* argv[])
 
 				// get input
 				getPlayerInput(player, keyState);
+				hitbox.setRectX(player.getRectX() + player.getRectW()/2 - 2);
+				hitbox.setRectY(player.getRectY() + player.getRectH()/2 - 2);
 
 				// enemies fire bullets
 				for (auto i : currentEnemies)
@@ -144,13 +147,20 @@ int main(int argc, char* argv[])
 				if (playerIsInvulnerable) // check invulnerability after respawn
 					animation::blink(&player);
 				else
+				{
 					global::render(player.getCurrentTexture(), player.getRectPtr());
+					global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
+				}
 
 				// check for enemy bullet collision (hitbox is player middle)
-				if(!playerIsInvulnerable && hasMiddleCollision(player, currentEnemyBullets))
+				for(auto bullet : currentEnemyBullets)
 				{
-					playerIsDead = true;
-					deaths++;
+					if(!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
+					{
+						playerIsDead = true;
+						deaths++;
+						break;
+					}
 				}
 			}
 			else
