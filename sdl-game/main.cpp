@@ -63,10 +63,9 @@ int main(int argc, char* argv[])
 	player.setBullet("player-bullet", -10, 20, 20, 100);
 
 	// set background
-	gameObj bg1 = gameObj("cloud-bg", 2, 0, 0, 800, 600);
-	gameObj bg2 = bg1;
-	bg2.setInitialY(-bg2.getRectH());
-	bg2.setRectY(bg2.getInitialY());
+	gameObj bg = gameObj("cloud-bg", 2, 0, 0, 800, 600);
+	SDL_Rect bgRect = *bg.getRectPtr(); // rect for 2nd bg render
+	bgRect.y = -bg.getRectH();
 
 	// game state booleans
 	bool quit = false;
@@ -122,7 +121,7 @@ int main(int argc, char* argv[])
 		} // end poll events
 
 
-		// run when not paused
+		// update rendered textures when not paused
 		if (!paused)
 		{
 
@@ -132,18 +131,21 @@ int main(int argc, char* argv[])
 			// update window
 			SDL_RenderClear(global::renderer);
 
-			if (bg1.getRectY() > global::SCREEN_HEIGHT - 1)
+			// background scrolling
+			if (bg.getRectY() > global::SCREEN_HEIGHT - 1) // reset bg positions
 			{
-				bg1.setRectY(bg1.getInitialY());
-				bg2.setRectY(bg2.getInitialY());
+				bg.setRectY(bg.getInitialY());
+				bgRect.y = -bg.getRectH();
 			}
-			else
+			else // scroll bg's
 			{
-				bg1.incRectY(bg1.getVelocity());
-				bg2.incRectY(bg1.getVelocity());
+				bg.incRectY(bg.getVelocity());
+				bgRect.y += bg.getVelocity();
 			}
-			global::render(bg1.getCurrentTexture(), bg1.getRectPtr());
-			global::render(bg2.getCurrentTexture(), bg2.getRectPtr());
+
+			// render bgs
+			global::render(bg.getCurrentTexture(), bg.getRectPtr());
+			global::render(bg.getCurrentTexture(), &bgRect);
 
 			// player alive routine (render player, enemy bullets)
 			// ===================================================
