@@ -33,15 +33,18 @@ int main(int argc, char* argv[])
 
 	// load textures
 	global::allTextures["enemy"] = global::loadTexture("enemy.png");
+	global::allTextures["enemy-bat"] = global::loadTexture("enemy-bat.png");
 	global::allTextures["player"] = global::loadTexture("player.png");
 	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
 	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
+	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
 
-	// list of all objects
+
+	// list of all enemies
 	std::vector<gameObj*> currentEnemies = {
-		new gameObj("enemy", 3, 500, 10, 50, 50),
-		new gameObj("enemy", 3, 600, 50, 50, 50),
-		new gameObj("enemy", 3, 400, 20, 50, 50),
+		new gameObj("enemy-bat", 3, 500, 10, 50, 46),
+		new gameObj("enemy-bat", 3, 600, 50, 50, 46),
+		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
 	};
 
 	for(auto i : currentEnemies)
@@ -57,7 +60,7 @@ int main(int argc, char* argv[])
 
 	// construct player
 	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
-	gameObj hitbox = gameObj("enemy", player.getVelocity(), player.getRectX() + player.getRectW()/2 - 2, player.getRectY() + player.getRectH()/2 - 2, 5, 5);
+	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
 
 	// set player bullet properties
 	player.setBullet("player-bullet", -10, 20, 20, 100);
@@ -156,17 +159,8 @@ int main(int argc, char* argv[])
 			getPlayerInput(player, keyState);
 
 			// update hitbox position to middle of player
-			hitbox.setRectX(player.getRectX() + player.getRectW() / 2 - 2);
-			hitbox.setRectY(player.getRectY() + player.getRectH() / 2 - 2);
-
-			// enemies fire bullets
-			for (auto i : currentEnemies)
-				animation::fire(i);
-
-			// render bullets
-			// =========================
-			renderBullets(currentPlayerBullets);
-			renderBullets(currentEnemyBullets);
+			hitbox.setRectX(player.getRectX() + player.getRectW() / 2 - 4);
+			hitbox.setRectY(player.getRectY() + player.getRectH() / 2 - 4);
 
 			// render player
 			if (playerIsInvulnerable) // check invulnerability after respawn
@@ -176,6 +170,15 @@ int main(int argc, char* argv[])
 				global::render(player.getCurrentTexture(), player.getRectPtr());
 				global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
 			}
+
+			// enemies fire bullets
+			for (auto i : currentEnemies)
+				animation::fire(i);
+
+			// render bullets
+			// =========================
+			renderBullets(currentPlayerBullets);
+			renderBullets(currentEnemyBullets);
 
 			// check for enemy bullet collision (hitbox is player middle)
 			for (auto bullet : currentEnemyBullets)
