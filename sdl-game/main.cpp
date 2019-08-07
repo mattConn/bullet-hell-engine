@@ -49,12 +49,12 @@ int main(int argc, char* argv[])
 		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
 	};
 
-	for(auto i : currentEnemies)
+	for (auto i : currentEnemies)
+	{
+		i->addAnimation(animation::down);
+		i->addAnimation(animation::left);
 		i->setBullet("bullet-orange", 7, 20, 20, 200);
-
-	currentEnemies[0]->setAnimation(animation::down);
-	currentEnemies[1]->setAnimation(animation::left);
-	currentEnemies[2]->setAnimation(animation::right);
+	}
 
 
 	// make player 

@@ -15,6 +15,9 @@ void renderEnemies(std::vector<gameObj *> &enemies, std::vector<gameObj> &bullet
 			// render
 			global::render(enemies[i]->getCurrentTexture(), enemies[i]->getRectPtr());
 
+			// play animations
+			enemies[i]->playAnimations();
+				
 			// check for player bullet collision
 			for (int j = 0; j < bullets.size(); j++)
 			{

@@ -28,7 +28,7 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
-	std::function<bool(gameObj*)> animation = nullptr;
+	std::vector<bool (*)(gameObj*)> animations;
 
 public:
 	// default constructor
@@ -60,11 +60,11 @@ public:
 		currentTexture = t;
 	}
 
-	void setAnimation(bool (*anim)(gameObj*) ) { animation = anim; }
-	bool playAnimation()
+	void addAnimation(bool (*anim)(gameObj*) ) { animations.push_back(anim); }
+	void playAnimations()
 	{
-		assert(animation != nullptr);
-		return animation(this); 
+		for (auto a : animations)
+			a(this);
 	}
 
 	bool isOffscreen() const {
