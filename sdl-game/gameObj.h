@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <cassert>
 #include <string>
+#include <functional>
 #include "global.h"
 
 // any game object
@@ -27,7 +28,7 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
-	bool (*animation)(gameObj *) = nullptr;
+	std::function<bool(gameObj*)> animation = nullptr;
 
 public:
 	// default constructor
