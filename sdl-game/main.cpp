@@ -35,7 +35,9 @@ int main(int argc, char* argv[])
 	global::allTextures["enemy"] = global::loadTexture("enemy.png");
 	global::allTextures["enemy-bat"] = global::loadTexture("enemy-bat.png");
 	global::allTextures["player"] = global::loadTexture("player.png");
-	global::allTextures["player-bullet"] = global::loadTexture("player-bullet.png");
+	global::allTextures["bullet-red"] = global::loadTexture("bullet-red.png");
+	global::allTextures["bullet-green"] = global::loadTexture("bullet-green.png");
+	global::allTextures["bullet-orange"] = global::loadTexture("bullet-orange.png");
 	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
 	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
 
@@ -48,7 +50,7 @@ int main(int argc, char* argv[])
 	};
 
 	for(auto i : currentEnemies)
-		i->setBullet("player-bullet", 5, 20, 20, 200);
+		i->setBullet("bullet-orange", 7, 20, 20, 200);
 
 	currentEnemies[0]->setAnimation(animation::down);
 	currentEnemies[1]->setAnimation(animation::left);
@@ -63,10 +65,10 @@ int main(int argc, char* argv[])
 	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
 
 	// set player bullet properties
-	player.setBullet("player-bullet", -10, 20, 20, 100);
+	player.setBullet("bullet-red", -10, 20, 20, 100);
 
 	// set background
-	gameObj bg = gameObj("cloud-bg", 2, 0, 0, 800, 600);
+	gameObj bg = gameObj("cloud-bg", 5, 0, 0, 800, 600);
 	SDL_Rect bgRect = *bg.getRectPtr(); // rect for 2nd bg render
 	bgRect.y = -bg.getRectH();
 
