@@ -50,7 +50,9 @@ int main(int argc, char* argv[])
 
 	for (auto &i : currentEnemies)
 	{
-		i->addAnimationSet({ animation::down, animation::left });
+		i->addAnimationSet({ animation::down, animation::left }, 100);
+		i->addAnimationSet({ animation::right}, 100);
+		i->addAnimationSet({ animation::left });
 		i->setBullet("bullet-orange", 7, 20, 20, 200);
 	}
 

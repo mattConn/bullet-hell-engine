@@ -66,15 +66,29 @@ public:
 		currentTexture = t;
 	}
 
-	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set, const int &distance = -1)
+	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set, const int &distance = 0)
 	{
 		animationSequence.push_back({set, distance});
 	}
 
 	void playAnimations()
 	{
-		for (const auto &a : animationSequence[0].first) // TEMP playing first row
-			a(this);
+		if (animationSequence.size() == 0) return;
+
+		auto currentRow = animationSequence.front(); // row of animation, distance pair
+
+		// if no duration specified or distance traveled < distance needed, play animations
+		if (currentRow.second <= 0 || abs(rect.x - initialX) < currentRow.second || abs(rect.y - initialY) < currentRow.second)
+		{
+			for (auto& animation : currentRow.first)
+				animation(this);
+		}
+		else // erase row, reset initial coords
+		{
+			animationSequence.erase(animationSequence.begin());
+			initialX = rect.x;
+			initialY = rect.y;
+		}
 	}
 
 	bool isOffscreen() const {
