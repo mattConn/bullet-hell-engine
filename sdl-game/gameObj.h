@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <cassert>
 #include <string>
+#include <vector>
 #include <functional>
 #include "global.h"
 
@@ -28,7 +29,7 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
-	std::vector<bool (*)(gameObj*)> animations;
+	std::vector<std::vector<bool (*)(gameObj*)>> animationSequence;
 
 public:
 	// default constructor
@@ -60,10 +61,14 @@ public:
 		currentTexture = t;
 	}
 
-	void addAnimation(bool (*anim)(gameObj*) ) { animations.push_back(anim); }
+	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set)
+	{
+		animationSequence.push_back(set);
+	}
+
 	void playAnimations()
 	{
-		for (const auto &a : animations)
+		for (const auto &a : animationSequence[0]) // TEMP playing first row
 			a(this);
 	}
 
