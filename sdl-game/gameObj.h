@@ -5,8 +5,12 @@
 #include <cassert>
 #include <string>
 #include <vector>
+#include <utility>
 #include <functional>
 #include "global.h"
+
+class gameObj;
+typedef std::vector<bool (*)(gameObj*)> animVector;
 
 // any game object
 // ===============
@@ -29,7 +33,8 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
-	std::vector<std::vector<bool (*)(gameObj*)>> animationSequence;
+	// sequence of animations: pair of vector and duration
+	std::vector<std::pair<animVector, int>> animationSequence;
 
 public:
 	// default constructor
@@ -61,14 +66,14 @@ public:
 		currentTexture = t;
 	}
 
-	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set)
+	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set, const int &distance = -1)
 	{
-		animationSequence.push_back(set);
+		animationSequence.push_back({set, distance});
 	}
 
 	void playAnimations()
 	{
-		for (const auto &a : animationSequence[0]) // TEMP playing first row
+		for (const auto &a : animationSequence[0].first) // TEMP playing first row
 			a(this);
 	}
 
