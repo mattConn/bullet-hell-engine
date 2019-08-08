@@ -52,8 +52,11 @@ int main(int argc, char* argv[])
 	{
 		i->addAnimationSet({ animation::down, animation::left }, 100);
 		i->addAnimationSet({ animation::right}, 100);
-		i->addAnimationSet({ animation::left });
-		i->setBullet("bullet-orange", 7, 20, 20, 200);
+		i->addAnimationSet({ animation::left }, 100);
+		i->addAnimationSet({ animation::right }, 100);
+		i->addAnimationSet({ animation::down });
+
+		i->setBullet("bullet-orange", 7, 20, 20, 500);
 	}
 
 

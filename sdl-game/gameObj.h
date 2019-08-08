@@ -78,7 +78,7 @@ public:
 		auto currentRow = animationSequence.front(); // row of animation, distance pair
 
 		// if no duration specified or distance traveled < distance needed, play animations
-		if (currentRow.second <= 0 || abs(rect.x - initialX) < currentRow.second || abs(rect.y - initialY) < currentRow.second)
+		if (currentRow.second <= 0 || (abs(rect.x - initialX) < currentRow.second && abs(rect.y - initialY) < currentRow.second) )
 		{
 			for (auto& animation : currentRow.first)
 				animation(this);
