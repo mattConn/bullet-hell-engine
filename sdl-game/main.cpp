@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
 	};
 
-	for (auto i : currentEnemies)
+	for (const auto &i : currentEnemies)
 	{
 		i->addAnimation(animation::down);
 		i->addAnimation(animation::left);
@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
 			}
 
 			// enemies fire bullets
-			for (auto i : currentEnemies)
+			for (const auto &i : currentEnemies)
 				animation::fire(i);
 
 			// render bullets
@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
 			renderBullets(currentEnemyBullets);
 
 			// check for enemy bullet collision (hitbox is player middle)
-			for (auto bullet : currentEnemyBullets)
+			for (auto &bullet : currentEnemyBullets)
 			{
 				if (!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
 				{

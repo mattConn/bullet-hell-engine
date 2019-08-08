@@ -158,7 +158,7 @@ bool close()
 	SDL_DestroyRenderer(renderer);
 
 	// Destroy textures
-	for (auto texture : allTextures)
+	for (auto &texture : allTextures)
 		SDL_DestroyTexture(texture.second);
 
 	//Quit SDL subsystems

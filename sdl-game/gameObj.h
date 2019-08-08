@@ -63,7 +63,7 @@ public:
 	void addAnimation(bool (*anim)(gameObj*) ) { animations.push_back(anim); }
 	void playAnimations()
 	{
-		for (auto a : animations)
+		for (const auto &a : animations)
 			a(this);
 	}
 
