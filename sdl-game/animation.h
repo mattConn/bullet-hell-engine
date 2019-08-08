@@ -64,7 +64,7 @@ namespace animation {
 		else
 			g->decRectX(5);
 
-		return endAnimation(g);
+		return true;
 	}
 
 	bool blink(gameObj* g)

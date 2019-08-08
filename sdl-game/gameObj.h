@@ -4,8 +4,13 @@
 #include <SDL2/SDL_image.h>
 #include <cassert>
 #include <string>
+#include <vector>
+#include <utility>
 #include <functional>
 #include "global.h"
+
+class gameObj;
+typedef std::vector<bool (*)(gameObj*)> animVector;
 
 // any game object
 // ===============
@@ -28,7 +33,8 @@ private:
 	int initialX = 0;
 	int initialY = 0;
 
-	std::function<bool(gameObj*)> animation = nullptr;
+	// sequence of animations: pair of vector and duration
+	std::vector<std::pair<animVector, int>> animationSequence;
 
 public:
 	// default constructor
@@ -60,11 +66,29 @@ public:
 		currentTexture = t;
 	}
 
-	void setAnimation(bool (*anim)(gameObj*) ) { animation = anim; }
-	bool playAnimation()
+	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set, const int &distance = 0)
 	{
-		assert(animation != nullptr);
-		return animation(this); 
+		animationSequence.push_back({set, distance});
+	}
+
+	void playAnimations()
+	{
+		if (animationSequence.size() == 0) return;
+
+		auto currentRow = animationSequence.front(); // row of animation, distance pair
+
+		// if no duration specified or distance traveled < distance needed, play animations
+		if (currentRow.second <= 0 || (abs(rect.x - initialX) < currentRow.second && abs(rect.y - initialY) < currentRow.second) )
+		{
+			for (auto& animation : currentRow.first)
+				animation(this);
+		}
+		else // erase row, reset initial coords
+		{
+			animationSequence.erase(animationSequence.begin());
+			initialX = rect.x;
+			initialY = rect.y;
+		}
 	}
 
 	bool isOffscreen() const {

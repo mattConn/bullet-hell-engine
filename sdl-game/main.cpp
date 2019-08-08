@@ -15,7 +15,6 @@
 #include "renderEnemies.h"
 #include "renderBullets.h"
 
-
 int main(int argc, char* argv[])
 {
 	// init sdl
@@ -49,12 +48,16 @@ int main(int argc, char* argv[])
 		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
 	};
 
-	for(auto i : currentEnemies)
-		i->setBullet("bullet-orange", 7, 20, 20, 200);
+	for (auto &i : currentEnemies)
+	{
+		i->addAnimationSet({ animation::down, animation::left }, 100);
+		i->addAnimationSet({ animation::right}, 100);
+		i->addAnimationSet({ animation::left }, 100);
+		i->addAnimationSet({ animation::right }, 100);
+		i->addAnimationSet({ animation::down });
 
-	currentEnemies[0]->setAnimation(animation::down);
-	currentEnemies[1]->setAnimation(animation::left);
-	currentEnemies[2]->setAnimation(animation::right);
+		i->setBullet("bullet-orange", 7, 20, 20, 500);
+	}
 
 
 	// make player 
@@ -174,7 +177,7 @@ int main(int argc, char* argv[])
 			}
 
 			// enemies fire bullets
-			for (auto i : currentEnemies)
+			for (const auto &i : currentEnemies)
 				animation::fire(i);
 
 			// render bullets
@@ -183,7 +186,7 @@ int main(int argc, char* argv[])
 			renderBullets(currentEnemyBullets);
 
 			// check for enemy bullet collision (hitbox is player middle)
-			for (auto bullet : currentEnemyBullets)
+			for (auto &bullet : currentEnemyBullets)
 			{
 				if (!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
 				{

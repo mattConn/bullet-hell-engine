@@ -10,11 +10,14 @@ void renderEnemies(std::vector<gameObj *> &enemies, std::vector<gameObj> &bullet
 			// =======================
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		if (enemies[i]->playAnimation()) // if playing animation
+		if (!enemies[i]->isOffscreen()) // if not offscreen
 		{
 			// render
 			global::render(enemies[i]->getCurrentTexture(), enemies[i]->getRectPtr());
 
+			// play animations
+			enemies[i]->playAnimations();
+				
 			// check for player bullet collision
 			for (int j = 0; j < bullets.size(); j++)
 			{
@@ -26,7 +29,7 @@ void renderEnemies(std::vector<gameObj *> &enemies, std::vector<gameObj> &bullet
 				}
 			}
 		}
-		else // no animation, offscreen: remove
+		else // offscreen: remove
 		{
 			delete enemies[i];
 			enemies.erase(enemies.begin() + i);
