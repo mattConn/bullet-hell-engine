@@ -50,10 +50,10 @@ int main(int argc, char* argv[])
 
 	for (auto &i : currentEnemies)
 	{
-		i->addAnimationSet({ animation::down, animation::left }, 100);
-		i->addAnimationSet({ animation::right}, 100);
-		i->addAnimationSet({ animation::left }, 100);
-		i->addAnimationSet({ animation::right }, 100);
+		i->addAnimationSet({ animation::down, animation::left, animation::fire }, 100);
+		i->addAnimationSet({ animation::down }, 100);
+		i->addAnimationSet({ animation::down, animation::right, animation::fire }, 100);
+		i->addAnimationSet({ animation::up, animation::right}, 100);
 		i->addAnimationSet({ animation::down });
 
 		i->setBullet("bullet-orange", 7, 20, 20, 500);
@@ -175,10 +175,6 @@ int main(int argc, char* argv[])
 				global::render(player.getCurrentTexture(), player.getRectPtr());
 				global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
 			}
-
-			// enemies fire bullets
-			for (const auto &i : currentEnemies)
-				animation::fire(i);
 
 			// render bullets
 			// =========================
