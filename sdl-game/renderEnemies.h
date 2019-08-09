@@ -23,7 +23,9 @@ void renderEnemies(std::vector<gameObj *> &enemies, std::vector<gameObj> &bullet
 			{
 				if (SDL_HasIntersection(enemies[i]->getRectPtr(), bullets[j].getRectPtr()))
 				{
+					delete enemies[i];
 					enemies.erase(enemies.begin() + i);
+
 					bullets.erase(bullets.begin() + j);
 					break; // avoid out of range index
 				}

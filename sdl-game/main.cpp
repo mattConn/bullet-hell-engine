@@ -217,9 +217,9 @@ int main(int argc, char* argv[])
 
 	// close SDL subsystems
 	global::close();
-	std::cout << "** Gameplay stats **" << std::endl;
-	std::cout << "Deaths: " << deaths << std::endl;
-	std::cout << "Graze: " << graze << std::endl;
+	DEBUG_MSG("** Gameplay stats **");
+	DEBUG_MSG("Deaths: " << deaths);
+	DEBUG_MSG("Graze: " << graze);
 
 	return 0;
 }
