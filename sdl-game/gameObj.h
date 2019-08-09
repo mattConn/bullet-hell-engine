@@ -42,14 +42,19 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, const std::initializer_list<std::pair<animVector, int>> &seq = {}) : currentTexture(t), velocity(vel)
+
+	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const std::initializer_list<std::pair<animVector, int>> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
 		setInitialY(yPos);
-		
-		animationSequence = seq;
+	}
 
+	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &dur) : currentTexture(t), velocity(vel) // abbreviated for when constructing bullet
+	{
+		rect = global::makeRect(0, 0, width, height);
+		duration = dur;
+		timeout = dur + SDL_GetTicks();
 	}
 
 	~gameObj()
