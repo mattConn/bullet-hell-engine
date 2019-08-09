@@ -196,10 +196,13 @@ int main(int argc, char* argv[])
 			playerIsInvulnerable = false;
 
 		// render enemies
-		if(enemyWaves.size() > 0 && enemyWaves.front().size() > 0)
-			renderEnemies(enemyWaves.front(), currentPlayerBullets);
-		else
-			enemyWaves.erase(enemyWaves.begin());
+		if(enemyWaves.size() > 0)	
+		{
+			if(enemyWaves.front().size() > 0)
+				renderEnemies(enemyWaves.front(), currentPlayerBullets);
+			else
+				enemyWaves.erase(enemyWaves.begin());
+		}
 
 		// render current textures
 		renderPresent:
