@@ -42,11 +42,14 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
+	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, const std::initializer_list<std::pair<animVector, int>> &seq = {}) : currentTexture(t), velocity(vel)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
 		setInitialY(yPos);
+		
+		animationSequence = seq;
+
 	}
 
 	~gameObj()
@@ -80,8 +83,8 @@ public:
 		// if no duration specified or distance traveled < distance needed, play animations
 		if (currentRow.second <= 0 || (abs(rect.x - initialX) < currentRow.second && abs(rect.y - initialY) < currentRow.second) )
 		{
-			for (auto& animation : currentRow.first)
-				animation(this);
+			for (auto& anim : currentRow.first)
+				anim(this);
 		}
 		else // erase row, reset initial coords
 		{
@@ -155,7 +158,11 @@ public:
 		return newBullet;
 	}
 
-	gameObj* getBulletPtr() const { return bullet; }
+	gameObj* getBulletPtr() const
+	{ 
+		assert(bullet != nullptr);
+		return bullet;
+	}
 
 	// set bullet
 	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
