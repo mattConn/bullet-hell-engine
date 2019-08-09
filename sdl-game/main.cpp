@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "global.h"
 #include "bulletContainers.h"
+#include "enemyWaves.h"
 #include "animation.h"
 #include "gameObj.h"
 
@@ -39,44 +40,6 @@ int main(int argc, char* argv[])
 	global::allTextures["bullet-orange"] = global::loadTexture("bullet-orange.png");
 	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
 	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
-
-
-	// list of all enemies
-	std::vector<gameObj*> currentEnemies = {
-		new gameObj("enemy-bat", 3, 500, 10, 50, 46),
-		new gameObj("enemy-bat", 3, 600, 50, 50, 46),
-		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
-	};
-
-	std::vector<std::vector<gameObj*>> waves = {
-		{
-			new gameObj("enemy-bat", 3, 500, 10, 50, 46, new gameObj("bullet-orange", 7, 20, 20, 500),
-				{
-					{ { animation::down, animation::left, animation::fire }, 100},
-					{ { animation::down }, 100},
-					{ { animation::down, animation::right, animation::fire }, 100},
-					{ { animation::up, animation::right}, 100},
-					{ { animation::down } , 0}
-				}
-			),
-			new gameObj("enemy-bat", 3, 600, 50, 50, 46),
-			new gameObj("enemy-bat", 3, 400, 20, 50, 46)
-		},
-
-	};
-
-/*
-	for (auto &i : currentEnemies)
-	{
-		i->addAnimationSet({ animation::down, animation::left, animation::fire }, 100);
-		i->addAnimationSet({ animation::down }, 100);
-		i->addAnimationSet({ animation::down, animation::right, animation::fire }, 100);
-		i->addAnimationSet({ animation::up, animation::right}, 100);
-		i->addAnimationSet({ animation::down });
-
-		i->setBullet("bullet-orange", 7, 20, 20, 500);
-	}
-*/
 
 
 	// make player 
@@ -233,7 +196,10 @@ int main(int argc, char* argv[])
 			playerIsInvulnerable = false;
 
 		// render enemies
-		renderEnemies(waves[0], currentPlayerBullets);
+		if(enemyWaves.size() > 0 && enemyWaves.front().size() > 0)
+			renderEnemies(enemyWaves.front(), currentPlayerBullets);
+		else
+			enemyWaves.erase(enemyWaves.begin());
 
 		// render current textures
 		renderPresent:
