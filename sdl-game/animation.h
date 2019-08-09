@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "global.h"
 #include "gameObj.h"
 #include "bulletContainers.h"

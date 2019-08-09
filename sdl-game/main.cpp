@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -10,6 +11,7 @@
 #include "bulletContainers.h"
 #include "animation.h"
 #include "gameObj.h"
+#include "allBullets.h"
 
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
@@ -42,21 +44,19 @@ int main(int argc, char* argv[])
 
 
 	// list of all enemies
-	std::vector<gameObj*> currentEnemies = {
-		new gameObj("enemy-bat", 3, 500, 10, 50, 46),
-		new gameObj("enemy-bat", 3, 600, 50, 50, 46),
-		new gameObj("enemy-bat", 3, 400, 20, 50, 46),
+	std::vector<gameObj> currentEnemies = {
+		gameObj("enemy-bat", 3, 500, 10, 50, 46, &allBullets["orange"]),
+		gameObj("enemy-bat", 3, 600, 50, 50, 46, &allBullets["orange"]),
+		gameObj("enemy-bat", 3, 400, 20, 50, 46, &allBullets["orange"])
 	};
 
 	for (auto &i : currentEnemies)
 	{
-		i->addAnimationSet({ animation::down, animation::left, animation::fire }, 100);
-		i->addAnimationSet({ animation::down }, 100);
-		i->addAnimationSet({ animation::down, animation::right, animation::fire }, 100);
-		i->addAnimationSet({ animation::up, animation::right}, 100);
-		i->addAnimationSet({ animation::down });
-
-		i->setBullet("bullet-orange", 7, 20, 20, 500);
+		i.addAnimationSet({ animation::down, animation::left, animation::fire }, 100);
+		i.addAnimationSet({ animation::down }, 100);
+		i.addAnimationSet({ animation::down, animation::right, animation::fire }, 100);
+		i.addAnimationSet({ animation::up, animation::right}, 100);
+		i.addAnimationSet({ animation::down });
 	}
 
 
@@ -64,11 +64,8 @@ int main(int argc, char* argv[])
 	// ===========
 
 	// construct player
-	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85, &allBullets["red"]);
 	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
-
-	// set player bullet properties
-	player.setBullet("bullet-red", -10, 20, 20, 100);
 
 	// set background
 	gameObj bg = gameObj("cloud-bg", 5, 0, 0, 800, 600);
@@ -101,7 +98,6 @@ int main(int argc, char* argv[])
 	//===========
 	while (!quit)
 	{
-
 		// event polling loop
 		while (SDL_PollEvent(&event))
 		{

@@ -42,18 +42,13 @@ public:
 	{
 		rect = global::makeRect(0, 0, 1, 1);
 	}
-	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height) : currentTexture(t), velocity(vel)
+	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const int &dur = 0) : currentTexture(t), velocity(vel), initialX(xPos), initialY(yPos), bullet(bull), duration(dur)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
-		setInitialX(xPos);
-		setInitialY(yPos);
+		timeout = dur + SDL_GetTicks();
 	}
 
-	~gameObj()
-	{
-		delete bullet;
-		bullet = nullptr;
-	}
+	~gameObj(){}
 
 	// accessors
 	std::string getCurrentTexture() const
@@ -148,7 +143,7 @@ public:
 	gameObj getBulletCopy()
 	{ 
 		assert(bullet != nullptr);
-		gameObj newBullet = gameObj(*bullet); // copy of bullet
+		gameObj newBullet = *bullet; // copy of bullet
 		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
 		newBullet.setRectY(getRectY());
 
@@ -156,14 +151,6 @@ public:
 	}
 
 	gameObj* getBulletPtr() const { return bullet; }
-
-	// set bullet
-	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
-	{
-		bullet = new gameObj(t, vel, 0, 0, width, height);
-		bullet->duration = d;
-		bullet->timeout = d + SDL_GetTicks();
-	}
 
 	// mutators
 	void incRectX(const int n) { rect.x += n; }
