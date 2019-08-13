@@ -1,5 +1,5 @@
-# Bullet Hell Engine
-Making a bullet hell/shmup engine with SDL2.
+# Shmup Game Engine
+Making a shmup game engine with SDL2. A shmup (shoot-em-up) is a game like Space Invaders.
 
 This project depends on SDL2 and SDL2_image. I followed along with Lazy Foo's tutorial to get started.
 
