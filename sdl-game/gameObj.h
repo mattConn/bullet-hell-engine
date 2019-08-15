@@ -65,11 +65,14 @@ public:
 		initialY = rect.y;
 	}
 
+	// bullet ptrs copied over from baseBullets; these are freed during close routine
+	/*
 	~gameObj()
 	{
 		delete bullet;
 		bullet = nullptr;
 	}
+	*/
 
 	// accessors
 	std::string getCurrentTexture() const

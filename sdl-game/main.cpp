@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "global.h"
 #include "bulletContainers.h"
+#include "baseObjects.h"
 #include "enemyWaves.h"
 #include "animation.h"
 #include "gameObj.h"
