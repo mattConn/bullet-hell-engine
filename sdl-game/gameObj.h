@@ -11,6 +11,7 @@
 
 class gameObj;
 typedef std::vector<bool (*)(gameObj*)> animVector;
+typedef std::pair<animVector, int> animPair;
 
 // any game object
 // ===============
@@ -34,7 +35,7 @@ private:
 	int initialY = 0;
 
 	// sequence of animations: pair of vector and duration
-	std::vector<std::pair<animVector, int>> animationSequence;
+	std::vector<animPair> animationSequence;
 
 public:
 	// default constructor
@@ -43,7 +44,7 @@ public:
 		rect = global::makeRect(0, 0, 1, 1);
 	}
 
-	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const std::initializer_list<std::pair<animVector, int>> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), animationSequence(seq)
+	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
@@ -58,7 +59,7 @@ public:
 	}
 
 	// copy constructor with rect coords
-	gameObj(const gameObj* other, const int &xPos, const int &yPos, const std::vector<std::pair<animVector, int>> &seq = {}) : currentTexture(other->currentTexture), velocity(other->velocity), bullet(other->bullet), animationSequence(seq)
+	gameObj(const gameObj* other, const int &xPos, const int &yPos, const std::vector<animPair> &seq = {}) : currentTexture(other->currentTexture), velocity(other->velocity), bullet(other->bullet), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, other->rect.w, other->rect.h);
 		initialX = rect.x;
