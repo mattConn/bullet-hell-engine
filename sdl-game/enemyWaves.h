@@ -15,7 +15,7 @@ std::map<std::string, gameObj*> baseBullets = {
 
 	{
 		"red",
-		new gameObj("bullet-orange", 7, 20, 20, 500)
+		new gameObj("bullet-red", -10, 20, 20, 100)
 	}
 };
 std::map<std::string, gameObj*> baseEnemies = {
