@@ -4,7 +4,7 @@
 #include "gameObj.h"
 
 // player bullet container
-std::vector<gameObj> currentPlayerBullets;
+extern std::vector<gameObj> currentPlayerBullets;
 
 // enemy bullet container
-std::vector<gameObj> currentEnemyBullets;
+extern std::vector<gameObj> currentEnemyBullets;

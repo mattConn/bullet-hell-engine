@@ -1,5 +1,6 @@
 #include "global.h"
 #include "debug.h"
+#include "baseObjects.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -160,6 +161,14 @@ bool close()
 	// Destroy textures
 	for (auto &texture : allTextures)
 		SDL_DestroyTexture(texture.second);
+
+	// Destroy base bullets 
+	for (auto &bullet : baseBullets)
+		delete bullet.second;
+
+	// Destroy base enemies
+	for (auto &enemy : baseEnemies)
+		delete enemy.second;
 
 	//Quit SDL subsystems
 	IMG_Quit();

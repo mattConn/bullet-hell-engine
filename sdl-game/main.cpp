@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "global.h"
 #include "bulletContainers.h"
+#include "baseObjects.h"
 #include "enemyWaves.h"
 #include "animation.h"
 #include "gameObj.h"
@@ -46,11 +47,8 @@ int main(int argc, char* argv[])
 	// ===========
 
 	// construct player
-	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85, baseBullets["red"]);
 	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
-
-	// set player bullet properties
-	player.setBullet("bullet-red", -10, 20, 20, 100);
 
 	// set background
 	gameObj bg = gameObj("cloud-bg", 5, 0, 0, 800, 600);
