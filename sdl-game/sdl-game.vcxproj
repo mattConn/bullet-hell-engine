@@ -124,11 +124,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="animSequence.cpp" />
+    <ClCompile Include="baseObjects.cpp" />
+    <ClCompile Include="bulletContainers.cpp" />
+    <ClCompile Include="enemyWaves.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
+    <ClInclude Include="animSequence.h" />
+    <ClInclude Include="baseObjects.h" />
     <ClInclude Include="bulletContainers.h" />
     <ClInclude Include="enemyWaves.h" />
     <ClInclude Include="hasMiddleCollision.h" />
