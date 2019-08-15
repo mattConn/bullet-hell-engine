@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <functional>
 #include "global.h"
+#include "debug.h"
 
 class gameObj;
 typedef std::vector<bool (*)(gameObj*)> animVector;
@@ -55,6 +55,14 @@ public:
 		rect = global::makeRect(0, 0, width, height);
 		duration = dur;
 		timeout = dur + SDL_GetTicks();
+	}
+
+	// copy constructor with rect coords
+	gameObj(const gameObj* other, const int &xPos, const int &yPos, const std::vector<std::pair<animVector, int>> &seq = {}) : currentTexture(other->currentTexture), velocity(other->velocity), bullet(other->bullet), animationSequence(seq)
+	{
+		rect = global::makeRect(xPos, yPos, other->rect.w, other->rect.h);
+		initialX = rect.x;
+		initialY = rect.y;
 	}
 
 	~gameObj()
