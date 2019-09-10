@@ -44,6 +44,8 @@ public:
 		rect = global::makeRect(0, 0, 1, 1);
 	}
 
+	// detailed constructor
+	// takes texture string, velocity, xPos, yPos, width, height, bullet gameObj, animation list
 	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
@@ -51,7 +53,8 @@ public:
 		setInitialY(yPos);
 	}
 
-	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &dur) : currentTexture(t), velocity(vel) // abbreviated for when constructing bullet
+	// bullet constructor
+	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &dur) : currentTexture(t), velocity(vel)
 	{
 		rect = global::makeRect(0, 0, width, height);
 		duration = dur;
@@ -59,6 +62,7 @@ public:
 	}
 
 	// copy constructor with rect coords
+	// takes rhs gameObj, xPos, yPos, animation sequence
 	gameObj(const gameObj* other, const int &xPos, const int &yPos, const std::vector<animPair> &seq = {}) : currentTexture(other->currentTexture), velocity(other->velocity), bullet(other->bullet), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, other->rect.w, other->rect.h);
