@@ -17,7 +17,7 @@ typedef struct GameObj {
 
 	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity;
-	double velocityMod1;
+	double velocityMod;
 
 	// starting position
 	int initialX;

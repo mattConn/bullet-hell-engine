@@ -5,6 +5,7 @@
 
 #include "global.h"
 #include "gameObj.h"
+#include "getInput.h"
 
 
 int main(int argc, char* argv[])
@@ -87,6 +88,12 @@ int main(int argc, char* argv[])
 			} // end get keyboard events
 		} // end poll events
 
+		// get input
+		getInput(&player, keyState);
+
+		// clear window
+		SDL_RenderClear(renderer);
+
 		render(allTextures[PLAYER], &player.rect);
 
 		SDL_RenderPresent(renderer);
@@ -94,17 +101,17 @@ int main(int argc, char* argv[])
 		SDL_Delay(16);
 	} //end game loop
 
-/*
 
 
 		// skip scene updating when paused
-		if (paused) goto renderPresent;
+		//if (paused) goto renderPresent;
 
 		// update scene
 		// ============
 
-		// clear window
-		SDL_RenderClear(global::renderer);
+
+
+/*
 
 		// background scrolling
 		if (bg.getRectY() > global::SCREEN_HEIGHT - 1) // reset bg positions

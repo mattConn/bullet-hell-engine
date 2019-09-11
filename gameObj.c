@@ -14,4 +14,6 @@ bool initGameObj(gameObj* obj, int texture, int velocity, int x, int y, int w, i
 {
 	obj->rect = makeRect(x, y, w, h);
 	obj->texture = texture;
+	obj->velocity = velocity;
+	obj->velocityMod = 1;
 }
