@@ -31,9 +31,16 @@ int main(int argc, char* argv[])
 	allTextures[CLOUD_BG] = loadTexture("cloud-bg.png"),
 	allTextures[HITBOX] = loadTexture("hitbox.png");
 
+	// base bullets
+	gameObj bulletRed;
+	initGameObj(&bulletRed, BULLET_RED, 8, 33, 36);
+
 	// init player
 	gameObj player;
-	initGameObj(&player, PLAYER, 8, SCREEN_WIDTH / 2 - 10 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	initGameObj(&player, PLAYER, 8, 50, 85);
+	player.rect.x = SCREEN_WIDTH / 2 - 10 / 2;
+	player.rect.y = SCREEN_HEIGHT / 2 - 100 / 2;
+	player.duration = 200;
 
 	// game states
 	bool quit = false;

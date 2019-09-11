@@ -15,13 +15,14 @@ void getInput(gameObj* player, const Uint8* keyState)
 		player->velocityMod = 1;
 
 	// fire
-	/*
-	if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
+	if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player->timeout))
 	{
+		printf("FIRE\n");
+/*
 		currentPlayerBullets.push_back(player.getBulletCopy());
-		player.getBulletPtr()->resetTimeout();
+*/
+		player->timeout = SDL_GetTicks() + player->duration;
 	}
-	*/
 
 	// move left
 	if (keyState[SDL_SCANCODE_LEFT] && player->rect.x > 0)

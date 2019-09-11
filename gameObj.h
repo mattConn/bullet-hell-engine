@@ -13,7 +13,7 @@ typedef struct GameObj {
 
 	// fire rate members
 	int duration; // duration of old bullet on screen
-	int timeout; // time before bullet shoul be fired
+	int timeout; // time before bullet shoul be fired (SDL_GetTicks() + duration)
 
 	SDL_Rect rect; // obj rect (used for coordinates)
 	double velocity;
@@ -118,6 +118,6 @@ public:
 
 // check if gameObj is offscreen
 bool isOffscreen(gameObj* obj);
-bool initGameObj(gameObj* obj, int texture, int velocity, int x, int y, int w, int h);
+bool initGameObj(gameObj* obj, int texture, int velocity, int w, int h);
 
 

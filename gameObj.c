@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include "global.h"
 #include "gameObj.h"
 
 bool isOffscreen(gameObj* obj)
@@ -10,9 +9,12 @@ bool isOffscreen(gameObj* obj)
 }
 
 //takes texture string, velocity, xPos, yPos, width, height, bullet gameObj, animation list
-bool initGameObj(gameObj* obj, int texture, int velocity, int x, int y, int w, int h)
+bool initGameObj(gameObj* obj, int texture, int velocity, int w, int h)
 {
-	obj->rect = makeRect(x, y, w, h);
+	obj->rect.w = w;
+	obj->rect.h = h;
+	obj->initialX = obj->initialY = 0;
+	obj->duration = obj->timeout = 0;
 	obj->texture = texture;
 	obj->velocity = velocity;
 	obj->velocityMod = 1;
