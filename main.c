@@ -32,15 +32,13 @@ int main(int argc, char* argv[])
 	allTextures[HITBOX] = loadTexture("hitbox.png");
 
 	// base bullets
-	gameObj bulletRed;
-	initGameObj(&bulletRed, BULLET_RED, 8, 33, 36);
+	gameObj* bulletRed = makeGameObj(BULLET_RED, 8, 33, 36);
 
 	// init player
-	gameObj player;
-	initGameObj(&player, PLAYER, 8, 50, 85);
-	player.rect.x = SCREEN_WIDTH / 2 - 10 / 2;
-	player.rect.y = SCREEN_HEIGHT / 2 - 100 / 2;
-	player.duration = 200;
+	gameObj* player = makeGameObj(PLAYER, 8, 50, 85);
+	player->rect.x = SCREEN_WIDTH / 2 - 10 / 2;
+	player->rect.y = SCREEN_HEIGHT / 2 - 100 / 2;
+	player->duration = 200;
 
 	// game states
 	bool quit = false;
@@ -96,12 +94,12 @@ int main(int argc, char* argv[])
 		} // end poll events
 
 		// get input
-		getInput(&player, keyState);
+		getInput(player, keyState);
 
 		// clear window
 		SDL_RenderClear(renderer);
 
-		render(allTextures[PLAYER], &player.rect);
+		render(allTextures[PLAYER], &player->rect);
 
 		SDL_RenderPresent(renderer);
 

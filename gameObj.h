@@ -118,6 +118,6 @@ public:
 
 // check if gameObj is offscreen
 bool isOffscreen(gameObj* obj);
-bool initGameObj(gameObj* obj, int texture, int velocity, int w, int h);
+gameObj* makeGameObj(int texture, int velocity, int w, int h);
 
 
