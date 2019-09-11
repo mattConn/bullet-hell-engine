@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #undef main
@@ -29,35 +30,11 @@ int main(int argc, char* argv[])
 	allTextures[CLOUD_BG] = loadTexture("cloud-bg.png"),
 	allTextures[HITBOX] = loadTexture("hitbox.png");
 
+	// init player
 	gameObj player;
 	initGameObj(&player, PLAYER, 8, SCREEN_WIDTH / 2 - 10 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
-	int a = SDL_GetTicks() + 3000;
-	while(SDL_GetTicks() < a)
-	{
-		render(allTextures[PLAYER], &player.rect);
 
-		SDL_RenderPresent(renderer);
-
-		SDL_Delay(16);
-	}
-	
-
-/*
-
-
-	// make player 
-	// ===========
-
-	// construct player
-	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85, baseBullets["red"]);
-	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
-
-	// set background
-	gameObj bg = gameObj("cloud-bg", 5, 0, 0, 800, 600);
-	SDL_Rect bgRect = *bg.getRectPtr(); // rect for 2nd bg render
-	bgRect.y = -bg.getRectH();
-
-	// game state booleans
+	// game states
 	bool quit = false;
 	bool paused = false;
 
@@ -65,7 +42,7 @@ int main(int argc, char* argv[])
 	SDL_Event event;
 
 	// realtime keystate
-	const Uint8* keyState = SDL_GetKeyboardState(nullptr);
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
 	// player life state bools
 	bool playerIsDead = false;
@@ -109,6 +86,15 @@ int main(int argc, char* argv[])
 				}
 			} // end get keyboard events
 		} // end poll events
+
+		render(allTextures[PLAYER], &player.rect);
+
+		SDL_RenderPresent(renderer);
+
+		SDL_Delay(16);
+	} //end game loop
+
+/*
 
 
 		// skip scene updating when paused
