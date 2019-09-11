@@ -10,26 +10,27 @@ SDL_Window *window = NULL; // main window
 SDL_Surface *windowSurface = NULL; // surface for main window
 SDL_Renderer *renderer = NULL; // main renderer
 
+SDL_Texture* allTextures[10]; 
 
 // functions
 // =========
 
 // SDL rect wrapper
-SDL_Rect makeRect(const int *xPos, const int *yPos, const int *width, const int *height)
+SDL_Rect makeRect(const int xPos, const int yPos, const int width, const int height)
 {
 	SDL_Rect rect;
-	rect.x = *xPos;
+	rect.x = xPos;
 
-	rect.y = *yPos;
-	rect.w = *width;
-	rect.h = *height;
+	rect.y = yPos;
+	rect.w = width;
+	rect.h = height;
 
 	return rect;
 }
 
-bool render(const char* texture, const SDL_Rect *rect)
+bool render(SDL_Texture *texture, const SDL_Rect *rect)
 {
-	if (SDL_RenderCopy(renderer, loadTexture(texture), NULL, rect) == 0)
+	if (SDL_RenderCopy(renderer, texture, NULL, rect) == 0)
 		return true;
 	else
 		return false;
@@ -45,7 +46,7 @@ bool init(SDL_Window *window, SDL_Surface *windowSurface)
 		printf("SDL could not init video: %s\n", SDL_GetError());
 		return false;
 	}
-	printf("Init video");
+	printf("Init video\n");
 
 	// init PNG loading
 	if (!IMG_Init(IMG_INIT_PNG))
@@ -128,12 +129,12 @@ SDL_Texture *loadTexture(const char fileName[])
 		return NULL;
 	}
 
-	printf("Load texture successful: %s\n");
+	printf("Load texture successful: %s\n", fileName);
 
 	return texture;
 }
 
-bool close()
+bool closeSDL()
 {
 	//Deallocate windowSurface
 	SDL_FreeSurface(windowSurface);
@@ -146,6 +147,10 @@ bool close()
 	// Destroy renderer
 	SDL_DestroyRenderer(renderer);
 
+	// Destroy all textures
+	for(int i=0; i < MAX_TEXTURES; i++)
+		SDL_DestroyTexture(allTextures[i]);
+		
 /*
 	// Destroy textures
 	for (auto &texture : allTextures)
@@ -167,5 +172,3 @@ bool close()
 	printf("Close successful\n");
 	return true;
 }
-
-int main(){return 0;}

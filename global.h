@@ -17,6 +17,20 @@ enum KeyPresses
 	KEY_PRESS_TOTAL
 };
 
+typedef enum Textures {
+	ENEMY,
+	ENEMY_BAT,
+	PLAYER,
+	BULLET_RED,
+	BULLET_GREEN,
+	BULLET_ORANGE,
+	CLOUD_BG,
+	HITBOX,
+	MAX_TEXTURES
+} textures;
+
+extern SDL_Texture* allTextures[];
+
 extern SDL_Window *window; // main window
 extern SDL_Surface *windowSurface; // surface for main window
 extern SDL_Renderer *renderer; // main renderer
@@ -26,10 +40,10 @@ extern SDL_Renderer *renderer; // main renderer
 // ===================
 
 // SDL rect wrapper
-extern SDL_Rect makeRect(const int *x, const int *y, const int *w, const int *h);
+extern SDL_Rect makeRect(const int x, const int y, const int w, const int h);
 
 // SDL_RenderCopy wrapper
-extern bool render(const char* texture, const SDL_Rect* rect);
+extern bool render(SDL_Texture* texture, const SDL_Rect* rect);
 
 // init SDL subsystems, windows etc.
 extern bool init(SDL_Window *window, SDL_Surface *windowSurface);
@@ -41,4 +55,4 @@ extern SDL_Surface *loadImage(const char fileName[]);
 extern SDL_Texture *loadTexture(const char filename[]);
 
 // free memory and quit SDL subsytems
-extern bool close();
+extern bool closeSDL();

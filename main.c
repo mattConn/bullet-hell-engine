@@ -1,46 +1,48 @@
-#include <iostream>
-#include <vector>
-#include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #undef main
 
-#include "debug.h"
 #include "global.h"
-#include "bulletContainers.h"
-#include "baseObjects.h"
-#include "enemyWaves.h"
-#include "animation.h"
 #include "gameObj.h"
 
-#include "getPlayerInput.h"
-#include "renderEnemies.h"
-#include "renderBullets.h"
 
 int main(int argc, char* argv[])
 {
 	// init sdl
-	if (!global::init(global::window, global::windowSurface))
+	if (!init(window, windowSurface))
 	{
-		DEBUG_MSG("Init failed");
+		printf("Init failed\n");
 		return -1;
 	}
 
 	// hide cursor
 	SDL_ShowCursor(SDL_DISABLE);
 
-	// containers
-	// ==========
 
 	// load textures
-	global::allTextures["enemy"] = global::loadTexture("enemy.png");
-	global::allTextures["enemy-bat"] = global::loadTexture("enemy-bat.png");
-	global::allTextures["player"] = global::loadTexture("player.png");
-	global::allTextures["bullet-red"] = global::loadTexture("bullet-red.png");
-	global::allTextures["bullet-green"] = global::loadTexture("bullet-green.png");
-	global::allTextures["bullet-orange"] = global::loadTexture("bullet-orange.png");
-	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
-	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
+	allTextures[ENEMY] = loadTexture("enemy.png"),
+	allTextures[ENEMY_BAT] = loadTexture("enemy-bat.png"),
+	allTextures[PLAYER] = loadTexture("player.png"),
+	allTextures[BULLET_RED] = loadTexture("bullet-red.png"),
+	allTextures[BULLET_GREEN] = loadTexture("bullet-green.png"),
+	allTextures[BULLET_ORANGE] = loadTexture("bullet-orange.png"),
+	allTextures[CLOUD_BG] = loadTexture("cloud-bg.png"),
+	allTextures[HITBOX] = loadTexture("hitbox.png");
+
+	gameObj player;
+	initGameObj(&player, PLAYER, 8, SCREEN_WIDTH / 2 - 10 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 85);
+	int a = SDL_GetTicks() + 3000;
+	while(SDL_GetTicks() < a)
+	{
+		render(allTextures[PLAYER], &player.rect);
+
+		SDL_RenderPresent(renderer);
+
+		SDL_Delay(16);
+	}
+	
+
+/*
 
 
 	// make player 
@@ -213,11 +215,9 @@ int main(int argc, char* argv[])
 	//==============
 	// end game loop
 
+*/
 	// close SDL subsystems
-	global::close();
-	DEBUG_MSG("** Gameplay stats **");
-	DEBUG_MSG("Deaths: " << deaths);
-	DEBUG_MSG("Graze: " << graze);
+	closeSDL();
 
 	return 0;
 }
