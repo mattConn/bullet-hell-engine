@@ -46,7 +46,7 @@ public:
 	}
 
 	// detailed constructor
-	// takes texture string, velocity, width, height, xPos, yPos, bullet string, animation list
+	// takes texture string, velocity, width, height, xPos, yPos, bullet string, bullet duration, animation list
 	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &xPos = 0 ,const int &yPos = 0, std::string bull = "", const int& dur = 0, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), duration(dur), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);

@@ -7,17 +7,8 @@
 
 // base objects to copy
 
-std::map<std::string, gameObj> baseBullets = {
-	{
-		"orange",
-		gameObj("bullet-orange", 10, 20, 20)
-	},
+std::map<std::string, gameObj> baseBullets;
 
-	{
-		"red",
-		gameObj("bullet-red", -10, 20, 20, 100)
-	}
-};
 std::map<std::string, gameObj> baseEnemies = {
 	{
 		"bat",

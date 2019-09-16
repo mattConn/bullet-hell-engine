@@ -36,11 +36,12 @@ int main(int argc, char* argv[])
 	global::allTextures["enemy"] = global::loadTexture("enemy.png");
 	global::allTextures["enemy-bat"] = global::loadTexture("enemy-bat.png");
 	global::allTextures["player"] = global::loadTexture("player.png");
-	global::allTextures["bullet-red"] = global::loadTexture("bullet-red.png");
 	global::allTextures["bullet-green"] = global::loadTexture("bullet-green.png");
-	global::allTextures["bullet-orange"] = global::loadTexture("bullet-orange.png");
 	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
 	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
+
+	// load bullets from file
+	global::mapFromFile("bullets.txt", baseBullets);	
 
 
 	// make player 
