@@ -56,12 +56,12 @@ public:
 
 	// copy constructor with rect coords
 	// takes rhs gameObj, xPos, yPos, animation sequence
-	gameObj(const gameObj* other, const int &xPos, const int &yPos, const std::vector<animPair> &seq = {}) : currentTexture(other->currentTexture), velocity(other->velocity), bullet(other->bullet), animationSequence(seq)
+	gameObj(const gameObj& other, const int &xPos, const int &yPos, const std::vector<animPair> &seq = {}) : currentTexture(other.currentTexture), velocity(other.velocity), bullet(other.bullet), animationSequence(seq)
 	{
-		rect = global::makeRect(xPos, yPos, other->rect.w, other->rect.h);
+		rect = global::makeRect(xPos, yPos, other.rect.w, other.rect.h);
 		initialX = rect.x;
 		initialY = rect.y;
-		duration = other->duration;
+		duration = other.duration;
 	}
 
 	// accessors
@@ -157,7 +157,7 @@ public:
 	gameObj getBulletCopy()
 	{ 
 		assert(bullet != "");
-		gameObj newBullet = *baseBullets[bullet]; // copy of bullet
+		gameObj newBullet = baseBullets[bullet]; // copy of bullet
 		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
 		newBullet.setRectY(getRectY());
 

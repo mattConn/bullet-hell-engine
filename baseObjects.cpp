@@ -7,22 +7,20 @@
 
 // base objects to copy
 
-std::map<std::string, gameObj*> baseBullets = {
+std::map<std::string, gameObj> baseBullets = {
 	{
 		"orange",
-		new gameObj("bullet-orange", 10, 20, 20)
-		// duration 500
+		gameObj("bullet-orange", 10, 20, 20)
 	},
 
 	{
 		"red",
-		new gameObj("bullet-red", -10, 20, 20, 100)
-		// duration 100
+		gameObj("bullet-red", -10, 20, 20, 100)
 	}
 };
-std::map<std::string, gameObj*> baseEnemies = {
+std::map<std::string, gameObj> baseEnemies = {
 	{
 		"bat",
-		new gameObj("enemy-bat", 6, 50, 46, 0, 0, "orange", 200)
+		gameObj("enemy-bat", 6, 50, 46, 0, 0, "orange", 200)
 	}
 };
