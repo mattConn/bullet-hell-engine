@@ -47,11 +47,11 @@ int main(int argc, char* argv[])
 	// ===========
 
 	// construct player
-	gameObj player = gameObj("player", 8, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, 50, 85, baseBullets["red"]);
-	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 0, 0, 10, 10);
+	gameObj player = gameObj("player", 8, 50, 85, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, "red", 100);
+	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 10, 10);
 
 	// set background
-	gameObj bg = gameObj("cloud-bg", 5, 0, 0, 800, 600);
+	gameObj bg = gameObj("cloud-bg", 5, 800, 600);
 	SDL_Rect bgRect = *bg.getRectPtr(); // rect for 2nd bg render
 	bgRect.y = -bg.getRectH();
 

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include "baseObjects.h"
 #include "global.h"
 #include "debug.h"
 
@@ -20,7 +21,7 @@ private:
 
 	std::string currentTexture;
 
-	gameObj *bullet = nullptr;
+	std::string bullet = "";
 
 	// fire rate members
 	int duration = 0; // duration of old bullet on screen
@@ -45,20 +46,12 @@ public:
 	}
 
 	// detailed constructor
-	// takes texture string, velocity, xPos, yPos, width, height, bullet gameObj, animation list
-	gameObj(std::string t, const double& vel, const int &xPos, const int &yPos, const int &width, const int &height, gameObj *bull = nullptr, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), animationSequence(seq)
+	// takes texture string, velocity, width, height, xPos, yPos, bullet string, animation list
+	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &xPos = 0 ,const int &yPos = 0, std::string bull = "", const int& dur = 0, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), duration(dur), animationSequence(seq)
 	{
 		rect = global::makeRect(xPos, yPos, width, height);
 		setInitialX(xPos);
 		setInitialY(yPos);
-	}
-
-	// bullet constructor
-	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &dur) : currentTexture(t), velocity(vel)
-	{
-		rect = global::makeRect(0, 0, width, height);
-		duration = dur;
-		timeout = dur + SDL_GetTicks();
 	}
 
 	// copy constructor with rect coords
@@ -68,16 +61,8 @@ public:
 		rect = global::makeRect(xPos, yPos, other->rect.w, other->rect.h);
 		initialX = rect.x;
 		initialY = rect.y;
+		duration = other->duration;
 	}
-
-	// bullet ptrs copied over from baseBullets; these are freed during close routine
-	/*
-	~gameObj()
-	{
-		delete bullet;
-		bullet = nullptr;
-	}
-	*/
 
 	// accessors
 	std::string getCurrentTexture() const
@@ -171,26 +156,20 @@ public:
 	// get bullet
 	gameObj getBulletCopy()
 	{ 
-		assert(bullet != nullptr);
-		gameObj newBullet = gameObj(*bullet); // copy of bullet
+		assert(bullet != "");
+		gameObj newBullet = *baseBullets[bullet]; // copy of bullet
 		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
 		newBullet.setRectY(getRectY());
 
 		return newBullet;
 	}
 
-	gameObj* getBulletPtr() const
-	{ 
-		assert(bullet != nullptr);
-		return bullet;
-	}
-
 	// set bullet
-	void setBullet(std::string t, const double& vel, const int& width, const int& height, const int& d)
+	void setBulletProps(std::string bull, const int& d)
 	{
-		bullet = new gameObj(t, vel, 0, 0, width, height);
-		bullet->duration = d;
-		bullet->timeout = d + SDL_GetTicks();
+		bullet = bull;
+		duration = d;
+		timeout = d + SDL_GetTicks();
 	}
 
 	// mutators

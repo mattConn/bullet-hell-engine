@@ -16,10 +16,10 @@ void getPlayerInput(gameObj& player, const Uint8* keyState)
 		player.setVelocityMod(1);
 
 	// fire
-	if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getBulletPtr()->getTimeout()))
+	if (keyState[SDL_SCANCODE_Z] && SDL_TICKS_PASSED(SDL_GetTicks(), player.getTimeout()))
 	{
 		currentPlayerBullets.push_back(player.getBulletCopy());
-		player.getBulletPtr()->resetTimeout();
+		player.resetTimeout();
 	}
 
 	// move left

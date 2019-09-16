@@ -19,10 +19,10 @@ namespace animation {
 
 	bool fire(gameObj* g)
 	{
-		if (SDL_TICKS_PASSED(SDL_GetTicks(), g->getBulletPtr()->getTimeout()))
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), g->getTimeout()))
 		{
 			currentEnemyBullets.push_back(g->getBulletCopy());
-			g->getBulletPtr()->resetTimeout();
+			g->resetTimeout();
 		}
 		return true;
 	}

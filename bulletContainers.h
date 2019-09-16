@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "gameObj.h"
+
+class gameObj;
 
 // player bullet container
 extern std::vector<gameObj> currentPlayerBullets;
