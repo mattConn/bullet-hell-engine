@@ -1,2 +1,5 @@
-player bullet collision with enemy
-enemy bullet collision with player, player death and spawn protection
+config files (in order of dependence):
+	bullets
+	animations
+	enemies
+	waves
