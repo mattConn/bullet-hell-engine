@@ -50,8 +50,6 @@ namespace global {
 	// SDL image wrapper
 	extern SDL_Texture *loadTexture(const char filename[]);
 
-	void mapFromFile(std::string fileName, std::map<std::string, gameObj> &objMap);
-
 	// free memory and quit SDL subsytems
 	extern bool close();
 

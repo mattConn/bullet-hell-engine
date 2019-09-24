@@ -147,35 +147,6 @@ SDL_Texture *loadTexture(const char fileName[])
 	return texture;
 }
 
-void mapFromFile(std::string fileName, std::map<std::string, gameObj> &objMap)
-{
-	std::ifstream infile(fileName);
-
-	std::string line;
-	std::string tok;
-
-	std::vector<std::string> args;
-
-	while(std::getline(infile, line))
-	{
-		if(line[0] != '#') // check for line comment
-		{
-			std::stringstream ss(line); // stringstream from line
-
-			while(std::getline(ss, tok, ' ')) // space delimiter
-				args.push_back(tok);
-
-			allTextures[args[1]] = global::loadTexture(args[1].c_str());
-			objMap[args[0]] = gameObj(args[1], std::stoi(args[2]), std::stoi(args[3]), std::stoi(args[4]));
-		}
-
-		line = "";
-		tok = "";
-		args.clear();
-	}
-
-}
-
 bool close()
 {
 	//Deallocate windowSurface

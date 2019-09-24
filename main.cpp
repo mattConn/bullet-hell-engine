@@ -9,13 +9,16 @@
 #include "global.h"
 #include "bulletContainers.h"
 #include "baseObjects.h"
-#include "enemyWaves.h"
+//#include "enemyWaves.h"
 #include "animation.h"
 #include "gameObj.h"
+#include "configFromFile.h"
 
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
 #include "renderBullets.h"
+
+using namespace animation;
 
 int main(int argc, char* argv[])
 {
@@ -33,15 +36,39 @@ int main(int argc, char* argv[])
 	// ==========
 
 	// load textures
-	global::allTextures["enemy"] = global::loadTexture("enemy.png");
-	global::allTextures["enemy-bat"] = global::loadTexture("enemy-bat.png");
 	global::allTextures["player"] = global::loadTexture("player.png");
-	global::allTextures["bullet-green"] = global::loadTexture("bullet-green.png");
 	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
 	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
 
+	DEBUG_MSG("Loading Bullets:");
 	// load bullets from file
-	global::mapFromFile("bullets.txt", baseBullets);	
+	bulletsFromFile("bullets.conf", baseBullets);	
+
+	DEBUG_MSG("Loading Enemies:");
+	// enemies from file
+	enemiesFromFile("enemies.conf", baseEnemies);
+
+std::vector<std::vector<gameObj*>> enemyWaves = {
+	// wave 1
+	{
+		new gameObj(baseEnemies["bat"], 200, 20,
+		{
+			{{down, left, fire}, 200},
+			{{down, fire}, 0},
+		}
+		),
+		new gameObj(baseEnemies["bat"], 300, 20, {
+			{{right, fire}, 200},
+			{{left, fire}, 200},
+			{{right, fire}, 200},
+			{{left, fire}, 200},
+			{{right, fire}, 200},
+			{{left, fire}, 200},
+			{{down, fire}, 0}
+		})
+	},
+
+};
 
 
 	// make player 
