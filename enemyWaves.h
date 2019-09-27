@@ -3,4 +3,4 @@
 #include "gameObj.h"
 
 
-extern std::vector<std::vector<gameObj*>> enemyWaves;
+extern std::vector<std::vector<gameObj>> enemyWaves;

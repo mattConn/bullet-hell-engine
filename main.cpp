@@ -9,7 +9,7 @@
 #include "global.h"
 #include "bulletContainers.h"
 #include "baseObjects.h"
-//#include "enemyWaves.h"
+#include "enemyWaves.h"
 #include "animation.h"
 #include "gameObj.h"
 #include "configFromFile.h"
@@ -17,8 +17,6 @@
 #include "getPlayerInput.h"
 #include "renderEnemies.h"
 #include "renderBullets.h"
-
-using namespace animation;
 
 int main(int argc, char* argv[])
 {
@@ -48,6 +46,11 @@ int main(int argc, char* argv[])
 	// enemies from file
 	enemiesFromFile("enemies.conf", baseEnemies);
 
+	DEBUG_MSG("Loading Waves:");
+	// enemies from file
+	wavesFromFile("waves.conf", enemyWaves);
+
+/*
 std::vector<std::vector<gameObj*>> enemyWaves = {
 	// wave 1
 	{
@@ -69,6 +72,7 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	},
 
 };
+*/
 
 
 	// make player 

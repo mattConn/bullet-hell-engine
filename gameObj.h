@@ -75,7 +75,7 @@ public:
 		currentTexture = t;
 	}
 
-	void addAnimationSet(const std::initializer_list<bool (*)(gameObj*)> &set, const int &distance = 0)
+	void addAnimationSet(const std::vector<bool (*)(gameObj*)> &set, const int &distance = 0)
 	{
 		animationSequence.push_back({set, distance});
 	}
