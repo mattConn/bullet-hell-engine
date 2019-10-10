@@ -124,15 +124,15 @@ void wavesFromFile(std::string fileName, std::vector<std::vector<gameObj>> &objV
 				{
 					for(auto token : args)
 					{
-						if(token == "^")
+						if(token == "up")
 							animSet.push_back(animation::up);
-						else if(token == "v")
+						else if(token == "down")
 							animSet.push_back(animation::down);
-						else if(token == "<")
+						else if(token == "left")
 							animSet.push_back(animation::left);
-						else if(token == ">")
+						else if(token == "right")
 							animSet.push_back(animation::right);
-						else if(token == "*")
+						else if(token == "fire")
 							animSet.push_back(animation::fire);
 					}
 
