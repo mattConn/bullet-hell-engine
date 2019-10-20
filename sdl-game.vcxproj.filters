@@ -24,9 +24,6 @@
     <ClCompile Include="animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="animSequence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="baseObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="enemyWaves.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="configFromFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

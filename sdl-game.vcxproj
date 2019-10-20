@@ -125,9 +125,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
-    <ClCompile Include="animSequence.cpp" />
     <ClCompile Include="baseObjects.cpp" />
     <ClCompile Include="bulletContainers.cpp" />
+    <ClCompile Include="configFromFile.cpp" />
     <ClCompile Include="enemyWaves.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
