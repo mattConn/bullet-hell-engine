@@ -1,3 +1,5 @@
 *.o
 *.swp
 sdl-game
+.gitattributes
+*.user
