@@ -19,7 +19,7 @@ namespace animation {
 
 	bool fire(gameObj* g)
 	{
-		if (SDL_TICKS_PASSED(SDL_GetTicks(), g->getTimeout()))
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), g->timeout))
 		{
 			currentEnemyBullets.push_back(g->getBulletCopy());
 			g->resetTimeout();
@@ -29,28 +29,28 @@ namespace animation {
 
 	bool up(gameObj *g)
 	{
-		g->decRectY(g->getVelocity());
+		g->rect.y -= g->velocity;
 	
 		return true;
 	}
 
 	bool down(gameObj *g)
 	{
-		g->incRectY(g->getVelocity());
+		g->rect.y += g->velocity;
 	
 		return true;
 	}
 
 	bool left(gameObj *g)
 	{
-		g->decRectX(g->getVelocity());
+		g->rect.y -= g->velocity;
 	
 		return true;
 	}
 
 	bool right(gameObj *g)
 	{
-		g->incRectX(g->getVelocity());
+		g->rect.x += g->velocity;
 	
 		return true;
 	}
@@ -58,10 +58,10 @@ namespace animation {
 	bool downAndLeft(gameObj *g)
 	{
 
-		if (abs(g->getInitialY() - g->getRectY()) < 100)
-			g->incRectY(5);
+		if (abs(g->initialY - g->rect.y) < 100)
+			g->rect.y += 5;
 		else
-			g->decRectX(5);
+			g->rect.x -= 5;
 
 		return true;
 	}
@@ -69,7 +69,7 @@ namespace animation {
 	bool blink(gameObj* g)
 	{
 		if (SDL_GetTicks() & 1) // render on odd tick (blink)
-			global::render(g->getCurrentTexture(), g->getRectPtr());
+			global::render(g->currentTexture, &g->rect);
 
 		return true;
 	}

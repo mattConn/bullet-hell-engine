@@ -80,12 +80,12 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 
 	// construct player
 	gameObj player = gameObj("player", 8, 50, 85, global::SCREEN_WIDTH / 2 - 10 / 2, global::SCREEN_HEIGHT / 2 - 100 / 2, "red", 100);
-	gameObj hitbox = gameObj("hitbox", player.getVelocity(), 10, 10);
+	gameObj hitbox = gameObj("hitbox", player.velocity, 10, 10);
 
 	// set background
 	gameObj bg = gameObj("cloud-bg", 5, 800, 600);
-	SDL_Rect bgRect = *bg.getRectPtr(); // rect for 2nd bg render
-	bgRect.y = -bg.getRectH();
+	SDL_Rect bgRect = bg.rect; // rect for 2nd bg render
+	bgRect.y = -bg.rect.h;
 
 	// game state booleans
 	bool quit = false;
@@ -151,20 +151,20 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 		SDL_RenderClear(global::renderer);
 
 		// background scrolling
-		if (bg.getRectY() > global::SCREEN_HEIGHT - 1) // reset bg positions
+		if (bg.rect.y > global::SCREEN_HEIGHT - 1) // reset bg positions
 		{
-			bg.setRectY(bg.getInitialY());
-			bgRect.y = -bg.getRectH();
+			bg.rect.y = bg.initialY;
+			bgRect.y = -bg.rect.h;
 		}
 		else // scroll bg's
 		{
-			bg.incRectY(bg.getVelocity());
-			bgRect.y += bg.getVelocity();
+			bg.rect.y += bg.velocity;
+			bgRect.y += bg.velocity;
 		}
 
 		// render bgs
-		global::render(bg.getCurrentTexture(), bg.getRectPtr());
-		global::render(bg.getCurrentTexture(), &bgRect);
+		global::render(bg.currentTexture, &bg.rect);
+		global::render(bg.currentTexture, &bgRect);
 
 		// player alive routine (render player, enemy bullets)
 		// ===================================================
@@ -176,16 +176,16 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 			getPlayerInput(player, keyState);
 
 			// update hitbox position to middle of player
-			hitbox.setRectX(player.getRectX() + player.getRectW() / 2 - 4);
-			hitbox.setRectY(player.getRectY() + player.getRectH() / 2 - 4);
+			hitbox.rect.x = (player.rect.x + player.rect.w / 2 - 4);
+			hitbox.rect.y = (player.rect.y + player.rect.h / 2 - 4);
 
 			// render player
 			if (playerIsInvulnerable) // check invulnerability after respawn
 				animation::blink(&player);
 			else
 			{
-				global::render(player.getCurrentTexture(), player.getRectPtr());
-				global::render(hitbox.getCurrentTexture(), hitbox.getRectPtr());
+				global::render(player.currentTexture, &player.rect);
+				global::render(hitbox.currentTexture, &hitbox.rect);
 			}
 
 			// render bullets
@@ -196,7 +196,7 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 			// check for enemy bullet collision (hitbox is player middle)
 			for (auto &bullet : currentEnemyBullets)
 			{
-				if (!playerIsInvulnerable && SDL_HasIntersection(hitbox.getRectPtr(), bullet.getRectPtr()))
+				if (!playerIsInvulnerable && SDL_HasIntersection(&hitbox.rect, &bullet.rect))
 				{
 					playerIsDead = true;
 					deaths++;

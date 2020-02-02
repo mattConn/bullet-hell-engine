@@ -10,14 +10,12 @@
 #include "global.h"
 #include "debug.h"
 
-class gameObj;
 typedef std::vector<bool (*)(gameObj*)> animVector;
 typedef std::pair<animVector, int> animPair;
 
 // any game object
 // ===============
-class gameObj {
-private:
+typedef struct gameObj {
 
 	std::string currentTexture;
 
@@ -38,21 +36,25 @@ private:
 	// sequence of animations: pair of vector and duration
 	std::vector<animPair> animationSequence;
 
-public:
 	// default constructor
 	gameObj()
 	{
 		rect = global::makeRect(0, 0, 1, 1);
-	}
+	};
 
 	// detailed constructor
 	// takes texture string, velocity, width, height, xPos, yPos, bullet string, bullet duration, animation list
-	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &xPos = 0 ,const int &yPos = 0, std::string bull = "", const int& dur = 0, const std::initializer_list<animPair> &seq = {}) : currentTexture(t), velocity(vel), bullet(bull), duration(dur), animationSequence(seq)
+	gameObj(std::string t, const double& vel, const int &width, const int &height, const int &xPos = 0 ,const int &yPos = 0, std::string bull = "", const int& dur = 0, const std::initializer_list<animPair> &seq = {}) 
 	{
+		currentTexture = t;
+		velocity = vel;
+		bullet = bull;
+		duration = dur;
+		animationSequence = seq;
 		rect = global::makeRect(xPos, yPos, width, height);
-		setInitialX(xPos);
-		setInitialY(yPos);
-	}
+		initialX = xPos;
+		initialY = yPos;
+	};
 
 	// copy constructor with rect coords
 	// takes rhs gameObj, xPos, yPos, animation sequence
@@ -62,23 +64,12 @@ public:
 		initialX = rect.x;
 		initialY = rect.y;
 		duration = other.duration;
-	}
-
-	// accessors
-	std::string getCurrentTexture() const
-	{
-		return currentTexture;
-	}
-
-	void setCurrentTexture(std::string t)
-	{
-		currentTexture = t;
-	}
+	};
 
 	void addAnimationSet(const std::vector<bool (*)(gameObj*)> &set, const int &distance = 0)
 	{
 		animationSequence.push_back({set, distance});
-	}
+	};
 
 	void playAnimations()
 	{
@@ -98,13 +89,18 @@ public:
 			initialX = rect.x;
 			initialY = rect.y;
 		}
-	}
+	};
 
 	bool isOffscreen() const {
 		if (getRectR() < 0 || getRectL() > global::SCREEN_WIDTH || getRectTop() > global::SCREEN_HEIGHT || getRectBottom() < 0)
 			return true;
 		return false;
-	}
+	};
+
+	int getRectTop() const { return rect.y; }
+	int getRectBottom() const { return rect.y + rect.h; }
+	int getRectL() const { return rect.x; }
+	int getRectR() const { return rect.x + rect.w; }
 
 	// get velocity
 	double getVelocity() const { return velocity; }
@@ -112,45 +108,12 @@ public:
 
 	void setVelocityMod(const double& v) { velocityMod = v; }
 
-	// get rect sides
-	int getRectTop() const { return rect.y; }
-	int getRectBottom() const { return rect.y + rect.h; }
-	int getRectL() const { return rect.x; }
-	int getRectR() const { return rect.x + rect.w; }
-	int getRectMiddle() const { return getRectR() - getRectW() / 2; }
-
-	int getRectY() const { return rect.y; }
-	int getRectX() const { return rect.x; }
-	int getRectW() const { return rect.w; }
-	int getRectH() const { return rect.h; }
-
-	void setRectX(const int &x) { rect.x = x; }
-	void setRectY(const int &y) { rect.y = y; }
-	void setRectW(const int &w) { rect.w = w; }
-	void setRectH(const int &h) { rect.h = h; }
-
-	SDL_Rect *getRectPtr() { return &rect; }
-
-	// get initial position
-	int getInitialX() const { return initialX; }
-	int getInitialY() const { return initialY; }
-	
-	// set initial position
-	void setInitialX(const int& x) { initialX = x; };
-	void setInitialY(const int& y) { initialY = y; };
-
 	void setInitialPos(const int& x, const int& y)
 	{
-		setInitialX(x);
-		setInitialY(y);
+		initialX = x;
+		initialY = y;
 	}
 
-	// get fire rate info
-	int getDuration() const { return duration; }
-	int getTimeout() const { return timeout; }
-
-	// set fire rate info
-	void setDuration(const int& d) { duration = d; }
 	void resetTimeout() { timeout = duration + SDL_GetTicks(); }
 
 	// get bullet
@@ -158,25 +121,10 @@ public:
 	{ 
 		assert(bullet != "");
 		gameObj newBullet = baseBullets[bullet]; // copy of bullet
-		newBullet.setRectX(getRectX() + getRectW()/2 - 8); // center bullet
-		newBullet.setRectY(getRectY());
+		newBullet.rect.x =  rect.x + rect.w/2 - 8; // center bullet
+		newBullet.rect.y = rect.y;
 
 		return newBullet;
 	}
 
-	// set bullet
-	void setBulletProps(std::string bull, const int& d)
-	{
-		bullet = bull;
-		duration = d;
-		timeout = d + SDL_GetTicks();
-	}
-
-	// mutators
-	void incRectX(const int n) { rect.x += n; }
-	void incRectY(const int n) { rect.y += n; }
-
-	void decRectX(const int n) { rect.x -= n; }
-	void decRectY(const int n) { rect.y -= n; }
-
-};
+} gameObj;

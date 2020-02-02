@@ -13,7 +13,7 @@ void renderEnemies(std::vector<gameObj> &enemies, std::vector<gameObj> &bullets)
 		if (!enemies[i].isOffscreen()) // if not offscreen
 		{
 			// render
-			global::render(enemies[i].getCurrentTexture(), enemies[i].getRectPtr());
+			global::render(enemies[i].currentTexture, &enemies[i].rect);
 
 			// play animations
 			enemies[i].playAnimations();
@@ -21,7 +21,7 @@ void renderEnemies(std::vector<gameObj> &enemies, std::vector<gameObj> &bullets)
 			// check for player bullet collision
 			for (int j = 0; j < bullets.size(); j++)
 			{
-				if (SDL_HasIntersection(enemies[i].getRectPtr(), bullets[j].getRectPtr()))
+				if (SDL_HasIntersection(&enemies[i].rect, &bullets[j].rect))
 				{
 					enemies.erase(enemies.begin() + i);
 
