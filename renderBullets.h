@@ -9,7 +9,7 @@ void renderBullets(std::vector<gameObj> &bullets)
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		// translate
-		bullets[i].rect.y += bullets[i].getVelocity();
+		bullets[i].rect.y += bullets[i].velocity;
 
 		// remove bullet if offscreen
 		if (bullets[i].isOffscreen())
