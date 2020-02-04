@@ -1,0 +1,16 @@
+# ENDW marks end of wave
+# ENDW marks end of wave
+
+# enemy1 x-pos y-pos
+# distance animation1 animation2 animationN...
+#
+# enemy2 x-pos y-pos
+# distance animation1 animation2 animationN...
+#
+# END
+
+#include macros.conf
+
+#include wave1.inc
+
+#include wave2.inc
