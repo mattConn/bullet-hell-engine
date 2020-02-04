@@ -43,7 +43,7 @@ namespace animation {
 
 	bool left(gameObj *g)
 	{
-		g->rect.y -= g->velocity;
+		g->rect.x -= g->velocity;
 	
 		return true;
 	}
