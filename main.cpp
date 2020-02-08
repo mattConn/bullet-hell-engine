@@ -31,9 +31,9 @@ int main(int argc, char* argv[])
 	// ==========
 
 	// load textures
-	global::allTextures["player"] = global::loadTexture("player.png");
-	global::allTextures["cloud-bg"] = global::loadTexture("cloud-bg.png");
-	global::allTextures["hitbox"] = global::loadTexture("hitbox.png");
+	global::allTextures["player"] = global::loadTexture("assets/player.png");
+	global::allTextures["cloud-bg"] = global::loadTexture("assets/cloud-bg.png");
+	global::allTextures["hitbox"] = global::loadTexture("assets/hitbox.png");
 
 	DEBUG_MSG("Loading Bullets:");
 	// load bullets from file
