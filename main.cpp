@@ -27,9 +27,6 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	// hide cursor
-	SDL_ShowCursor(SDL_DISABLE);
-
 	// containers
 	// ==========
 

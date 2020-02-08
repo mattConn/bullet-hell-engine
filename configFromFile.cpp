@@ -10,6 +10,12 @@
 void bulletsFromFile(std::string fileName, std::map<std::string, gameObj> &objMap)
 {
 	std::ifstream infile(fileName);
+	if(!infile)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", std::string("Could not open \""+std::string(fileName)+"\".").c_str(), NULL);
+		exit(EXIT_FAILURE);
+	}
+
 
 	std::string line;
 	std::string tok;
@@ -42,6 +48,11 @@ void bulletsFromFile(std::string fileName, std::map<std::string, gameObj> &objMa
 void enemiesFromFile(std::string fileName, std::map<std::string, gameObj> &objMap)
 {
 	std::ifstream infile(fileName);
+	if(!infile)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", std::string("Could not open \""+std::string(fileName)+"\".").c_str(), NULL);
+		exit(EXIT_FAILURE);
+	}
 
 	std::string line;
 	std::string tok;
@@ -76,6 +87,11 @@ void enemiesFromFile(std::string fileName, std::map<std::string, gameObj> &objMa
 void wavesFromFile(std::string fileName, std::vector<std::vector<gameObj>> &objVec)
 {
 	std::ifstream infile(fileName);
+	if(!infile)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", std::string("Could not open \""+std::string(fileName)+"\".").c_str(), NULL);
+		exit(EXIT_FAILURE);
+	}
 
 	std::string line;
 	std::string tok;
