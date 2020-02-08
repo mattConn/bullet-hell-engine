@@ -15,7 +15,8 @@ typedef std::pair<animVector, int> animPair;
 
 // any game object
 // ===============
-typedef struct gameObj {
+class gameObj {
+	public:
 
 	std::string currentTexture;
 
@@ -69,4 +70,4 @@ typedef struct gameObj {
 	// get bullet
 	gameObj getBulletCopy();
 
-} gameObj;
+};
