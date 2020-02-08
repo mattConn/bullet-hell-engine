@@ -10,7 +10,7 @@
 #include "bulletContainers.h"
 #include "baseObjects.h"
 #include "enemyWaves.h"
-#include "animation.h"
+#include "movement.h"
 #include "gameObj.h"
 #include "configFromFile.h"
 
@@ -181,7 +181,7 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 
 			// render player
 			if (playerIsInvulnerable) // check invulnerability after respawn
-				animation::blink(&player);
+				movement::blink(&player);
 			else
 			{
 				global::render(player.currentTexture, &player.rect);

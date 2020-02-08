@@ -1,10 +1,10 @@
 #include "global.h"
 #include "gameObj.h"
-#include "animation.h"
+#include "movement.h"
 #include "bulletContainers.h"
 
-namespace animation {
-	bool endAnimation(const gameObj* g)
+namespace movement {
+	bool endMovement(const gameObj* g)
 	{
 		if (g->isOffscreen())
 			return false;

@@ -1,7 +1,7 @@
 #include <map>
 #include <string>
 
-#include "animation.h"
+#include "movement.h"
 #include "gameObj.h"
 
 // base objects to copy

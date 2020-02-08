@@ -4,7 +4,7 @@
 #include <sstream>
 #include "global.h"
 #include "gameObj.h"
-#include "animation.h"
+#include "movement.h"
 #include "configFromFile.h"
 
 void bulletsFromFile(std::string fileName, std::map<std::string, gameObj> &objMap)
@@ -120,20 +120,20 @@ void wavesFromFile(std::string fileName, std::vector<std::vector<gameObj>> &objV
 					enemy = gameObj(baseEnemies[args[0]], std::stoi(args[1]), std::stoi(args[2]));
 					onEnemy = false;
 				}
-				else // animation data line
+				else // movement data line
 				{
 					for(auto token : args)
 					{
 						if(token == "up")
-							animSet.push_back(animation::up);
+							animSet.push_back(movement::up);
 						else if(token == "down")
-							animSet.push_back(animation::down);
+							animSet.push_back(movement::down);
 						else if(token == "left")
-							animSet.push_back(animation::left);
+							animSet.push_back(movement::left);
 						else if(token == "right")
-							animSet.push_back(animation::right);
+							animSet.push_back(movement::right);
 						else if(token == "fire")
-							animSet.push_back(animation::fire);
+							animSet.push_back(movement::fire);
 					}
 
 					enemy.addAnimationSet(animSet, std::stoi(args[0]));

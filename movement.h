@@ -4,8 +4,8 @@
 #include "gameObj.h"
 #include "bulletContainers.h"
 
-namespace animation {
-	bool endAnimation(const gameObj* g);
+namespace movement {
+	bool endMovement(const gameObj* g);
 	
 	bool wait(gameObj* g);
 
