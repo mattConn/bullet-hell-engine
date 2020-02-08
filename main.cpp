@@ -37,15 +37,15 @@ int main(int argc, char* argv[])
 
 	DEBUG_MSG("Loading Bullets:");
 	// load bullets from file
-	bulletsFromFile("bullets.conf", baseBullets);	
+	bulletsFromFile("config/bullets.conf", baseBullets);	
 
 	DEBUG_MSG("Loading Enemies:");
 	// enemies from file
-	enemiesFromFile("enemies.conf", baseEnemies);
+	enemiesFromFile("config/enemies.conf", baseEnemies);
 
 	DEBUG_MSG("Loading Waves:");
 	// enemies from file
-	wavesFromFile("waves.conf", enemyWaves);
+	wavesFromFile("config/waves.conf", enemyWaves);
 
 /*
 std::vector<std::vector<gameObj*>> enemyWaves = {
