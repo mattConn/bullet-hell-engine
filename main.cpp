@@ -27,6 +27,9 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+	// hide cursor
+	SDL_ShowCursor(SDL_DISABLE);
+
 	// containers
 	// ==========
 
@@ -38,14 +41,18 @@ int main(int argc, char* argv[])
 	DEBUG_MSG("Loading Bullets:");
 	// load bullets from file
 	bulletsFromFile("config/bullets.conf", baseBullets);	
+	DEBUG_MSG("\tSuccess");
 
 	DEBUG_MSG("Loading Enemies:");
 	// enemies from file
 	enemiesFromFile("config/enemies.conf", baseEnemies);
+	DEBUG_MSG("\tSuccess");
 
 	DEBUG_MSG("Loading Waves:");
 	// enemies from file
 	wavesFromFile("config/waves.conf", enemyWaves);
+	DEBUG_MSG("\tSuccess");
+
 
 /*
 std::vector<std::vector<gameObj*>> enemyWaves = {
@@ -88,6 +95,8 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	bool quit = false;
 	bool paused = false;
 
+
+
 	// event handler
 	SDL_Event event;
 
@@ -104,7 +113,9 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 
 	// scorekeeping
 	int deaths = 0;
-	int graze = 0;
+	int numEnemies = 0;
+		for(auto &w : enemyWaves) numEnemies += w.size();
+	int numWaves = enemyWaves.size();
 
 	// game loop
 	//===========
@@ -230,6 +241,8 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 			else
 				enemyWaves.erase(enemyWaves.begin());
 		}
+		else
+			break; // all waves completed, game ends
 
 		// render current textures
 		renderPresent:
@@ -242,11 +255,14 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	//==============
 	// end game loop
 
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Stats", std::string("Deaths: "+std::to_string(deaths)+"\nWaves: "+std::to_string(numWaves - enemyWaves.size())+"/"+std::to_string(numWaves)+"\nKills: "+std::to_string(global::kills)+"/"+std::to_string(numEnemies)).c_str(), NULL);
+
 	// close SDL subsystems
 	global::close();
 	DEBUG_MSG("** Gameplay stats **");
 	DEBUG_MSG("Deaths: " << deaths);
-	DEBUG_MSG("Graze: " << graze);
+	DEBUG_MSG("Waves: " << numWaves - enemyWaves.size() << "/" << numWaves);
+	DEBUG_MSG("Kills: " << global::kills << "/" << numEnemies);
 
 	return 0;
 }

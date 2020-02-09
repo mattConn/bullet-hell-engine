@@ -26,6 +26,8 @@ void renderEnemies(std::vector<gameObj> &enemies, std::vector<gameObj> &bullets)
 					enemies.erase(enemies.begin() + i);
 
 					bullets.erase(bullets.begin() + j);
+
+					global::kills++;
 					break; // avoid out of range index
 				}
 			}
