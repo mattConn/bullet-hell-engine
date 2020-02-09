@@ -268,10 +268,10 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	std::stringstream gameplayStats;
 	gameplayStats << "Deaths: " << deaths << "\n";
 	gameplayStats << "Kills: " << global::kills << "/" << numEnemies << "\n";
-	gameplayStats << "Shots Fired: " << global::shotsFired << "\n";
-	gameplayStats << "Waves Passed: " << numWaves - enemyWaves.size() << "/" << numWaves << "\n";
-	gameplayStats << "Distance Traveled: " << global::distanceTraveled << "px\n";
-	gameplayStats << "Time Played: " << playTime << "s";
+	gameplayStats << "Shots: " << global::shotsFired << "\n";
+	gameplayStats << "Waves: " << numWaves - enemyWaves.size() << "/" << numWaves << "\n";
+	gameplayStats << "Traveled: " << global::distanceTraveled << "px\n";
+	gameplayStats << "Time: " << playTime << "s";
 
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Stats", gameplayStats.str().c_str(), NULL);
 
