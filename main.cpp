@@ -3,6 +3,7 @@
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <sstream>
 #undef main
 
 #include "debug.h"
@@ -110,6 +111,10 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	// player life timeouts
 	int playerDeathTimeout;
 	int playerInvulnerableTimeout;
+
+	// timekeeping
+	int startDelay = SDL_GetTicks() + 1000;
+	int startingTime = SDL_GetTicks();
 
 	// scorekeeping
 	int deaths = 0;
@@ -234,15 +239,18 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 			playerIsInvulnerable = false;
 
 		// render enemies
-		if(enemyWaves.size() > 0)	
+		if(SDL_GetTicks() > startDelay) // starting game delay
 		{
-			if(enemyWaves.front().size() > 0)
-				renderEnemies(enemyWaves.front(), currentPlayerBullets);
+			if(enemyWaves.size() > 0)	
+			{
+				if(enemyWaves.front().size() > 0)
+					renderEnemies(enemyWaves.front(), currentPlayerBullets);
+				else
+					enemyWaves.erase(enemyWaves.begin());
+			}
 			else
-				enemyWaves.erase(enemyWaves.begin());
+				break; // all waves completed, game ends
 		}
-		else
-			break; // all waves completed, game ends
 
 		// render current textures
 		renderPresent:
@@ -255,14 +263,22 @@ std::vector<std::vector<gameObj*>> enemyWaves = {
 	//==============
 	// end game loop
 
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Stats", std::string("Deaths: "+std::to_string(deaths)+"\nWaves: "+std::to_string(numWaves - enemyWaves.size())+"/"+std::to_string(numWaves)+"\nKills: "+std::to_string(global::kills)+"/"+std::to_string(numEnemies)).c_str(), NULL);
+	int playTime = (SDL_GetTicks() - startingTime)/1000;
+
+	std::stringstream gameplayStats;
+	gameplayStats << "Deaths: " << deaths << "\n";
+	gameplayStats << "Kills: " << global::kills << "/" << numEnemies << "\n";
+	gameplayStats << "Shots Fired: " << global::shotsFired << "\n";
+	gameplayStats << "Waves Passed: " << numWaves - enemyWaves.size() << "/" << numWaves << "\n";
+	gameplayStats << "Distance Traveled: " << global::distanceTraveled << "px\n";
+	gameplayStats << "Time Played: " << playTime << "s";
+
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Stats", gameplayStats.str().c_str(), NULL);
 
 	// close SDL subsystems
 	global::close();
 	DEBUG_MSG("** Gameplay stats **");
-	DEBUG_MSG("Deaths: " << deaths);
-	DEBUG_MSG("Waves: " << numWaves - enemyWaves.size() << "/" << numWaves);
-	DEBUG_MSG("Kills: " << global::kills << "/" << numEnemies);
+	DEBUG_MSG(gameplayStats.str());
 
 	return 0;
 }

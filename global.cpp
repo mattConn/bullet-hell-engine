@@ -19,6 +19,9 @@ const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
 int kills = 0;
+int shotsFired = 0;
+
+int distanceTraveled = 0;
 
 SDL_Window *window = nullptr; // main window
 SDL_Surface *windowSurface = nullptr; // surface for main window
