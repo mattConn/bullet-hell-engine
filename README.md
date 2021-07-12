@@ -1,12 +1,10 @@
 # Shmup Game Engine
 Making a shmup game engine with SDL2. A shmup (shoot-em-up) is a game like Space Invaders.
 
-This project depends on SDL2 and SDL2_image. I followed along with Lazy Foo's tutorial to get started.
+This project depends on SDL2 and SDL2_image, as well as GPP for generating config files. I followed along with Lazy Foo's tutorial to get started.
 
 ## Compiling
-On Mac and Linux, use the makefile in `sdl-game`.
-
-On Windows, open the .vcxproj file in the top-level directory with Visual Studio. 
+On Mac and Linux, run `make` to produce binary `sdl-game.` Run `make check` to generate config file and run the game.
 
 # Documentation
 
